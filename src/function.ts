@@ -1,6 +1,6 @@
-import { EmailAliasCore } from 'email-alias-core';
-import { Hono } from 'hono';
-import { handle } from 'hono/cloudflare-pages';
+import { EmailAliasCore } from "email-alias-core";
+import { Hono } from "hono";
+import { handle } from "hono/cloudflare-pages";
 
 /**
  * Defines the structure of the environment variable bindings expected by the Pages Function.
@@ -20,8 +20,8 @@ const app = new Hono<{ Bindings: Bindings }>();
  * @param {string} service - The name of the service, passed as a query parameter.
  * @returns {Response} A JSON response containing the generated alias or an error message.
  */
-app.get('/', (c) => {
-	const service = c.req.query('service');
+app.get("/", (c) => {
+	const service = c.req.query("service");
 
 	if (!service) {
 		return c.json({ error: 'The "service" query parameter is required.' }, 400);
@@ -30,8 +30,10 @@ app.get('/', (c) => {
 	const { SECRET_KEY, DOMAIN } = c.env;
 
 	if (!SECRET_KEY || !DOMAIN) {
-		console.error('SECRET_KEY and/or DOMAIN environment variables are not set.');
-		return c.json({ error: 'Server is not configured correctly.' }, 500);
+		console.error(
+			"SECRET_KEY and/or DOMAIN environment variables are not set.",
+		);
+		return c.json({ error: "Server is not configured correctly." }, 500);
 	}
 
 	try {
@@ -48,7 +50,10 @@ app.get('/', (c) => {
 		});
 	} catch (error) {
 		console.error(`Failed to generate alias for service "${service}":`, error);
-		return c.json({ error: 'An internal error occurred while generating the alias.' }, 500);
+		return c.json(
+			{ error: "An internal error occurred while generating the alias." },
+			500,
+		);
 	}
 });
 
