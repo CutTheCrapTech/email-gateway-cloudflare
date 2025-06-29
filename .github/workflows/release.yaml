@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for creating the release
+      pull-requests: read # Required for generating release notes
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build artifacts
+        run: npm run build
+
+      - name: Create Release and Upload Assets
+        uses: ncipollo/release-action@v1
+        with:
+          # This token is provided by Actions, you do not need to create your own token
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # The artifacts to upload to the release.
+          # The worker script is for Cloudflare Workers.
+          # The function.js script is for Cloudflare Pages Functions.
+          artifacts: "dist/worker.js,dist/function.js"
+          # This will automatically generate release notes based on commits since the last release.
+          generateReleaseNotes: true

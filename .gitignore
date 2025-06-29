@@ -1,0 +1,33 @@
+# Dependency directories
+# This is the most important one! Never commit your dependencies.
+node_modules/
+
+# Build output
+# This directory will contain our bundled artifact for Terraform.
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test and coverage output
+coverage/
+.jest-cache/
+
+# Environment variables
+# Never commit secrets or local environment configurations.
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+
+# macOS specific
+.DS_Store
+
+# Editor-specific directories
+.vscode/
+.idea/
