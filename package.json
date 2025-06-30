@@ -1,34 +1,35 @@
 {
-	"name": "email-gateway-cloudflare",
-	"version": "1.0.0",
-	"private": true,
-	"description": "A Cloudflare Worker and Pages Function for a private email gateway, integrating email-alias-core and email-sanitizer.",
-	"main": "dist/worker.js",
-	"scripts": {
-		"clean": "rimraf dist",
-		"build:worker": "esbuild src/worker.ts --bundle --outfile=dist/worker.js --format=esm --platform=neutral --main-fields=worker,browser,module,main --minify",
-		"build:function": "esbuild src/function.ts --bundle --outfile=dist/function.js --format=esm --platform=neutral --main-fields=worker,browser,module,main --minify",
-		"build": "npm run clean && npm run build:worker && npm run build:function",
-		"format": "biome format --write .",
-		"lint": "biome check .",
-		"lint:fix": "biome check --write .",
-		"lint:unsafe_fix": "biome check --write --unsafe .",
-		"lint:ci": "biome ci ."
-	},
-	"engines": {
-		"node": ">=22.0.0",
-		"npm": ">=10.0.0"
-	},
-	"dependencies": {
-		"@biomejs/biome": "^2.0.6",
-		"email-alias-core": "^1.0.2",
-		"email-sanitizer": "^1.0.2",
-		"hono": "^4.8.2"
-	},
-	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20250620.0",
-		"esbuild": "^0.25.5",
-		"rimraf": "^6.0.1",
-		"typescript": "^5.8.3"
-	}
+  "name": "email-gateway-cloudflare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Cloudflare Worker and Pages Function for a private email gateway, integrating email-alias-core and email-sanitizer.",
+  "main": "dist/worker.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build:worker": "esbuild src/worker.ts --bundle --outfile=dist/worker.js --format=esm --platform=neutral --main-fields=worker,browser,module,main --minify",
+    "build:function": "esbuild src/function.ts --bundle --outfile=dist/function.js --format=esm --platform=neutral --main-fields=worker,browser,module,main --minify",
+    "build": "npm run clean && npm run build:worker && npm run build:function",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "lint:unsafe_fix": "biome check --write --unsafe .",
+    "lint:ci": "biome ci ."
+  },
+  "_scripts_documentation": {},
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "dependencies": {
+    "email-alias-core": "^1.0.2",
+    "email-sanitizer": "^1.0.2",
+    "hono": "^4.8.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.6",
+    "@cloudflare/workers-types": "^4.20250620.0",
+    "esbuild": "^0.25.5",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3"
+  }
 }

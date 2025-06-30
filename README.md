@@ -1,29 +1,29 @@
 # email-gateway-cloudflare
 
-A project containing a Cloudflare Worker for secure email forwarding and sanitization, and a Cloudflare Pages Function for generating email aliases. It integrates [`email-alias-core`](https://github.com/your-username/email-alias-core) and [`email-sanitizer`](https://github.com/your-username/email-sanitizer) to form a complete private email gateway on Cloudflare.
+A project containing a Cloudflare Worker for secure email forwarding and sanitization, and a Cloudflare Pages Function for generating email aliases. It integrates [`email-alias-core`](https://github.com/CutTheCrapTech/email-alias-core) and [`email-sanitizer`](https://github.com/CutTheCrapTech/email-sanitizer) to form a complete private email gateway on Cloudflare.
 
 ## Features
 
--   **Secure Email Forwarding:** Uses HMAC-based email aliases to verify incoming emails, preventing unauthorized use of your email domain.
--   **Email Sanitization:** Strips known tracking pixels and cleans URLs in incoming emails to enhance privacy.
--   **Alias Generation:** A simple Cloudflare Pages Function provides an endpoint to generate new email aliases on demand.
--   **Cloudflare Native:** Built to run entirely on the Cloudflare serverless platform (Workers and Pages).
--   **Infrastructure as Code:** Designed to be deployed via Terraform.
+- **Secure Email Forwarding:** Uses HMAC-based email aliases to verify incoming emails, preventing unauthorized use of your email domain.
+- **Email Sanitization:** Strips known tracking pixels and cleans URLs in incoming emails to enhance privacy.
+- **Alias Generation:** A simple Cloudflare Pages Function provides an endpoint to generate new email aliases on demand.
+- **Cloudflare Native:** Built to run entirely on the Cloudflare serverless platform (Workers and Pages).
+- **Infrastructure as Code:** Designed to be deployed via Terraform.
 
 ## Architecture
 
 This project consists of two main components:
 
 1.  **Cloudflare Worker (`worker/`):** This is the core of the email gateway. It's responsible for:
-    -   Receiving all emails sent to your domain.
-    -   Validating the recipient alias using `email-alias-core`.
-    -   Sanitizing the email content (HTML and text) using `email-sanitizer`.
-    -   Forwarding the clean, validated email to your real inbox.
+    - Receiving all emails sent to your domain.
+    - Validating the recipient alias using `email-alias-core`.
+    - Sanitizing the email content (HTML and text) using `email-sanitizer`.
+    - Forwarding the clean, validated email to your real inbox.
 
 2.  **Cloudflare Pages Function (`functions/`):** This is a simple API endpoint that generates new email aliases.
-    -   It takes a `service` name as a query parameter.
-    -   It uses `email-alias-core` to generate a new, valid email alias for that service.
-    -   This can be used to build a simple web UI or for programmatic alias creation.
+    - It takes a `service` name as a query parameter.
+    - It uses `email-alias-core` to generate a new, valid email alias for that service.
+    - This can be used to build a simple web UI or for programmatic alias creation.
 
 ## Deployment
 
@@ -35,8 +35,8 @@ The release process is automated via GitHub Actions, which builds the worker and
 
 ### Prerequisites
 
--   Node.js and npm
--   A local `git` client
+- Node.js and npm
+- A local `git` client
 
 ### Building
 
