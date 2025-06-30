@@ -13,7 +13,8 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "lint:unsafe_fix": "biome check --write --unsafe .",
-    "lint:ci": "biome ci ."
+    "lint:ci": "biome ci .",
+    "upgrade": "npx npm-check-updates -u && npm install"
   },
   "_scripts_documentation": {},
   "engines": {
