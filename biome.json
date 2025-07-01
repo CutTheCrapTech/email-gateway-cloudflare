@@ -14,5 +14,10 @@
   "formatter": {
     "enabled": true,
     "useEditorconfig": true
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "always"
+    }
   }
 }
