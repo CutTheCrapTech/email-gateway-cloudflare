@@ -22,13 +22,13 @@
     "npm": ">=10.0.0"
   },
   "dependencies": {
-    "email-alias-core": "^1.0.2",
-    "email-sanitizer": "^1.0.2",
-    "hono": "^4.8.2"
+    "email-alias-core": "^1.4.0",
+    "email-scrubber-core": "^1.0.5",
+    "hono": "^4.8.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
-    "@cloudflare/workers-types": "^4.20250620.0",
+    "@cloudflare/workers-types": "^4.20250701.0",
     "esbuild": "^0.25.5",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3"
