@@ -32,12 +32,25 @@ interface EmailOptions {
 async function safeForward(
   message: ForwardableEmailMessage,
   destination: string,
+  defaultEmailAddress: string,
 ): Promise<void> {
   try {
     await message.forward(destination);
   } catch (error) {
     console.error(`Failed to forward email to ${destination}:`, error);
-    // If forward fails, we can't do much else - just log it
+    if (destination !== defaultEmailAddress) {
+      console.log(
+        `Attempting to forward to default address ${defaultEmailAddress} after initial failure.`,
+      );
+      try {
+        await message.forward(defaultEmailAddress);
+      } catch (defaultForwardError) {
+        console.error(
+          `Failed to forward email to default address ${defaultEmailAddress}:`,
+          defaultForwardError,
+        );
+      }
+    }
   }
 }
 
@@ -53,13 +66,12 @@ export default {
   ): Promise<void> {
     // Input validation
     if (!message.to || !message.from) {
-      message.setReject("Invalid email message: missing to/from fields.");
+      console.error("Invalid email message: missing to/from fields.");
       return;
     }
 
     if (!env.EMAIL_OPTIONS) {
       console.error("EMAIL_OPTIONS environment variable is not set");
-      message.setReject("Configuration error: EMAIL_OPTIONS not configured.");
       return;
     }
 
@@ -68,33 +80,26 @@ export default {
       options = JSON.parse(env.EMAIL_OPTIONS);
     } catch (error) {
       console.error("Failed to parse EMAIL_OPTIONS:", error);
-      message.setReject("Configuration error: Invalid EMAIL_OPTIONS JSON.");
       return;
     }
 
     const { default_email_address, ignore_email_checks = [] } = options;
 
     if (!default_email_address) {
-      message.setReject(
-        "Configuration error: No default email address specified.",
-      );
+      console.error("Configuration error: No default email address specified.");
       return;
     }
 
-    if (ignore_email_checks.includes(message.from)) {
+    if (ignore_email_checks.includes(message.to)) {
       console.log(
-        `Sender ${message.from} is in the ignore list. Forwarding to default address.`,
+        `Recipient ${message.to} is in the ignore list. Forwarding to default address.`,
       );
-      await safeForward(message, default_email_address);
+      await safeForward(message, default_email_address, default_email_address);
       return;
     }
 
     if (!env.EMAIL_SECRET_MAPPING) {
-      console.error("EMAIL_SECRET_MAPPING is not set");
-      console.log(
-        "No secret mapping configured. Forwarding to default address.",
-      );
-      await safeForward(message, default_email_address);
+      console.error("EMAIL_SECRET_MAPPING is not set. Cannot process email.");
       return;
     }
 
@@ -103,10 +108,6 @@ export default {
       secretKeyMap = JSON.parse(env.EMAIL_SECRET_MAPPING);
     } catch (error) {
       console.error("Failed to parse EMAIL_SECRET_MAPPING:", error);
-      console.log(
-        "Invalid secret mapping JSON. Forwarding to default address.",
-      );
-      await safeForward(message, default_email_address);
       return;
     }
 
@@ -116,24 +117,21 @@ export default {
         fullAlias: message.to,
       });
 
-      if (destinationEmail) {
+      if (destinationEmail && destinationEmail !== "") {
         console.log(
           `Forwarding email for alias ${message.to} to ${destinationEmail}`,
         );
-        await safeForward(message, destinationEmail);
+        await safeForward(message, destinationEmail, default_email_address);
       } else {
-        console.log(
-          `No valid destination email for alias ${message.to}. Forward to default address ${default_email_address}.`,
-        );
-        await safeForward(message, default_email_address);
+        console.error(`No valid destination email for alias ${message.to}.`);
+        return;
       }
     } catch (error) {
       console.error(
         `Error validating alias ${message.to} with a secret:`,
         error,
       );
-      console.log(`Forward to default address ${default_email_address}.`);
-      await safeForward(message, default_email_address);
+      return;
     }
   },
 };
