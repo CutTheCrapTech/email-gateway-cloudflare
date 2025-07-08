@@ -1,15 +1,13 @@
 {
   "name": "email-gateway-cloudflare",
   "version": "1.0.0",
-  "description": "A zero-dependency library to create and verify secure email aliases for custom domains.",
-
   "release": {
     "branches": [
       "main"
     ]
   },
   "private": true,
-  "description": "A Cloudflare Worker for a private email gateway, integrating email-alias-core and email-sanitizer.",
+  "description": "A Cloudflare Worker for a private email gateway, integrating email-alias-core and email-scrubber-core.",
   "main": "dist/worker.js",
   "scripts": {
     "clean": "rimraf dist",
