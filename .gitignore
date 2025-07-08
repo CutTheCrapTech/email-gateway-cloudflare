@@ -33,3 +33,7 @@ coverage/
 .idea/
 
 samples/
+
+# Wrangler
+wrangler.toml
+.wrangler/

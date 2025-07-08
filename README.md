@@ -20,11 +20,152 @@ This project consists of a Cloudflare Worker that is the core of the email gatew
 
 This project was intended to integrate the [`email-sanitizer`](https://github.com/CutTheCrapTech/email-sanitizer) library to strip tracking pixels and clean URLs from incoming emails. However, Cloudflare Email Workers do not currently support modifying the body of an email. Once this feature becomes available, `email-sanitizer` will be integrated.
 
-## Deployment
+## Configuration
 
-The final built artifacts from this repository are designed to be consumed by an Infrastructure as Code (IaC) setup, such as Terraform, to deploy the resources to Cloudflare.
+The Worker requires the following configuration:
 
-The release process is automated via GitHub Actions, which builds the worker script and attaches it to a GitHub Release. Your Terraform configuration can then pull this asset directly.
+### Environment Variables
+
+- `EMAIL_OPTIONS`: JSON string containing configuration options
+- `DOMAIN`: Your email domain (e.g., "example.com")
+
+### Secrets
+
+- `EMAIL_SECRET_MAPPING`: JSON string mapping secret keys to destination email addresses
+
+### Configuration Examples
+
+**EMAIL_OPTIONS**:
+
+```json
+{
+  "default_email_address": "your-real-email@gmail.com",
+  "ignore_email_checks": ["trusted-receiver@example.com"]
+}
+```
+
+**EMAIL_SECRET_MAPPING**:
+
+```json
+{
+  "secret1": "user1@gmail.com",
+  "secret2": "user2@gmail.com"
+}
+```
+
+## Deployment Options
+
+Choose the deployment method that best fits your needs:
+
+### Option 1: Terraform (Recommended for people using the homelab repository)
+
+Use the complete infrastructure setup from the [homelab repository](https://github.com/CutTheCrapTech/homelab) which includes:
+
+- Cloudflare Workers deployment
+- Email routing configuration
+- DNS setup
+- Environment and secret management
+
+This approach is ideal for production deployments and teams managing multiple environments.
+
+### Option 2: Wrangler CLI (Recommended for others)
+
+For direct deployment using Cloudflare's native tooling:
+
+1. **Install Wrangler**:
+
+   ```bash
+   npm install
+   ```
+
+2. **Authenticate with Cloudflare**:
+
+   ```bash
+   npx wrangler login
+   ```
+
+3. **Build the worker**:
+
+   ```bash
+   npm run build
+   ```
+
+4. **Create configuration**:
+
+   ```bash
+   cp wrangler.toml.template wrangler.toml
+   ```
+
+   Edit `wrangler.toml` with your values:
+
+   ```toml
+   name = "email-gateway-worker"
+   main = "dist/worker.js"
+   compatibility_date = "2025-07-08"
+
+   [vars]
+   EMAIL_OPTIONS = '{"default_email_address":"your-real-email@gmail.com","ignore_email_checks":["trusted-receiver@example.com"]}'
+
+   [[email]]
+   name = "email-gateway"
+   destination_confirmed = true
+   ```
+
+5. **Set secrets**:
+
+   ```bash
+   wrangler secret put EMAIL_SECRET_MAPPING
+   ```
+
+   When prompted, paste your JSON mapping:
+
+   ```json
+   { "secret1": "user1@gmail.com", "secret2": "user2@gmail.com" }
+   ```
+
+6. **Deploy**:
+   ```bash
+   wrangler deploy
+   ```
+
+### Option 3: Manual Deployment (Beginner-friendly)
+
+For a simple one-time setup without additional tooling:
+
+1. **Download the worker code**:
+   - Go to the [latest GitHub release](https://github.com/CutTheCrapTech/email-gateway-cloudflare/releases/latest)
+   - Download the `dist/worker.js` file
+
+2. **Access Cloudflare Dashboard**:
+   - Log in to your [Cloudflare Dashboard](https://dash.cloudflare.com/)
+   - Navigate to **Workers & Pages** → **Create Application** → **Create Worker**
+
+3. **Upload the code**:
+   - Replace the default code with the contents of `dist/worker.js`
+   - Click **Save and Deploy**
+
+4. **Configure Environment Variables**:
+   - Go to **Settings** → **Variables**
+   - Add these variables:
+     - `EMAIL_OPTIONS`: `{"default_email_address":"your-real-email@gmail.com","ignore_email_checks":["trusted-receiver@example.com"]}`
+
+5. **Set Secrets**:
+   - In the same **Variables** section, add an encrypted variable:
+     - `EMAIL_SECRET_MAPPING`: `{"secret1": "user1@gmail.com", "secret2": "user2@gmail.com"}`
+
+6. **Configure Email Routing**:
+   - Go to your domain in Cloudflare Dashboard
+   - Navigate to **Email** → **Email Routing**
+   - Add a custom address with your Worker as the destination
+
+## Email Routing Setup
+
+Regardless of deployment method, you need to configure Cloudflare Email Routing:
+
+1. **Enable Email Routing** for your domain in the Cloudflare Dashboard
+2. **Add MX records** (Cloudflare will prompt you to do this)
+3. **Configure routing rules** to send emails to your Worker
+4. **Verify your destination email** address
 
 ## Development
 
@@ -43,6 +184,26 @@ npm run build
 ```
 
 This will generate the bundled JavaScript files in the `dist/` directory.
+
+### Testing
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+### Code Quality
+
+Check types, linting, and run tests:
+
+```bash
+npm run check
+```
+
+## Release Process
+
+The release process is automated via GitHub Actions, which builds the worker script and attaches it to a GitHub Release. Your deployment method can then pull this asset directly.
 
 ## License
 

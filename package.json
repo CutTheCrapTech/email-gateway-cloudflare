@@ -1,15 +1,12 @@
 {
   "name": "email-gateway-cloudflare",
   "version": "1.0.0",
-  "release": {
-    "branches": [
-      "main"
-    ]
-  },
   "private": true,
   "description": "A Cloudflare Worker for a private email gateway, integrating email-alias-core and email-scrubber-core.",
   "main": "dist/worker.js",
   "scripts": {
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
     "clean": "rimraf dist",
     "build:worker": "esbuild src/worker.ts --bundle --outfile=dist/worker.js --format=esm --platform=neutral --main-fields=worker,browser,module,main",
     "build": "npm run clean && npm run build:worker",
@@ -30,6 +27,8 @@
     "upgrade": "npx npm-check-updates -u && npm install"
   },
   "_scripts_documentation": {
+    "deploy": "Deploy to production using Wrangler",
+    "deploy:staging": "Deploy to staging using Wrangler",
     "clean": "Clean build artifacts in dist/",
     "build:worker": "Compile TypeScript to JavaScript in dist/",
     "build": "Clean and build",
@@ -66,6 +65,32 @@
     "rimraf": "^6.0.1",
     "semantic-release": "^24.2.5",
     "ts-jest": "^29.4.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wrangler": "^4.23.0"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/worker.js",
+              "label": "Cloudflare Worker (worker.js)"
+            },
+            {
+              "path": "dist/**",
+              "label": "Built artifacts"
+            }
+          ]
+        }
+      ]
+    ]
   }
 }

@@ -69,7 +69,6 @@ describe("Email Worker", () => {
         secret1: "user1@example.com",
         secret2: "user2@example.com",
       }),
-      DOMAIN: "example.com",
     };
 
     // Create mock context

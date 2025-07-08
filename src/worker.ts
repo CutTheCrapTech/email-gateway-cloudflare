@@ -16,9 +16,6 @@ export interface Env {
    * e.g., '{"default_email_address":"default@example.com", "ignore_email_checks":["test@example.com"]}'
    */
   EMAIL_OPTIONS: string;
-
-  /** The domain for which email aliases are managed (e.g., "example.com"). */
-  DOMAIN: string;
 }
 
 /**
