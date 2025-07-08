@@ -134,14 +134,14 @@ For a simple one-time setup without additional tooling:
 
 1. **Download the worker code**:
    - Go to the [latest GitHub release](https://github.com/CutTheCrapTech/email-gateway-cloudflare/releases/latest)
-   - Download the `dist/worker.js` file
+   - Download the "Built artifacts" asset (e.g., `worker v1.0.1.js`)
 
 2. **Access Cloudflare Dashboard**:
    - Log in to your [Cloudflare Dashboard](https://dash.cloudflare.com/)
    - Navigate to **Workers & Pages** → **Create Application** → **Create Worker**
 
 3. **Upload the code**:
-   - Replace the default code with the contents of `dist/worker.js`
+   - Replace the default code with the contents of the downloaded worker file (e.g., `worker v1.0.1.js`)
    - Click **Save and Deploy**
 
 4. **Configure Environment Variables**:
