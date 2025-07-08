@@ -1,10 +1,14 @@
 {
   "extends": "./tsconfig.json",
-  "include": [
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/__tests__/**/*",
-    "*.ts"
-  ],
-  "exclude": []
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types", "jest", "@types/jest"],
+    "module": "commonjs",
+    "target": "es2022",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.test.ts", "src/**/*.spec.ts", "src/**/__tests__/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
