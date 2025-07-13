@@ -125,9 +125,15 @@ For direct deployment using Cloudflare's native tooling:
    ```
 
 6. **Deploy**:
+
    ```bash
    wrangler deploy
    ```
+
+7. **Configure Email Routing**:
+   - Go to your domain in Cloudflare Dashboard
+   - Navigate to **Email** → **Email Routing** → **Routing Rules**
+   - Enable catch-all with your Worker as the destination
 
 ### Option 3: Manual Deployment (Beginner-friendly)
 
@@ -146,18 +152,18 @@ For a simple one-time setup without additional tooling:
    - Click **Save and Deploy**
 
 4. **Configure Environment Variables**:
-   - Go to **Settings** → **Variables**
-   - Add these variables:
+   - Go to **Settings** → **Variables and Secrets**
+   - Add these text variables:
      - `EMAIL_OPTIONS`: `{"default_email_address":"your-real-email@gmail.com","ignore_email_checks":["trusted-receiver@example.com"]}`
 
 5. **Set Secrets**:
-   - In the same **Variables** section, add an encrypted variable:
+   - In the same **Variables and Secrets** section, add a variable of type secret:
      - `EMAIL_SECRET_MAPPING`: `{"secret1": "user1@gmail.com", "secret2": "user2@gmail.com"}`
 
 6. **Configure Email Routing**:
    - Go to your domain in Cloudflare Dashboard
-   - Navigate to **Email** → **Email Routing**
-   - Add a custom address with your Worker as the destination
+   - Navigate to **Email** → **Email Routing** → **Routing Rules**
+   - Enable catch-all with your Worker as the destination
 
 ## Email Routing Setup
 
