@@ -32,8 +32,6 @@ coverage/
 .vscode/
 .idea/
 
-samples/
-
 # Wrangler
 wrangler.toml
 .wrangler/
