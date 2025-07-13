@@ -60,7 +60,7 @@ Choose the deployment method that best fits your needs:
 
 ### Option 1: Terraform (Recommended for people using the homelab repository)
 
-Use the complete infrastructure setup from the [homelab repository](https://github.com/karteekiitg/homelab) which includes:
+Use the complete infrastructure setup from the [homelab repository](https://github.com/CutTheCrapTech/homelab) which includes:
 
 - Cloudflare Workers deployment
 - Email routing configuration
