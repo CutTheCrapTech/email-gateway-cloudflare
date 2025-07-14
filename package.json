@@ -1,36 +1,31 @@
 {
-  "name": "email-gateway-cloudflare",
-  "version": "1.0.0",
+  "name": "email-gateway",
   "private": true,
-  "description": "A Cloudflare Worker for a private email gateway, integrating email-alias-core and email-scrubber-core.",
-  "main": "dist/worker.js",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "deploy": "wrangler deploy",
-    "deploy:staging": "wrangler deploy --env staging",
-    "clean": "rimraf dist",
-    "build:worker": "esbuild src/worker.ts --bundle --outfile=dist/worker.js --format=esm --platform=neutral --main-fields=worker,browser,module,main",
-    "build": "npm run clean && npm run build:worker",
-    "type-check": "tsc --noEmit",
-    "type-check:test": "tsc --noEmit --project tsconfig.test.json",
-    "type-check:all": "npm run type-check && npm run type-check:test",
-    "format": "biome format --write .",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "lint:unsafe_fix": "biome check --write --unsafe .",
-    "lint:ci": "biome ci .",
-    "test": "jest",
-    "check": "npm run type-check:all && npm run lint && npm run test",
-    "check:ci": "npm run type-check:all && npm run lint:ci && npm run test",
-    "ci": "npm run check:ci && npm run build",
-    "prepublishOnly": "npm run ci",
-    "semantic-release": "npx semantic-release",
-    "upgrade": "npx npm-check-updates -u && npm install"
+    "deploy": "npm run deploy --workspaces",
+    "clean": "npm run clean --workspaces",
+    "build": "npm run build --workspaces",
+    "type-check": "npm run type-check --workspaces",
+    "type-check:test": "npm run type-check:test --workspaces",
+    "type-check:all": "npm run type-check:all --workspaces",
+    "format": "npm run format --workspaces",
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "lint:unsafe_fix": "npm run lint:unsafe_fix --workspaces",
+    "lint:ci": "npm run lint:ci --workspaces",
+    "test": "npm run test --workspaces",
+    "check": "npm run check --workspaces",
+    "check:ci": "npm run check:ci --workspaces",
+    "ci": "npm run ci --workspaces",
+    "prepublishOnly": "npm run prepublishOnly --workspaces",
+    "upgrade": "npm run upgrade --workspaces"
   },
   "_scripts_documentation": {
-    "deploy": "Deploy to production using Wrangler",
-    "deploy:staging": "Deploy to staging using Wrangler",
+    "deploy": "Deploy to production",
     "clean": "Clean build artifacts in dist/",
-    "build:worker": "Compile TypeScript to JavaScript in dist/",
     "build": "Clean and build",
     "type-check": "Check TypeScript types for source files only",
     "type-check:test": "Check TypeScript types for test files only",
@@ -45,54 +40,22 @@
     "check:ci": "Run all checks (types, lint, tests) for CI/CD",
     "ci": "Run all CI checks including build - for CI/CD",
     "prepublishOnly": "Runs before npm publish to ensure quality",
-    "semantic-release": "Create semantic releases with automated versioning",
     "upgrade": "Upgrades dependencies using npm-check-updates."
   },
   "engines": {
     "node": ">=22.0.0",
     "npm": ">=10.0.0"
   },
-  "dependencies": {
-    "email-alias-core": "^1.5.0",
-    "hono": "^4.8.4"
-  },
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
-    "@cloudflare/workers-types": "^4.20250705.0",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/github": "^11.0.3",
-    "@types/jest": "^30.0.0",
-    "esbuild": "^0.25.5",
-    "jest": "^30.0.2",
-    "rimraf": "^6.0.1",
-    "semantic-release": "^24.2.5",
-    "ts-jest": "^29.4.0",
+
     "typescript": "^5.8.3",
-    "wrangler": "^4.23.0"
-  },
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            {
-              "path": "dist/worker.js",
-              "label": "Cloudflare Worker (worker.js)"
-            },
-            {
-              "path": "dist/**",
-              "label": "Built artifacts"
-            }
-          ]
-        }
-      ]
-    ]
+
+    "esbuild": "^0.25.5",
+    "rimraf": "^6.0.1",
+
+    "jest": "^30.0.2",
+    "@types/jest": "^30.0.0",
+    "ts-jest": "^29.4.0"
   }
 }

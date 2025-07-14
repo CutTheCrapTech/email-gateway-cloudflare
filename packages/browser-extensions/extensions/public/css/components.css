@@ -1,0 +1,318 @@
+/* --- Component Styles --- */
+
+/* Status messages */
+#status-message {
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--background-success);
+  color: var(--text-success);
+  border: 1px solid var(--border-success);
+  margin-bottom: 1rem;
+}
+
+.status-message {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.status-message.success {
+  background-color: var(--background-success);
+  color: var(--text-success);
+  border-color: var(--border-success);
+}
+
+.status-message.error {
+  color: var(--text-error) !important;
+  background-color: rgba(220, 53, 69, 0.1) !important;
+  border-color: var(--text-error) !important;
+}
+
+.status-message.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border-color: #ffeaa7;
+}
+
+.status-message.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border-color: #bee5eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .status-message.warning {
+    background-color: #663d00;
+    color: #ffd60a;
+    border-color: #b8860b;
+  }
+
+  .status-message.info {
+    background-color: #1e3a8a;
+    color: #93c5fd;
+    border-color: #3b82f6;
+  }
+}
+
+/* Error container */
+.error {
+  color: var(--text-error) !important;
+  background-color: rgba(220, 53, 69, 0.1) !important;
+  border-color: var(--text-error) !important;
+}
+
+#error-container {
+  padding: 1rem;
+  border-radius: 6px;
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--text-error);
+  border: 1px solid var(--text-error);
+  margin-top: 1rem;
+}
+
+/* Info icons */
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  background-color: var(--button-secondary);
+  border-radius: 50%;
+  cursor: help;
+  margin-left: 0.5rem;
+  position: relative;
+}
+
+.info-icon:hover {
+  background-color: var(--button-primary);
+}
+
+/* Loading indicator */
+.loading-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.loading-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--button-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Progress bar */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--button-primary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Badge component */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.primary {
+  background-color: var(--button-primary);
+  color: white;
+}
+
+.badge.secondary {
+  background-color: var(--button-secondary);
+  color: white;
+}
+
+.badge.success {
+  background-color: var(--text-success);
+  color: white;
+}
+
+.badge.error {
+  background-color: var(--text-error);
+  color: white;
+}
+
+/* Card component */
+.card {
+  background-color: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px var(--shadow);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--background-input);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--background-input);
+}
+
+/* Alert component */
+.alert {
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.alert.dismissible {
+  padding-right: 3rem;
+}
+
+.alert-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.alert-close:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 1rem 0;
+}
+
+.divider.vertical {
+  width: 1px;
+  height: auto;
+  margin: 0 1rem;
+}
+
+/* Shortcut warnings and suggestions */
+.shortcut-warnings {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: rgba(220, 53, 69, 0.1);
+  border-left: 3px solid var(--text-error);
+  border-radius: 4px;
+}
+
+.shortcut-suggestions {
+  margin: 0.5rem 0;
+}
+
+.suggestion-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.warning {
+  color: var(--text-error);
+  margin-bottom: 0.25rem;
+}
+
+/* Keyboard display component */
+.kbd {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-family: "Courier New", monospace;
+  background-color: var(--background-input);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px var(--shadow);
+  white-space: nowrap;
+}
+
+/* Tab component */
+.tabs {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.tab-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tab-item {
+  margin-right: 0.5rem;
+}
+
+.tab-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-link:hover {
+  color: var(--text-primary);
+  background-color: var(--background-input);
+}
+
+.tab-link.active {
+  color: var(--button-primary);
+  border-bottom-color: var(--button-primary);
+}
+
+.tab-content {
+  padding: 1rem 0;
+}

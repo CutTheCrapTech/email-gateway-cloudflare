@@ -1,0 +1,66 @@
+{
+  "manifest_version": 3,
+  "name": "Email Alias Generator",
+  "version": "1.0.0",
+  "description": "Generate secure email aliases for any website on the fly using your custom domain and secret token.",
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "notifications",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dialog.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["dialog.html", "css/dialog.css", "css/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "commands": {
+    "open-dialog": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      },
+      "description": "Open Email Alias Generator popup"
+    },
+    "fill-current-field": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U"
+      },
+      "description": "Fill current email input field with generated alias"
+    },
+    "quick-generate": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Quick generate alias with default settings"
+    }
+  }
+}

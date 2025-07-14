@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Email Alias Settings</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="options-page">
+    <h1>Settings</h1>
+
+    <!-- Combined settings section -->
+    <div class="section">
+      <h2>Configuration</h2>
+
+      <div class="form-group">
+        <label for="domain">
+          Domain
+          <span
+            class="info-icon"
+            title="The domain you own where the aliases will be created, e.g., 'your-domain.com'."
+            >i</span
+          >
+        </label>
+        <input type="text" id="domain" placeholder="your-domain.com" />
+      </div>
+
+      <div class="form-group secret-key-group">
+        <label for="token">
+          Secret Key
+          <span
+            class="info-icon"
+            title="The secret key used to generate unique, secure aliases. This key is the foundation of your email security."
+            >i</span
+          >
+        </label>
+        <div class="secret-key-container">
+          <div class="input-with-icon-wrapper">
+            <input
+              type="password"
+              id="token"
+              placeholder="Generate a key to get started"
+            />
+            <button id="view-key-btn" class="btn-icon" title="View Key">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-eye"
+              >
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+          <button id="copy-key-btn" class="btn-small btn-secondary hidden">
+            Copy Key
+          </button>
+          <button id="generate-key-btn" class="btn-small btn-primary">
+            Generate New Key
+          </button>
+        </div>
+        <div id="key-actions" class="hidden">
+          <p class="backup-prompt">
+            <strong>Action Required:</strong> Back up this key in a password
+            manager. It is not recoverable.
+          </p>
+          <div class="backup-confirmation">
+            <input type="checkbox" id="backup-confirmed" />
+            <label for="backup-confirmed">
+              I have securely backed up my secret key.
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="default-label">
+          Default Label
+          <span
+            class="info-icon"
+            title="The default category that will be pre-filled when generating aliases (e.g., 'marketing', 'newsletter', 'signup')."
+            >i</span
+          >
+        </label>
+        <input type="text" id="default-label" placeholder="marketing" />
+      </div>
+
+      <button id="save-btn">Save</button>
+
+      <div id="status-message" class="hidden"></div>
+    </div>
+
+    <!-- Keyboard Shortcuts section -->
+    <div class="section keyboard-section">
+      <h2>Keyboard Shortcuts</h2>
+      <p>
+        To customize these shortcuts, please visit your browser's extension
+        management page.
+      </p>
+      <div id="shortcut-list" class="shortcut-list">
+        <!-- Shortcuts will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- Pin to toolbar section -->
+    <div class="section pin-section">
+      <h2>Quick Access</h2>
+      <p>
+        For easy access to the alias generator, make sure to pin this extension
+        to your toolbar:
+      </p>
+      <ol class="pin-instructions">
+        <li>
+          Click the puzzle piece icon <span class="puzzle-icon">🧩</span> in
+          your browser toolbar
+        </li>
+        <li>Find "Email Alias Generator" in the list</li>
+        <li>Click the pin icon <span class="pin-icon">📌</span> next to it</li>
+      </ol>
+      <p class="pin-note">
+        Once pinned, you'll see the extension icon in your toolbar for quick
+        access!
+      </p>
+    </div>
+
+    <!-- Context menu info section -->
+    <div class="section context-menu-section">
+      <h2>Context Menu Feature</h2>
+      <p>You can also generate aliases directly on any website:</p>
+      <ol class="context-instructions">
+        <li>Right-click on any email input field on a website</li>
+        <li>Select "Fill with generated email alias" from the context menu</li>
+        <li>Enter your label and source, then click generate</li>
+        <li>The alias will be automatically filled into the input field</li>
+      </ol>
+    </div>
+
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

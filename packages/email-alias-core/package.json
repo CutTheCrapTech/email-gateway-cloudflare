@@ -1,0 +1,62 @@
+{
+  "name": "@email-gateway/email-alias-core",
+  "version": "1.0.0",
+  "description": "A zero-dependency library to create and verify secure email aliases for custom domains.",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "type-check:test": "tsc --noEmit --project tsconfig.test.json",
+    "type-check:all": "npm run type-check && npm run type-check:test",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "lint:unsafe_fix": "biome check --write --unsafe .",
+    "lint:ci": "biome ci .",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+    "check": "npm run type-check:all && npm run lint && npm run test",
+    "check:ci": "npm run type-check:all && npm run lint:ci && npm run test",
+    "ci": "npm run check:ci && npm run build",
+    "prepublishOnly": "npm run ci",
+    "upgrade": "npx npm-check-updates -u && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CutTheCrapTech/email-alias-core.git"
+  },
+  "keywords": [
+    "email",
+    "alias",
+    "hmac",
+    "secure",
+    "privacy",
+    "typescript",
+    "zero-dependency",
+    "cloudflare",
+    "worker",
+    "custom-domain"
+  ],
+  "author": "CutTheCrapTech",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CutTheCrapTech/email-alias-core/issues"
+  },
+  "homepage": "https://github.com/CutTheCrapTech/email-alias-core#readme",
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ]
+}

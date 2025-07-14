@@ -1,0 +1,384 @@
+/* --- Keyboard Shortcuts Styles --- */
+
+/* Shortcut item containers */
+.shortcut-item {
+  background-color: var(--background-input);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.shortcut-item:hover {
+  border-color: var(--border-focus);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.shortcut-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Shortcut input container */
+.shortcut-input-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Shortcut input field */
+.shortcut-input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-family: "Courier New", monospace;
+  background-color: var(--background-input);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.shortcut-input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.shortcut-input:read-only {
+  cursor: default;
+}
+
+/* Recording state */
+.shortcut-input.recording {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  animation: pulse 1s infinite;
+  color: #856404;
+}
+
+@media (prefers-color-scheme: dark) {
+  .shortcut-input.recording {
+    background-color: #664d03;
+    border-color: #ffc107;
+    color: #ffd60a;
+  }
+}
+
+/* Pulse animation for recording state */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+/* Shortcut display formatting */
+.shortcut-display {
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  background-color: var(--background-input);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin: 0 0.2rem;
+}
+
+/* Shortcut key combinations */
+.shortcut-keys {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.shortcut-key {
+  background-color: var(--background-input);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 1.5rem;
+  text-align: center;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+
+.shortcut-separator {
+  color: var(--text-secondary);
+  font-weight: bold;
+  margin: 0 0.2rem;
+}
+
+/* Shortcut validation states */
+.shortcut-input.valid {
+  border-color: var(--border-success);
+  background-color: var(--background-success);
+  color: var(--text-success);
+}
+
+.shortcut-input.invalid {
+  border-color: var(--text-error);
+  background-color: rgba(220, 53, 69, 0.1);
+  color: var(--text-error);
+}
+
+.shortcut-input.conflict {
+  border-color: #ffc107;
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+@media (prefers-color-scheme: dark) {
+  .shortcut-input.conflict {
+    background-color: #664d03;
+    color: #ffd60a;
+  }
+}
+
+/* Shortcut status indicators */
+.shortcut-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.shortcut-status-icon {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: white;
+}
+
+.shortcut-status.available .shortcut-status-icon {
+  background-color: var(--text-success);
+}
+
+.shortcut-status.conflict .shortcut-status-icon {
+  background-color: #ffc107;
+}
+
+.shortcut-status.invalid .shortcut-status-icon {
+  background-color: var(--text-error);
+}
+
+/* Shortcut help section */
+.shortcut-help {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--background-input);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.shortcut-help-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-heading);
+}
+
+.shortcut-help-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.shortcut-help-item {
+  padding: 0.25rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shortcut-help-item:last-child {
+  border-bottom: none;
+}
+
+.shortcut-help-action {
+  color: var(--text-primary);
+}
+
+.shortcut-help-keys {
+  color: var(--text-secondary);
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+}
+
+/* Shortcut recording instructions */
+.recording-instructions {
+  background-color: rgba(13, 110, 253, 0.1);
+  border: 1px solid var(--button-primary);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.recording-instructions.active {
+  animation: highlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+  0%,
+  100% {
+    background-color: rgba(13, 110, 253, 0.1);
+  }
+  50% {
+    background-color: rgba(13, 110, 253, 0.2);
+  }
+}
+
+/* Platform-specific key indicators */
+.platform-key {
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  padding: 0.1rem 0.3rem;
+  background-color: var(--background-input);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
+
+/* Shortcut conflicts warning */
+.shortcut-conflicts {
+  background-color: rgba(255, 193, 7, 0.1);
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.conflict-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.conflict-item:last-child {
+  border-bottom: none;
+}
+
+.conflict-shortcut {
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+}
+
+.conflict-app {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* Responsive design for shortcuts */
+@media (max-width: 768px) {
+  .shortcut-input-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .shortcut-input {
+    min-width: auto;
+    max-width: none;
+  }
+
+  .shortcut-keys {
+    justify-content: center;
+  }
+
+  .shortcut-help-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .recording-instructions {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shortcut-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .shortcut-key {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.3rem;
+  }
+
+  .shortcut-help {
+    padding: 0.75rem;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .shortcut-input {
+    border-width: 2px;
+  }
+
+  .shortcut-key {
+    border-width: 2px;
+    font-weight: bold;
+  }
+
+  .shortcut-status-icon {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .shortcut-input.recording {
+    animation: none;
+  }
+
+  .recording-instructions.active {
+    animation: none;
+  }
+
+  @keyframes pulse {
+    from,
+    to {
+      opacity: 1;
+      transform: none;
+      background-color: inherit;
+    }
+  }
+
+  @keyframes highlightPulse {
+    from,
+    to {
+      opacity: 1;
+      transform: none;
+      background-color: inherit;
+    }
+  }
+}

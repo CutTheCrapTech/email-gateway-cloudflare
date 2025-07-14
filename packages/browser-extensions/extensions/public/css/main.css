@@ -1,0 +1,50 @@
+/* --- Main CSS Entry Point --- */
+/* This file imports all modular CSS files for the email alias extension */
+
+/* Import CSS custom properties and variables first */
+@import url("./variables.css");
+
+/* Import base styles */
+@import url("./base.css");
+
+/* Import layout utilities and containers */
+@import url("./layout.css");
+
+/* Import form elements */
+@import url("./forms.css");
+
+/* Import button styles */
+@import url("./buttons.css");
+
+/* Import component styles */
+@import url("./components.css");
+
+/* Import keyboard shortcuts styles */
+@import url("./shortcuts.css");
+
+/* Import popup-specific styles */
+@import url("./popup.css");
+
+/* Import dialog styles */
+@import url("./dialog.css");
+
+/* Import toast notification styles */
+@import url("./toast.css");
+
+/* Legacy compatibility - Gradually remove these as components are updated */
+.legacy-section {
+  /* Temporary styles for components not yet migrated */
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

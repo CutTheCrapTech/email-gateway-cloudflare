@@ -1,0 +1,287 @@
+/* --- Button Styles --- */
+
+/* Base button styles */
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+/* Disabled button styles - IMPORTANT: Must come before specific button styles */
+button:disabled {
+  background-color: var(--button-disabled) !important;
+  color: var(--text-disabled) !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+button:disabled:hover {
+  background-color: var(--button-disabled) !important;
+  color: var(--text-disabled) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Primary button */
+.btn-primary,
+button.primary {
+  background-color: var(--button-primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled),
+button.primary:hover:not(:disabled) {
+  background-color: var(--button-primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Secondary button */
+.btn-secondary,
+button.secondary {
+  background-color: var(--button-secondary);
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled),
+button.secondary:hover:not(:disabled) {
+  background-color: var(--button-secondary-hover);
+}
+
+/* Danger button */
+.btn-danger,
+button.danger {
+  background-color: var(--button-danger);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled),
+button.danger:hover:not(:disabled) {
+  background-color: var(--button-danger-hover);
+}
+
+/* Outline button variants */
+.btn-outline-primary {
+  background-color: transparent;
+  color: var(--button-primary);
+  border: 1px solid var(--button-primary);
+}
+
+.btn-outline-primary:hover:not(:disabled) {
+  background-color: var(--button-primary);
+  color: white;
+}
+
+.btn-outline-secondary {
+  background-color: transparent;
+  color: var(--button-secondary);
+  border: 1px solid var(--button-secondary);
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  background-color: var(--button-secondary);
+  color: white;
+}
+
+/* Button sizes */
+.btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.btn-large {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+.btn-extra-small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Full width button */
+.btn-block {
+  width: 100%;
+}
+
+/* Icon buttons */
+.btn-icon {
+  background-color: transparent;
+  border: none;
+  padding: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--text-secondary);
+}
+
+.btn-icon:hover {
+  color: var(--text-primary);
+}
+
+.btn-icon-small {
+  padding: 0.25rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Specific button IDs for backwards compatibility */
+#save-btn {
+  background-color: var(--button-primary);
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+#save-btn:hover:not(:disabled) {
+  background-color: var(--button-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+#save-btn:disabled {
+  background-color: var(--button-disabled) !important;
+  color: var(--text-disabled) !important;
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border: 2px solid var(--border-color) !important;
+}
+
+#generate-btn {
+  background-color: var(--button-primary);
+  color: white;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+#generate-btn:hover:not(:disabled) {
+  background-color: var(--button-primary-hover);
+}
+
+#copy-btn {
+  background-color: var(--button-secondary);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+#copy-btn:hover:not(:disabled) {
+  background-color: var(--button-secondary-hover);
+}
+
+/* Shortcut-related buttons */
+.record-btn {
+  background-color: var(--button-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.record-btn:hover:not(:disabled) {
+  background-color: var(--button-primary-hover);
+}
+
+.record-btn:disabled {
+  background-color: var(--button-secondary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.clear-btn {
+  background-color: var(--button-danger);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.clear-btn:hover:not(:disabled) {
+  background-color: var(--button-danger-hover);
+}
+
+/* Suggestion buttons */
+.suggestion-btn {
+  background-color: var(--button-secondary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.suggestion-btn:hover:not(:disabled) {
+  background-color: var(--button-secondary-hover);
+}
+
+/* Loading state */
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: button-spin 1s linear infinite;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+@keyframes button-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Focus styles for accessibility */
+button:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .btn-large {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  #copy-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
