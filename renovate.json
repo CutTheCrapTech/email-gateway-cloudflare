@@ -1,10 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
+  "platform": "github",
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "📊 Dependency Updates (Manual Review Required)",
+  "labels": ["dependencies", "renovate"],
+  "schedule": ["30 8 * * 1"],
+  "prHourlyLimit": 5,
+  "automerge": false,
   "packageRules": [
     {
-      "description": "HIGHLY TRUSTED VENDORS: Automerge non-major updates for official and trusted actions",
-      "matchManagers": ["github-actions"],
+      "description": "Github Actions Trusted vendors: Non-major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
       "matchPackagePatterns": [
         "^actions/",
         "^github/",
@@ -12,22 +19,49 @@
         "^opentofu/",
         "^docker/"
       ],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchUpdateTypes": ["digest", "minor", "patch"]
+      "matchUpdateTypes": ["digest", "minor", "patch"],
+      "groupName": "github-actions-trusted",
+      "labels": ["non-major-update"]
     },
     {
-      "description": "ALL OTHERS: Group all other GitHub Action updates for manual review",
-      "matchManagers": ["github-actions"],
+      "description": "Github Actions Trusted vendors: Non-major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchUpdateTypes": ["digest", "minor", "patch"],
       "groupName": "github-actions-community",
-      "groupSlug": "github-actions-community"
+      "labels": ["non-major-update"]
     },
     {
-      "description": "Automerge non-major updates for NPM packages",
+      "description": "Github Actions Community vendors: Major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchPackagePatterns": [
+        "^actions/",
+        "^github/",
+        "^google-github-actions/",
+        "^opentofu/",
+        "^docker/"
+      ],
+      "matchUpdateTypes": ["major"],
+      "groupName": "github-actions-trusted-major",
+      "labels": ["major-update"]
+    },
+    {
+      "description": "Github Actions Community vendors: Major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "github-actions-community-major",
+      "labels": ["major-update"]
+    },
+    {
+      "description": "NPM: Non-major updates",
       "matchManagers": ["npm"],
-      "automerge": true,
-      "automergeType": "pr",
-      "matchUpdateTypes": ["minor", "patch"]
+      "matchUpdateTypes": ["patch", "minor"],
+      "labels": ["non-major-update"]
+    },
+    {
+      "description": "NPM: Major updates",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "labels": ["major-update"]
     }
   ]
 }
