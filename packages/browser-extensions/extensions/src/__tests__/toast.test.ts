@@ -248,9 +248,9 @@ describe("Toast Notification System", () => {
       dismissAllToasts();
 
       // All toasts should have removing class
-      toasts.forEach((toast) => {
+      for (const toast of toasts) {
         expect(toast.classList.contains("removing")).toBe(true);
-      });
+      }
     });
 
     it("should handle dismissing when no toasts exist", () => {

@@ -3,11 +3,7 @@
  * @copyright 2025 karteekiitg
  */
 
-import {
-  generateEmailAlias,
-  generateSecureRandomString,
-  validateEmailAlias,
-} from "../index.js";
+import { generateEmailAlias, generateSecureRandomString, validateEmailAlias } from "../index.js";
 
 /**
  * Cross-environment consistency tests for email alias generation and validation.
@@ -404,20 +400,14 @@ describe("Cross-Environment Consistency", () => {
       // Generate the same HMAC signature multiple times
       const signatures: number[][] = [];
       for (let i = 0; i < 5; i++) {
-        const signature = await crypto.subtle.sign(
-          "HMAC",
-          key,
-          encoder.encode(testData),
-        );
+        const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(testData));
         signatures.push(Array.from(new Uint8Array(signature)));
       }
 
       // All signatures should be identical
-      expect(
-        signatures.every(
-          (sig) => JSON.stringify(sig) === JSON.stringify(signatures[0]),
-        ),
-      ).toBe(true);
+      expect(signatures.every((sig) => JSON.stringify(sig) === JSON.stringify(signatures[0]))).toBe(
+        true,
+      );
     });
   });
 
@@ -426,7 +416,7 @@ describe("Cross-Environment Consistency", () => {
       it("should generate strings with consistent character sets across environments", () => {
         const lengths = [10, 25, 50, 100];
 
-        lengths.forEach((length) => {
+        for (const length of lengths) {
           const result = generateSecureRandomString(length);
 
           // Should always have the correct length
@@ -437,7 +427,7 @@ describe("Cross-Environment Consistency", () => {
 
           // Should never contain standard base64 unsafe characters
           expect(result).not.toMatch(/[+/=]/);
-        });
+        }
       });
 
       it("should handle edge cases consistently", () => {
@@ -447,21 +437,21 @@ describe("Cross-Environment Consistency", () => {
         expect(minResult).toMatch(/^[A-Za-z0-9_-]$/);
 
         // Test various boundary lengths
-        [2, 3, 4, 8, 16, 32, 64].forEach((length) => {
+        for (const length of [2, 3, 4, 8, 16, 32, 64]) {
           const result = generateSecureRandomString(length);
           expect(result).toHaveLength(length);
           expect(result).toMatch(/^[A-Za-z0-9_-]*$/);
-        });
+        }
       });
 
       it("should throw identical errors for invalid inputs across environments", () => {
-        const invalidInputs = [0, -1, 1.5, NaN, Infinity];
+        const invalidInputs = [0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY];
 
-        invalidInputs.forEach((input) => {
+        for (const input of invalidInputs) {
           expect(() => generateSecureRandomString(input)).toThrow(
             "Length must be a positive integer.",
           );
-        });
+        }
       });
     });
 
@@ -522,14 +512,14 @@ describe("Cross-Environment Consistency", () => {
       it("should perform efficiently across different lengths", () => {
         const lengths = [10, 50, 100, 500, 1000];
 
-        lengths.forEach((length) => {
+        for (const length of lengths) {
           const startTime = Date.now();
           const result = generateSecureRandomString(length);
           const endTime = Date.now();
 
           expect(result).toHaveLength(length);
           expect(endTime - startTime).toBeLessThan(50); // Should be fast
-        });
+        }
       });
 
       it("should handle batch operations efficiently", () => {
@@ -554,11 +544,9 @@ describe("Cross-Environment Consistency", () => {
 
     describe("URL-safe encoding consistency", () => {
       it("should consistently produce URL-safe strings", () => {
-        const results = Array.from({ length: 50 }, () =>
-          generateSecureRandomString(64),
-        );
+        const results = Array.from({ length: 50 }, () => generateSecureRandomString(64));
 
-        results.forEach((result) => {
+        for (const result of results) {
           // Should be URL-safe
           expect(result).toMatch(/^[A-Za-z0-9_-]*$/);
 
@@ -569,14 +557,14 @@ describe("Cross-Environment Consistency", () => {
           expect(result.includes("=")).toBe(false);
           expect(result.includes("+")).toBe(false);
           expect(result.includes("/")).toBe(false);
-        });
+        }
       });
 
       it("should use URL-safe replacements when needed", () => {
         // Generate many strings to ensure we get some - and _ characters
-        const largeString = Array.from({ length: 100 }, () =>
-          generateSecureRandomString(50),
-        ).join("");
+        const largeString = Array.from({ length: 100 }, () => generateSecureRandomString(50)).join(
+          "",
+        );
 
         // Should contain URL-safe replacement characters
         // (This is probabilistic but very likely with this much data)
@@ -638,9 +626,7 @@ describe("Cross-Environment Consistency", () => {
 
         // Should produce valid alias
         expect(alias).toMatch(
-          new RegExp(
-            `^${randomService}-${randomProvider}-[a-f0-9]{8}@example\\.com$`,
-          ),
+          new RegExp(`^${randomService}-${randomProvider}-[a-f0-9]{8}@example\\.com$`),
         );
 
         // Should validate correctly

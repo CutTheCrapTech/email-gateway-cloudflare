@@ -59,9 +59,7 @@ describe("API Module Integration with email-alias-core", () => {
 
   describe("Content Script Injection", () => {
     it("should handle injection failures gracefully", async () => {
-      vi.mocked(browser.scripting.executeScript).mockRejectedValue(
-        new Error("Injection failed"),
-      );
+      vi.mocked(browser.scripting.executeScript).mockRejectedValue(new Error("Injection failed"));
       const [tab] = await browser.tabs.query({
         active: true,
         currentWindow: true,

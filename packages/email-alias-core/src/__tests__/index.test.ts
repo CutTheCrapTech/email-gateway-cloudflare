@@ -5,11 +5,7 @@
 
 // We import from `index.js` because this is what Node.js's ES Module resolver expects.
 // The `moduleNameMapper` in our jest.config.js will correctly map this to the source .ts file during the test run.
-import {
-  generateEmailAlias,
-  generateSecureRandomString,
-  validateEmailAlias,
-} from "../index.js";
+import { generateEmailAlias, generateSecureRandomString, validateEmailAlias } from "../index.js";
 
 describe("email-alias-core", () => {
   const secretKey = "a-very-secret-key-that-is-long-enough";
@@ -67,9 +63,9 @@ describe("email-alias-core", () => {
     });
 
     it("should throw an error if aliasParts is an empty array", async () => {
-      await expect(
-        generateEmailAlias({ secretKey, aliasParts: [], domain }),
-      ).rejects.toThrow("The `aliasParts` array cannot be empty.");
+      await expect(generateEmailAlias({ secretKey, aliasParts: [], domain })).rejects.toThrow(
+        "The `aliasParts` array cannot be empty.",
+      );
     });
 
     // NOTE: A test for non-string elements in aliasParts is not included because
@@ -128,9 +124,7 @@ describe("email-alias-core", () => {
 
       // Ensure the test setup is correct before asserting the real logic
       if (!hash) {
-        throw new Error(
-          "Test setup failed: could not extract hash from alias.",
-        );
+        throw new Error("Test setup failed: could not extract hash from alias.");
       }
 
       // Construct a new, invalid alias with the valid hash but a different prefix
@@ -181,19 +175,16 @@ describe("email-alias-core", () => {
       [""], // empty string
       [null], // null
       [undefined], // undefined
-    ])(
-      "should return false for malformed alias: %s",
-      async (malformedAlias) => {
-        // The `as any` cast is intentional here. It allows us to bypass TypeScript's
-        // compile-time checks to test the runtime robustness of the validation function
-        // against invalid data types like null and undefined.
-        const recipient = await validateEmailAlias({
-          keysRecipientMap: { [secretKey]: "recipient@gmail.com" },
-          fullAlias: malformedAlias as string,
-        });
-        expect(recipient).toBe("");
-      },
-    );
+    ])("should return false for malformed alias: %s", async (malformedAlias) => {
+      // The `as any` cast is intentional here. It allows us to bypass TypeScript's
+      // compile-time checks to test the runtime robustness of the validation function
+      // against invalid data types like null and undefined.
+      const recipient = await validateEmailAlias({
+        keysRecipientMap: { [secretKey]: "recipient@gmail.com" },
+        fullAlias: malformedAlias as string,
+      });
+      expect(recipient).toBe("");
+    });
   });
 });
 
@@ -238,15 +229,24 @@ describe("generateSecureRandomString()", () => {
     expect(minResult).toMatch(/^[A-Za-z0-9_-]$/);
 
     // Test various lengths
-    [2, 3, 7, 15, 31, 63, 127].forEach((length) => {
+    for (const length of [2, 3, 7, 15, 31, 63, 127]) {
       const result = generateSecureRandomString(length);
       expect(result).toHaveLength(length);
       expect(result).toMatch(/^[A-Za-z0-9_-]*$/);
-    });
+    }
   });
 
   it("should throw error for invalid length values", () => {
-    const invalidLengths = [0, -1, -10, 1.5, 2.7, NaN, Infinity, -Infinity];
+    const invalidLengths = [
+      0,
+      -1,
+      -10,
+      1.5,
+      2.7,
+      Number.NaN,
+      Number.POSITIVE_INFINITY,
+      Number.NEGATIVE_INFINITY,
+    ];
 
     for (const length of invalidLengths) {
       expect(() => generateSecureRandomString(length)).toThrow(
@@ -265,9 +265,9 @@ describe("generateSecureRandomString()", () => {
       "Length must be a positive integer.",
     );
 
-    expect(() =>
-      generateSecureRandomString(undefined as unknown as number),
-    ).toThrow("Length must be a positive integer.");
+    expect(() => generateSecureRandomString(undefined as unknown as number)).toThrow(
+      "Length must be a positive integer.",
+    );
   });
 
   it("should generate strings with good entropy distribution", () => {
@@ -299,9 +299,7 @@ describe("generateSecureRandomString()", () => {
   });
 
   it("should be deterministic in character set but not output", () => {
-    const results = Array.from({ length: 10 }, () =>
-      generateSecureRandomString(50),
-    );
+    const results = Array.from({ length: 10 }, () => generateSecureRandomString(50));
 
     // All results should use the same character set
     const allChars = results.join("");
@@ -334,7 +332,7 @@ describe("generateSecureRandomString()", () => {
     it("should not contain standard base64 padding or unsafe characters", () => {
       const lengths = [10, 20, 30, 40, 50];
 
-      lengths.forEach((length) => {
+      for (const length of lengths) {
         const result = generateSecureRandomString(length);
 
         // Should not contain padding
@@ -346,14 +344,12 @@ describe("generateSecureRandomString()", () => {
 
         // Should only contain URL-safe characters
         expect(result).toMatch(/^[A-Za-z0-9_-]*$/);
-      });
+      }
     });
 
     it("should use URL-safe replacements correctly", () => {
       // Generate many strings to increase chance of getting + and / in original base64
-      const results = Array.from({ length: 100 }, () =>
-        generateSecureRandomString(64),
-      );
+      const results = Array.from({ length: 100 }, () => generateSecureRandomString(64));
       const combined = results.join("");
 
       // Should contain _ and - characters (URL-safe replacements)

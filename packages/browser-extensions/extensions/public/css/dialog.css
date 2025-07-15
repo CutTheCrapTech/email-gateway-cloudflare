@@ -71,8 +71,7 @@
   width: 100%;
   height: 100%;
   z-index: 10000;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   animation: dialogFadeIn 0.2s ease-out;
 }
 
@@ -156,9 +155,7 @@
   border-radius: 6px;
   font-size: 14px;
   box-sizing: border-box;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   background: var(--dialog-background-input);
   color: var(--dialog-text-primary);
 }

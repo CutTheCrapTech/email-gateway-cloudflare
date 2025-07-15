@@ -15,10 +15,5 @@
     "types": ["chrome"]
   },
   "include": ["extensions/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "extensions/**/*.test.ts",
-    "extensions/**/*.spec.ts"
-  ]
+  "exclude": ["node_modules", "dist", "extensions/**/*.test.ts", "extensions/**/*.spec.ts"]
 }

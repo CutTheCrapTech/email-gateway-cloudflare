@@ -4,27 +4,13 @@ import { extractDomainForSource, getDefaultLabel } from "./domain";
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- DOM Element Selection ---
-  const labelInput = document.getElementById(
-    "label-input",
-  ) as HTMLInputElement | null;
-  const sourceInput = document.getElementById(
-    "source-input",
-  ) as HTMLInputElement | null;
-  const generateBtn = document.getElementById(
-    "generate-btn",
-  ) as HTMLButtonElement | null;
-  const resultContainer = document.getElementById(
-    "result-container",
-  ) as HTMLDivElement | null;
-  const aliasResultSpan = document.getElementById(
-    "alias-result",
-  ) as HTMLSpanElement | null;
-  const copyBtn = document.getElementById(
-    "copy-btn",
-  ) as HTMLButtonElement | null;
-  const errorContainer = document.getElementById(
-    "error-container",
-  ) as HTMLDivElement | null;
+  const labelInput = document.getElementById("label-input") as HTMLInputElement | null;
+  const sourceInput = document.getElementById("source-input") as HTMLInputElement | null;
+  const generateBtn = document.getElementById("generate-btn") as HTMLButtonElement | null;
+  const resultContainer = document.getElementById("result-container") as HTMLDivElement | null;
+  const aliasResultSpan = document.getElementById("alias-result") as HTMLSpanElement | null;
+  const copyBtn = document.getElementById("copy-btn") as HTMLButtonElement | null;
+  const errorContainer = document.getElementById("error-container") as HTMLDivElement | null;
 
   // --- Type Guard ---
   if (
@@ -200,9 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       if (error instanceof ApiError) {
         // Check if the error is about missing domain/token configuration
-        const isConfigError = error.message.includes(
-          "Domain and Token are not configured",
-        );
+        const isConfigError = error.message.includes("Domain and Token are not configured");
         showError(error.message, isConfigError);
       } else {
         console.error("An unexpected error occurred:", error);

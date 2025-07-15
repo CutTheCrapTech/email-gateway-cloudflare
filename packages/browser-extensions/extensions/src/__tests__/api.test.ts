@@ -41,8 +41,7 @@ describe("API Module: generateEmailAlias", () => {
   });
 
   describe("Input Validation Errors", () => {
-    const expectedError =
-      "Invalid input: exactly two parts (Label and Source) are required.";
+    const expectedError = "Invalid input: exactly two parts (Label and Source) are required.";
 
     it("should throw an ApiError if aliasParts array is empty", async () => {
       try {
@@ -108,9 +107,7 @@ describe("API Module: generateEmailAlias", () => {
         expect.fail("Expected function to throw");
       } catch (error) {
         expect(error).toBeInstanceOf(ApiError);
-        expect((error as ApiError).message).toMatch(
-          /Domain and Token are not configured/,
-        );
+        expect((error as ApiError).message).toMatch(/Domain and Token are not configured/);
       }
     });
   });
@@ -118,9 +115,7 @@ describe("API Module: generateEmailAlias", () => {
   describe("Core Library Error Handling", () => {
     it("should catch errors from email-alias-core and re-throw as an ApiError", async () => {
       // Arrange
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
       vi.mocked(loadSettings).mockResolvedValue(validSettings);
       const coreError = new Error("Invalid character in token");
       vi.mocked(coreGenerateAlias).mockRejectedValue(coreError);
@@ -133,23 +128,19 @@ describe("API Module: generateEmailAlias", () => {
     });
 
     it("should handle special characters in alias parts", async () => {
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
       vi.mocked(loadSettings).mockResolvedValue({
         domain: "example.com",
         token: "secret",
       });
-      await expect(
-        generateEmailAlias(["shopping!", "amazon$"]),
-      ).rejects.toThrow("Failed to generate alias: Invalid character in token");
+      await expect(generateEmailAlias(["shopping!", "amazon$"])).rejects.toThrow(
+        "Failed to generate alias: Invalid character in token",
+      );
       consoleSpy.mockRestore();
     });
 
     it("should handle very long alias parts", async () => {
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
       vi.mocked(loadSettings).mockResolvedValue({
         domain: "example.com",
         token: "secret",
@@ -162,9 +153,7 @@ describe("API Module: generateEmailAlias", () => {
     });
 
     it("should reject invalid tokens", async () => {
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
       vi.mocked(loadSettings).mockResolvedValue({
         domain: "example.com",
         token: "short", // Too short

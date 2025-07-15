@@ -40,9 +40,7 @@ vi.mock("../dialog", async () => {
         const id = element.id.toLowerCase();
         const name = element.name.toLowerCase();
         const placeholder = element.placeholder.toLowerCase();
-        const autocomplete = (
-          element.getAttribute("autocomplete") || ""
-        ).toLowerCase();
+        const autocomplete = (element.getAttribute("autocomplete") || "").toLowerCase();
         const className = element.className.toLowerCase();
 
         // Primary check: type="email" is a strong indicator.
@@ -56,14 +54,7 @@ vi.mock("../dialog", async () => {
         }
 
         // For type="text" or other types, check common naming conventions.
-        const keywords = [
-          "email",
-          "e-mail",
-          "mail",
-          "login",
-          "user",
-          "username",
-        ];
+        const keywords = ["email", "e-mail", "mail", "login", "user", "username"];
         const searchString = `${id} ${name} ${placeholder} ${className}`;
 
         if (keywords.some((keyword) => searchString.includes(keyword))) {
@@ -99,9 +90,7 @@ vi.mock("../dialog", async () => {
           const id = element.id.toLowerCase();
           const name = element.name.toLowerCase();
           const placeholder = element.placeholder.toLowerCase();
-          const autocomplete = (
-            element.getAttribute("autocomplete") || ""
-          ).toLowerCase();
+          const autocomplete = (element.getAttribute("autocomplete") || "").toLowerCase();
           const className = element.className.toLowerCase();
 
           // Primary check: type="email" is a strong indicator.
@@ -115,14 +104,7 @@ vi.mock("../dialog", async () => {
           }
 
           // For type="text" or other types, check common naming conventions.
-          const keywords = [
-            "email",
-            "e-mail",
-            "mail",
-            "login",
-            "user",
-            "username",
-          ];
+          const keywords = ["email", "e-mail", "mail", "login", "user", "username"];
           const searchString = `${id} ${name} ${placeholder} ${className}`;
 
           if (keywords.some((keyword) => searchString.includes(keyword))) {
@@ -162,9 +144,7 @@ vi.mock("../dialog", async () => {
         }
 
         // Higher score for inputs with email-specific autocomplete
-        const autocomplete = (
-          input.getAttribute("autocomplete") || ""
-        ).toLowerCase();
+        const autocomplete = (input.getAttribute("autocomplete") || "").toLowerCase();
         if (autocomplete.includes("email")) {
           score += 7;
         }

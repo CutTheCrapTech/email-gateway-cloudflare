@@ -474,20 +474,12 @@ body.options-page .section:last-child {
 
 /* Special sections */
 .keyboard-section {
-  background: linear-gradient(
-    135deg,
-    var(--background-card),
-    rgba(13, 110, 253, 0.05)
-  );
+  background: linear-gradient(135deg, var(--background-card), rgba(13, 110, 253, 0.05));
 }
 
 .pin-section,
 .context-menu-section {
-  background: linear-gradient(
-    135deg,
-    var(--background-card),
-    rgba(108, 117, 125, 0.05)
-  );
+  background: linear-gradient(135deg, var(--background-card), rgba(108, 117, 125, 0.05));
 }
 
 /* Instructions and help sections */

@@ -134,10 +134,7 @@ class ToastManager {
   /**
    * Create the toast DOM element
    */
-  private createToastElement(
-    toastId: string,
-    options: ToastOptions,
-  ): HTMLElement {
+  private createToastElement(toastId: string, options: ToastOptions): HTMLElement {
     const toast = document.createElement("div");
     toast.className = `toast ${options.type}`;
     toast.setAttribute("data-toast-id", toastId);
@@ -195,11 +192,7 @@ const toastManager = new ToastManager();
 /**
  * Show a success toast notification
  */
-export function showSuccessToast(
-  message: string,
-  duration = 4000,
-  closable = true,
-): string {
+export function showSuccessToast(message: string, duration = 4000, closable = true): string {
   return toastManager.show({
     message,
     type: "success",
@@ -211,11 +204,7 @@ export function showSuccessToast(
 /**
  * Show an error toast notification
  */
-export function showErrorToast(
-  message: string,
-  duration = 6000,
-  closable = true,
-): string {
+export function showErrorToast(message: string, duration = 6000, closable = true): string {
   return toastManager.show({
     message,
     type: "error",
@@ -227,11 +216,7 @@ export function showErrorToast(
 /**
  * Show an info toast notification
  */
-export function showInfoToast(
-  message: string,
-  duration = 4000,
-  closable = true,
-): string {
+export function showInfoToast(message: string, duration = 4000, closable = true): string {
   return toastManager.show({
     message,
     type: "info",

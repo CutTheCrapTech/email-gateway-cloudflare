@@ -55,12 +55,9 @@ function isContentMessage(message: unknown): message is ContentMessage {
     message !== null &&
     "type" in message &&
     typeof (message as { type: unknown }).type === "string" &&
-    [
-      "show-alias-dialog",
-      "fill-email-field",
-      "check-email-fields",
-      "ping",
-    ].includes((message as { type: string }).type)
+    ["show-alias-dialog", "fill-email-field", "check-email-fields", "ping"].includes(
+      (message as { type: string }).type,
+    )
   );
 }
 
@@ -73,24 +70,23 @@ function isContentMessage(message: unknown): message is ContentMessage {
  * @returns True to indicate the response will be sent asynchronously
  */
 browser.runtime.onMessage.addListener(
-  (
-    message: unknown,
-    _sender,
-    sendResponse: (response: MessageResponse) => void,
-  ) => {
+  (message: unknown, _sender, sendResponse: (response: MessageResponse) => void) => {
     if (isContentMessage(message)) {
       if (message.type === "ping") {
         sendResponse({ success: true });
         return true; // Indicate we handled the message
-      } else if (message.type === "show-alias-dialog") {
+      }
+      if (message.type === "show-alias-dialog") {
         void showAliasGenerationDialog();
         sendResponse({ success: true });
         return true; // Indicate we handled the message
-      } else if (message.type === "fill-email-field") {
+      }
+      if (message.type === "fill-email-field") {
         fillEmailField(message.alias);
         sendResponse({ success: true });
         return true; // Indicate we handled the message
-      } else if (message.type === "check-email-fields") {
+      }
+      if (message.type === "check-email-fields") {
         // Check if there are email fields on the page
         const emailInputs = findAllEmailInputs();
         const response: EmailFieldsResponse = {
@@ -127,9 +123,7 @@ function isEmailInput(element: HTMLInputElement): boolean {
   const id = element.id.toLowerCase();
   const name = element.name.toLowerCase();
   const placeholder = element.placeholder.toLowerCase();
-  const autocomplete = (
-    element.getAttribute("autocomplete") || ""
-  ).toLowerCase();
+  const autocomplete = (element.getAttribute("autocomplete") || "").toLowerCase();
   const className = element.className.toLowerCase();
 
   // Primary check: type="email" is a strong indicator.
@@ -200,9 +194,7 @@ export function findBestEmailInput(): HTMLInputElement | null {
     }
 
     // Higher score for inputs with email-specific autocomplete
-    const autocomplete = (
-      input.getAttribute("autocomplete") || ""
-    ).toLowerCase();
+    const autocomplete = (input.getAttribute("autocomplete") || "").toLowerCase();
     if (autocomplete.includes("email")) {
       score += 7;
     }
@@ -255,11 +247,7 @@ function fillEmailField(alias: string): void {
  * @returns True if the element is visible, false otherwise.
  */
 function isVisible(elem: HTMLElement): boolean {
-  return !!(
-    elem.offsetWidth ||
-    elem.offsetHeight ||
-    elem.getClientRects().length
-  );
+  return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
 }
 
 /**
@@ -320,41 +308,32 @@ async function showAliasGenerationDialog(): Promise<void> {
       return;
     }
     // Fetch the HTML and CSS for the dialog from the extension's public resources.
-    const [dialogHtml, dialogCss, componentsCss, variablesCss] =
-      await Promise.all([
-        fetch(browser.runtime.getURL("dialog.html")).then((res) => {
-          if (!res.ok) {
-            throw new Error(
-              `Failed to fetch dialog.html: ${res.status} ${res.statusText}`,
-            );
-          }
-          return res.text();
-        }),
-        fetch(browser.runtime.getURL("css/dialog.css")).then((res) => {
-          if (!res.ok) {
-            throw new Error(
-              `Failed to fetch css/dialog.css: ${res.status} ${res.statusText}`,
-            );
-          }
-          return res.text();
-        }),
-        fetch(browser.runtime.getURL("css/components.css")).then((res) => {
-          if (!res.ok) {
-            throw new Error(
-              `Failed to fetch css/components.css: ${res.status} ${res.statusText}`,
-            );
-          }
-          return res.text();
-        }),
-        fetch(browser.runtime.getURL("css/variables.css")).then((res) => {
-          if (!res.ok) {
-            throw new Error(
-              `Failed to fetch css/variables.css: ${res.status} ${res.statusText}`,
-            );
-          }
-          return res.text();
-        }),
-      ]);
+    const [dialogHtml, dialogCss, componentsCss, variablesCss] = await Promise.all([
+      fetch(browser.runtime.getURL("dialog.html")).then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch dialog.html: ${res.status} ${res.statusText}`);
+        }
+        return res.text();
+      }),
+      fetch(browser.runtime.getURL("css/dialog.css")).then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch css/dialog.css: ${res.status} ${res.statusText}`);
+        }
+        return res.text();
+      }),
+      fetch(browser.runtime.getURL("css/components.css")).then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch css/components.css: ${res.status} ${res.statusText}`);
+        }
+        return res.text();
+      }),
+      fetch(browser.runtime.getURL("css/variables.css")).then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch css/variables.css: ${res.status} ${res.statusText}`);
+        }
+        return res.text();
+      }),
+    ]);
 
     // Inject the fetched CSS into the document's head
     const variablesStyle = document.createElement("style");
@@ -381,21 +360,11 @@ async function showAliasGenerationDialog(): Promise<void> {
 
     // Get dialog elements
     const labelInput = dialog.querySelector("#alias-label") as HTMLInputElement;
-    const sourceInput = dialog.querySelector(
-      "#alias-source",
-    ) as HTMLInputElement;
-    const generateBtn = dialog.querySelector(
-      "#alias-generate-btn",
-    ) as HTMLButtonElement;
-    const cancelBtn = dialog.querySelector(
-      "#alias-cancel-btn",
-    ) as HTMLButtonElement;
-    const closeBtn = dialog.querySelector(
-      ".alias-dialog-close",
-    ) as HTMLButtonElement;
-    const errorDiv = dialog.querySelector(
-      "#alias-dialog-error",
-    ) as HTMLDivElement;
+    const sourceInput = dialog.querySelector("#alias-source") as HTMLInputElement;
+    const generateBtn = dialog.querySelector("#alias-generate-btn") as HTMLButtonElement;
+    const cancelBtn = dialog.querySelector("#alias-cancel-btn") as HTMLButtonElement;
+    const closeBtn = dialog.querySelector(".alias-dialog-close") as HTMLButtonElement;
+    const errorDiv = dialog.querySelector("#alias-dialog-error") as HTMLDivElement;
     const labelHint = dialog.querySelector("#label-hint") as HTMLDivElement;
     const sourceHint = dialog.querySelector("#source-hint") as HTMLDivElement;
 
@@ -444,10 +413,7 @@ async function showAliasGenerationDialog(): Promise<void> {
     };
 
     // Auto-fill hint interactions
-    const setupHintInteraction = (
-      input: HTMLInputElement,
-      hint: HTMLDivElement,
-    ) => {
+    const setupHintInteraction = (input: HTMLInputElement, hint: HTMLDivElement) => {
       if (!input || !hint) return;
 
       const updateHintVisibility = () => {
@@ -489,9 +455,7 @@ async function showAliasGenerationDialog(): Promise<void> {
     cancelBtn.addEventListener("click", closeDialog);
 
     dialog.addEventListener("click", (e) => {
-      if (
-        (e.target as HTMLElement)?.classList.contains("alias-dialog-overlay")
-      ) {
+      if ((e.target as HTMLElement)?.classList.contains("alias-dialog-overlay")) {
         closeDialog();
       }
     });
@@ -561,9 +525,7 @@ async function showAliasGenerationDialog(): Promise<void> {
             closeDialog();
           } catch (clipboardError) {
             console.error("Failed to copy to clipboard:", clipboardError);
-            showError(
-              `Generated alias: ${alias}\n(Could not copy to clipboard)`,
-            );
+            showError(`Generated alias: ${alias}\n(Could not copy to clipboard)`);
           }
         }
       } catch (error) {
@@ -581,14 +543,14 @@ async function showAliasGenerationDialog(): Promise<void> {
 
     generateBtn.addEventListener("click", () => void handleGenerate());
 
-    [labelInput, sourceInput].forEach((input) => {
+    for (const input of [labelInput, sourceInput]) {
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
           void handleGenerate();
         }
       });
-    });
+    }
 
     // Focus logic: if we auto-filled both, focus source for easy editing
     if (autoLabel && autoSource) {
@@ -612,9 +574,6 @@ async function showAliasGenerationDialog(): Promise<void> {
       }
     }
 
-    alert(
-      errorMessage +
-        " Check extension permissions and console for more details.",
-    );
+    alert(`${errorMessage} Check extension permissions and console for more details.`);
   }
 }

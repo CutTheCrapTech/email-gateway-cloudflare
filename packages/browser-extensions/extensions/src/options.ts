@@ -66,25 +66,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Get references to DOM elements ---
   const domainInput = document.getElementById("domain") as HTMLInputElement;
   const tokenInput = document.getElementById("token") as HTMLInputElement;
-  const defaultLabelInput = document.getElementById(
-    "default-label",
-  ) as HTMLInputElement;
+  const defaultLabelInput = document.getElementById("default-label") as HTMLInputElement;
   const saveButton = document.getElementById("save-btn") as HTMLButtonElement;
 
   // New Secret Key elements
-  const generateKeyBtn = document.getElementById(
-    "generate-key-btn",
-  ) as HTMLButtonElement;
+  const generateKeyBtn = document.getElementById("generate-key-btn") as HTMLButtonElement;
   const keyActions = document.getElementById("key-actions") as HTMLDivElement;
-  const copyKeyBtn = document.getElementById(
-    "copy-key-btn",
-  ) as HTMLButtonElement;
-  const viewKeyBtn = document.getElementById(
-    "view-key-btn",
-  ) as HTMLButtonElement;
-  const backupConfirmedCheckbox = document.getElementById(
-    "backup-confirmed",
-  ) as HTMLInputElement;
+  const copyKeyBtn = document.getElementById("copy-key-btn") as HTMLButtonElement;
+  const viewKeyBtn = document.getElementById("view-key-btn") as HTMLButtonElement;
+  const backupConfirmedCheckbox = document.getElementById("backup-confirmed") as HTMLInputElement;
 
   // Type guard to ensure all elements were found
   if (
@@ -98,9 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     !viewKeyBtn ||
     !backupConfirmedCheckbox
   ) {
-    console.error(
-      "Could not find one or more required elements on the options page.",
-    );
+    console.error("Could not find one or more required elements on the options page.");
     return;
   }
 
@@ -120,8 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hasBackupConfirmation = backupConfirmedCheckbox.checked;
 
     // Enable save button only if all conditions are met
-    const canSave =
-      hasRequiredFields && (!needsBackupConfirmation || hasBackupConfirmation);
+    const canSave = hasRequiredFields && (!needsBackupConfirmation || hasBackupConfirmation);
 
     saveButton.disabled = !canSave;
 
@@ -184,8 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Validate form after loading settings
       validateForm();
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "An unknown error occurred.";
+      const message = error instanceof Error ? error.message : "An unknown error occurred.";
       showStatusMessage(`Error loading settings: ${message}`, true);
     }
   }
@@ -202,10 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (isNewKeyGenerated && !backupConfirmedCheckbox.checked) {
-        showStatusMessage(
-          "Please confirm you have backed up the new secret key.",
-          true,
-        );
+        showStatusMessage("Please confirm you have backed up the new secret key.", true);
         return;
       }
 
@@ -223,8 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tokenInput.type = "password";
         validateForm(); // Revalidate after saving
       } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "An unknown error occurred.";
+        const message = error instanceof Error ? error.message : "An unknown error occurred.";
         showStatusMessage(`Error saving settings: ${message}`, true);
       }
     })();

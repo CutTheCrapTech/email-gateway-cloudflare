@@ -105,8 +105,7 @@ describe("Options Page Utilities", () => {
       const hasBackupConfirmation = true;
       const hasRequiredFields = true;
 
-      const canSave =
-        hasRequiredFields && (!isNewKeyGenerated || hasBackupConfirmation);
+      const canSave = hasRequiredFields && (!isNewKeyGenerated || hasBackupConfirmation);
       expect(canSave).toBe(true);
     });
 
@@ -115,8 +114,7 @@ describe("Options Page Utilities", () => {
       const hasBackupConfirmation = false;
       const hasRequiredFields = true;
 
-      const canSave =
-        hasRequiredFields && (!isNewKeyGenerated || hasBackupConfirmation);
+      const canSave = hasRequiredFields && (!isNewKeyGenerated || hasBackupConfirmation);
       expect(canSave).toBe(false);
     });
   });
