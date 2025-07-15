@@ -1,0 +1,110 @@
+# .github/workflows/publish-extensions.yml
+name: Publish Extensions
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_filter:
+        description: "Package name filter (e.g., 'my-extension')"
+        required: false
+        default: ""
+        type: string
+      force_publish:
+        description: "Force publish even if no changes detected"
+        required: false
+        default: false
+        type: boolean
+  workflow_call:
+    inputs:
+      published_packages:
+        description: "JSON array of published packages"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  publish-extensions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          # Use the latest Long-Term Support version of Node.js
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine packages to publish
+        id: packages
+        run: |
+          if [ "${{ github.event.inputs.force_publish }}" == "true" ]; then
+            echo "Force publish mode - finding all extension packages"
+            # Find all packages with "extension" in name
+            PACKAGES=$(find packages -name "package.json" -exec grep -l "extension" {} \; | xargs -I {} dirname {} | xargs -I {} basename {})
+            echo "packages<<EOF" >> $GITHUB_OUTPUT
+            echo "$PACKAGES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "has_packages=true" >> $GITHUB_OUTPUT
+          elif [ -n "${{ inputs.published_packages }}" ]; then
+            echo "Using provided published packages"
+            echo "${{ inputs.published_packages }}" | grep -E ".*extension.*" || echo ""
+            PACKAGES=$(echo "${{ inputs.published_packages }}" | grep -E ".*extension.*" || echo "")
+            if [ -n "$PACKAGES" ]; then
+              echo "packages<<EOF" >> $GITHUB_OUTPUT
+              echo "$PACKAGES" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+              echo "has_packages=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_packages=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "Detecting changes from changesets"
+            PACKAGES=$(npx changeset status --output=json | jq -r '.releases[] | select(.type != "none" and (.name | contains("extension"))) | "\(.name)@\(.newVersion)"')
+            if [ -n "$PACKAGES" ]; then
+              echo "packages<<EOF" >> $GITHUB_OUTPUT
+              echo "$PACKAGES" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+              echo "has_packages=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_packages=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Publish extensions
+        if: steps.packages.outputs.has_packages == 'true'
+        run: |
+          echo "Publishing browser extensions..."
+          echo "${{ steps.packages.outputs.packages }}" | while read -r package; do
+            if [ -z "$package" ]; then continue; fi
+
+            if [[ "$package" == *"@"* ]]; then
+              name=$(echo "$package" | cut -d'@' -f1)
+              version=$(echo "$package" | cut -d'@' -f2)
+            else
+              name="$package"
+              version="latest"
+            fi
+
+            # Apply package filter if specified
+            if [ -n "${{ github.event.inputs.package_filter }}" ] && [[ "$name" != *"${{ github.event.inputs.package_filter }}"* ]]; then
+              echo "Skipping $name (doesn't match filter)"
+              continue
+            fi
+
+            echo "Publishing extension: $name v$version"
+            # TODO: Add your extension publishing logic here
+            # npm run deploy:firefox --workspace="$name" --if-present
+            # npm run deploy:chrome --workspace="$name" --if-present
+          done
+          echo "Extension publishing completed"
+        env:
+          FIREFOX_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
+          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}

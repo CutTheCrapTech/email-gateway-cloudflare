@@ -1,6 +1,6 @@
 {
-  "name": "@email-gateway/email-alias-core",
-  "version": "1.0.0",
+  "name": "email-alias-core",
+  "version": "1.5.0",
   "description": "A zero-dependency library to create and verify secure email aliases for custom domains.",
   "main": "dist/index.js",
   "module": "dist/index.js",

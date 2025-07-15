@@ -1,0 +1,47 @@
+# .github/workflows/version.yml
+name: Version Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force version even if no changesets"
+        required: false
+        default: false
+        type: boolean
+  pull_request:
+    types: [closed]
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  version:
+    # Skip if it's the bot's own version commit (prevents infinite loop)
+    if: github.event.head_commit.message != 'Version packages [skip ci]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          # Use the latest Long-Term Support version of Node.js
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
+        with:
+          # Only version, don't publish
+          version: npm run version
+          commit: "Version packages [skip ci]"
+          title: "Version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
