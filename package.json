@@ -59,6 +59,7 @@
     "jest": "^30.0.4",
     "@types/jest": "^30.0.0",
     "ts-jest": "^29.4.0",
+    "vitest": "^3.2.4",
 
     "@changesets/cli": "^2.29.5",
     "@changesets/changelog-github": "^0.5.1"

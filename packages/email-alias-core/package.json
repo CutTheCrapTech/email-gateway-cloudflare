@@ -1,5 +1,5 @@
 {
-  "name": "email-alias-core",
+  "name": "@email-gateway/email-alias-core",
   "version": "1.5.0",
   "description": "A zero-dependency library to create and verify secure email aliases for custom domains.",
   "main": "dist/index.js",
@@ -47,6 +47,7 @@
   },
   "homepage": "https://github.com/CutTheCrapTech/email-alias-core#readme",
   "publishConfig": {
+    "name": "email-alias-core",
     "provenance": true,
     "access": "public"
   },
