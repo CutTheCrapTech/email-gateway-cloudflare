@@ -28,7 +28,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci --workspaces
+        run: npm ci
 
       - name: Run comprehensive CI checks
         run: npm run ci
