@@ -59,5 +59,8 @@
     "dist",
     "LICENSE",
     "README.md"
-  ]
+  ],
+  "devDependencies": {
+    "@types/node": "^20.14.2"
+  }
 }
