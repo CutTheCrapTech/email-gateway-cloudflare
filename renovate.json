@@ -1,7 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
-  "platform": "github",
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "📊 Dependency Updates (Manual Review Required)",
   "labels": ["dependencies", "renovate"],
