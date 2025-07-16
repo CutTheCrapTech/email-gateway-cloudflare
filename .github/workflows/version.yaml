@@ -3,17 +3,15 @@ name: Version Packages
 
 on:
   workflow_dispatch:
-    inputs:
-      force:
-        description: "Force version even if no changesets"
-        required: false
-        default: false
-        type: boolean
   pull_request:
     types: [closed]
     branches: [main]
   push:
     branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   version:
@@ -49,7 +47,7 @@ jobs:
         with:
           # Only version, don't publish
           version: npm run version
-          commit: "Version packages [skip ci]"
+          commit: "Version packages"
           title: "Version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
