@@ -17,7 +17,7 @@ import {
 describe("Cross-Environment Consistency", () => {
   const secretKey = "test-secret-key-for-consistency-testing";
   const domain = "test.example.com";
-  const escapedDomain = domain.replace(/\./g, "\\.");
+  const escapedDomain = domain.replace(/\\/g, "\\\\").replace(/\./g, "\\.");
   const testCases = [
     { aliasParts: ["service", "provider"], hashLength: 8 },
     { aliasParts: ["shop", "amazon", "electronics"], hashLength: 12 },

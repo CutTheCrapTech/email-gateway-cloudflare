@@ -86,6 +86,8 @@ jobs:
   publish-extensions:
     needs: publish
     if: github.event.inputs.publish_extensions == 'true'
+    permissions:
+      contents: read
     uses: ./.github/workflows/publish-extensions.yml
     with:
       published_packages: ${{ needs.publish.outputs.published-packages }}
@@ -94,6 +96,8 @@ jobs:
   deploy-workers:
     needs: publish
     if: github.event.inputs.publish_worker == 'true'
+    permissions:
+      contents: read
     uses: ./.github/workflows/publish-worker.yaml
     with:
       published_packages: ${{ needs.publish.outputs.published-packages }}
