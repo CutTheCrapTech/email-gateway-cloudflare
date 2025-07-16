@@ -90,4 +90,4 @@ Contributions, issues, and feature requests are welcome. Feel free to check the 
 
 ### Before submitting:
 
-Ensure everything passes using: `pnpm run ci`
+Ensure everything passes using: `pnpm run validate`

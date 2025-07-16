@@ -17,7 +17,8 @@
     "test": "pnpm run -r test",
     "check": "pnpm run -r check",
     "check:ci": "pnpm run -r check:ci",
-    "ci": "pnpm run -r ci",
+    "ci": "pnpm run -r --reporter=append-only ci",
+    "validate": "pnpm run -r --sequential validate",
     "prepublishOnly": "pnpm run -r prepublishOnly",
     "upgrade": "pnpm update -r"
   },
@@ -38,6 +39,7 @@
     "check": "Run all checks (types, lint, tests) - for development",
     "check:ci": "Run all checks (types, lint, tests) for CI/CD",
     "ci": "Run all CI checks including build - for CI/CD",
+    "validate": "Run all CI checks including build - for dev - similar to CI above but sequential",
     "prepublishOnly": "Runs before npm publish to ensure quality",
     "upgrade": "Upgrades dependencies using pnpm."
   },

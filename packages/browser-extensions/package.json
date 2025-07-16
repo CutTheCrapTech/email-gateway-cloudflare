@@ -18,9 +18,11 @@
     "lint:ci": "biome ci .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm run type-check:all && pnpm run lint && pnpm run test",
+    "check": "pnpm run format && pnpm run type-check:all && pnpm run lint && pnpm run test",
     "check:ci": "pnpm run type-check:all && pnpm run lint:ci && pnpm run test",
-    "ci": "pnpm run check:ci && pnpm run build"
+    "ci": "pnpm run check:ci && pnpm run build",
+    "validate": "pnpm run check && pnpm run build",
+    "prepublishOnly": "pnpm run ci"
   },
   "_scripts_documentation": {
     "clean": "Clean build artifacts in dist/",
@@ -35,10 +37,11 @@
     "lint:ci": "Lints the code for CI environments.",
     "test": "Runs all tests using Vitest.",
     "test:watch": "Runs tests in watch mode using Vitest.",
-    "check": "Runs type checks, linting, and tests.",
+    "check": "Run all checks (format, types, lint, tests) - for development",
     "check:ci": "Runs type checks, linting, and tests for CI environments.",
     "ci": "Runs all CI checks and builds the extensions.",
-    "upgrade": "Upgrades dependencies using npm-check-updates."
+    "validate": "Run all CI checks including build - for development",
+    "prepublishOnly": "Runs before npm publish to ensure quality"
   },
   "dependencies": {
     "email-alias-core": "^1.5.1",

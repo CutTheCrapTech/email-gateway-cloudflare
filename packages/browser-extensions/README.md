@@ -54,7 +54,7 @@ This extension uses a **"Key Ring Model"** to provide a balance of high security
     ```
 3.  Run quality checks:
     ```bash
-    pnpm run ci
+    pnpm run check
     ```
 
 ### Build

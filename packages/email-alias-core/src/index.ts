@@ -183,12 +183,20 @@ export async function validateEmailAlias({
     const fullHash = _bufferToHex(signatureBuffer);
     const expectedHash = fullHash.substring(0, hashLength - 2);
 
-    if (expectedHash === actualHash) {
-      const recipient = keysRecipientMap[secretKey];
-      if (typeof recipient === "string") {
-        return recipient;
+    // Use a constant-time comparison to mitigate timing attacks.
+    if (expectedHash.length === actualHash.length) {
+      let mismatch = 0;
+      for (let i = 0; i < expectedHash.length; i++) {
+        mismatch |= expectedHash.charCodeAt(i) ^ actualHash.charCodeAt(i);
       }
-      return "";
+
+      if (mismatch === 0) {
+        const recipient = keysRecipientMap[secretKey];
+        if (typeof recipient === "string") {
+          return recipient;
+        }
+        return "";
+      }
     }
   }
 

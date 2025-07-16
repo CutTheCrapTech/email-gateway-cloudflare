@@ -54,4 +54,4 @@ The test suite covers a variety of scenarios to ensure the worker's reliability:
 
 ## Continuous Integration
 
-The test suite is an integral part of the CI pipeline defined in `.github/workflows/ci.yaml`. Every push and pull request triggers the `npm run ci` command, which includes running the full test suite. This ensures that no code that breaks the existing functionality is merged.
+The test suite is an integral part of the CI pipeline defined in `.github/workflows/ci.yaml`. Every push and pull request triggers the `pnpm run ci` command, which includes running the full test suite. This ensures that no code that breaks the existing functionality is merged.
