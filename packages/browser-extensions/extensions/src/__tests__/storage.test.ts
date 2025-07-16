@@ -84,14 +84,18 @@ describe("Storage Module", () => {
       const loaded = await loadSettings();
 
       // We expect `get` to have been called with the correct key
-      expect(browser.storage.sync.get).toHaveBeenCalledWith("extension_settings");
+      expect(browser.storage.sync.get).toHaveBeenCalledWith(
+        "extension_settings",
+      );
       // And we expect the loaded settings to match what we saved
       expect(loaded).toEqual(settings);
     });
 
     it("should return an empty object when no settings are saved", async () => {
       const loaded = await loadSettings();
-      expect(browser.storage.sync.get).toHaveBeenCalledWith("extension_settings");
+      expect(browser.storage.sync.get).toHaveBeenCalledWith(
+        "extension_settings",
+      );
       // The result should be an empty object, not null or undefined
       expect(loaded).toEqual({});
     });

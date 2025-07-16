@@ -58,7 +58,10 @@ interface ValidateOptions {
  * The core cryptographic function to generate an HMAC-SHA-256 signature.
  * @internal
  */
-async function _getHmacSignature(secretKey: string, data: string): Promise<ArrayBuffer> {
+async function _getHmacSignature(
+  secretKey: string,
+  data: string,
+): Promise<ArrayBuffer> {
   const crypto = getCryptoInstance();
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
@@ -113,7 +116,9 @@ export async function generateEmailAlias({
   const fullHash = _bufferToHex(signatureBuffer);
 
   // Get first 2 chars of the key as hex
-  const keyHint = _bufferToHex(new TextEncoder().encode(secretKey).slice(0, 1)).substring(0, 2); // First byte as 2 hex chars
+  const keyHint = _bufferToHex(
+    new TextEncoder().encode(secretKey).slice(0, 1),
+  ).substring(0, 2); // First byte as 2 hex chars
 
   // Combine key hint + truncated hash
   const truncatedHash = fullHash.substring(0, hashLength - 2); // Reduce by 2 to make room
@@ -166,7 +171,9 @@ export async function validateEmailAlias({
 
   // Find keys that match this hint
   const candidateKeys = Object.keys(keysRecipientMap).filter((key) => {
-    const keyFirstByte = _bufferToHex(new TextEncoder().encode(key).slice(0, 1)).substring(0, 2);
+    const keyFirstByte = _bufferToHex(
+      new TextEncoder().encode(key).slice(0, 1),
+    ).substring(0, 2);
     return keyFirstByte === keyHint;
   });
 
@@ -229,7 +236,10 @@ export function generateSecureRandomString(length: number): string {
   }
 
   // Make URL-safe: replace + with -, / with _, and remove padding =
-  const urlSafe = base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+  const urlSafe = base64
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "");
 
   // Return the requested length
   return urlSafe.substring(0, length);

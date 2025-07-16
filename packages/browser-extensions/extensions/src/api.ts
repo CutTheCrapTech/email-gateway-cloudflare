@@ -19,10 +19,14 @@ export { ApiError };
  * @throws {ApiError} - Throws a custom error if settings are missing, the parts are invalid,
  *                      or if the core library fails.
  */
-export async function generateEmailAlias(aliasParts: string[]): Promise<string> {
+export async function generateEmailAlias(
+  aliasParts: string[],
+): Promise<string> {
   // 1. Validate the input array and its contents
   if (!aliasParts || aliasParts.length !== 2) {
-    throw new ApiError("Invalid input: exactly two parts (Label and Source) are required.");
+    throw new ApiError(
+      "Invalid input: exactly two parts (Label and Source) are required.",
+    );
   }
   if (aliasParts.some((part) => !part || part.trim() === "")) {
     throw new ApiError("Both Label and Source fields are required.");
@@ -53,7 +57,8 @@ export async function generateEmailAlias(aliasParts: string[]): Promise<string> 
     console.error("Error during alias generation from core library:", error);
 
     // Safe error message extraction
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred.";
 
     // Throw a new ApiError with the extracted message
     throw new ApiError(`Failed to generate alias: ${errorMessage}`);

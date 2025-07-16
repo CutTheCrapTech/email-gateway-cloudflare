@@ -1,6 +1,9 @@
 /// <reference types="jest" />
 
-import type { ExecutionContext, ForwardableEmailMessage } from "@cloudflare/workers-types";
+import type {
+  ExecutionContext,
+  ForwardableEmailMessage,
+} from "@cloudflare/workers-types";
 import worker, { type Env } from "../worker";
 
 // Mock the validateEmailAlias function
@@ -81,9 +84,15 @@ describe("Email Worker", () => {
     it('should log error and return when missing "to" field', async () => {
       mockMessage.to = "";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
-      expect(console.error).toHaveBeenCalledWith("Invalid email message: missing to/from fields.");
+      expect(console.error).toHaveBeenCalledWith(
+        "Invalid email message: missing to/from fields.",
+      );
       expect(mockMessage.setReject).not.toHaveBeenCalled();
       expect(mockMessage.forward).not.toHaveBeenCalled();
     });
@@ -91,9 +100,15 @@ describe("Email Worker", () => {
     it('should log error and return when missing "from" field', async () => {
       mockMessage.from = "";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
-      expect(console.error).toHaveBeenCalledWith("Invalid email message: missing to/from fields.");
+      expect(console.error).toHaveBeenCalledWith(
+        "Invalid email message: missing to/from fields.",
+      );
       expect(mockMessage.setReject).not.toHaveBeenCalled();
       expect(mockMessage.forward).not.toHaveBeenCalled();
     });
@@ -103,9 +118,15 @@ describe("Email Worker", () => {
     it("should log error and return when EMAIL_OPTIONS is not set", async () => {
       mockEnv.EMAIL_OPTIONS = "";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
-      expect(console.error).toHaveBeenCalledWith("EMAIL_OPTIONS environment variable is not set");
+      expect(console.error).toHaveBeenCalledWith(
+        "EMAIL_OPTIONS environment variable is not set",
+      );
       expect(mockMessage.setReject).not.toHaveBeenCalled();
       expect(mockMessage.forward).not.toHaveBeenCalled();
     });
@@ -113,7 +134,11 @@ describe("Email Worker", () => {
     it("should log error and return when EMAIL_OPTIONS has invalid JSON", async () => {
       mockEnv.EMAIL_OPTIONS = "invalid json";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         "Failed to parse EMAIL_OPTIONS:",
@@ -128,7 +153,11 @@ describe("Email Worker", () => {
         ignore_email_checks: ["test@example.com"],
       });
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         "Configuration error: No default email address specified.",
@@ -140,7 +169,11 @@ describe("Email Worker", () => {
     it("should log error and return when EMAIL_SECRET_MAPPING is not set", async () => {
       mockEnv.EMAIL_SECRET_MAPPING = "";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         "EMAIL_SECRET_MAPPING is not set. Cannot process email.",
@@ -152,7 +185,11 @@ describe("Email Worker", () => {
     it("should log error and return when EMAIL_SECRET_MAPPING has invalid JSON", async () => {
       mockEnv.EMAIL_SECRET_MAPPING = "invalid json";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         "Failed to parse EMAIL_SECRET_MAPPING:",
@@ -167,7 +204,11 @@ describe("Email Worker", () => {
     it("should forward to default address when recipient is in ignore list", async () => {
       mockMessage.to = "ignored@example.com";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(mockMessage.forward).toHaveBeenCalledWith("default@example.com");
       expect(mockValidateEmailAlias).not.toHaveBeenCalled();
@@ -177,7 +218,11 @@ describe("Email Worker", () => {
       mockMessage.to = "normal@example.com";
       mockValidateEmailAlias.mockResolvedValue("user1@example.com");
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(mockValidateEmailAlias).toHaveBeenCalled();
       expect(mockMessage.forward).toHaveBeenCalledWith("user1@example.com");
@@ -189,7 +234,11 @@ describe("Email Worker", () => {
       });
       mockValidateEmailAlias.mockResolvedValue("user1@example.com");
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(mockValidateEmailAlias).toHaveBeenCalled();
       expect(mockMessage.forward).toHaveBeenCalledWith("user1@example.com");
@@ -200,7 +249,11 @@ describe("Email Worker", () => {
     it("should forward to validated destination when alias is valid", async () => {
       mockValidateEmailAlias.mockResolvedValue("user1@example.com");
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(mockValidateEmailAlias).toHaveBeenCalledWith({
         keysRecipientMap: {
@@ -215,7 +268,11 @@ describe("Email Worker", () => {
     it("should log error and return when alias validation returns null", async () => {
       mockValidateEmailAlias.mockResolvedValue(null);
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         `No valid destination email for alias ${mockMessage.to}.`,
@@ -227,7 +284,11 @@ describe("Email Worker", () => {
     it("should log error and return when alias validation returns undefined", async () => {
       mockValidateEmailAlias.mockResolvedValue(undefined);
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         `No valid destination email for alias ${mockMessage.to}.`,
@@ -239,7 +300,11 @@ describe("Email Worker", () => {
     it("should log error and return when alias validation throws error", async () => {
       mockValidateEmailAlias.mockRejectedValue(new Error("Validation failed"));
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         `Error validating alias ${mockMessage.to} with a secret:`,
@@ -253,10 +318,16 @@ describe("Email Worker", () => {
   describe("Error handling", () => {
     it("should handle forward failure gracefully", async () => {
       // Don't need to manually spy on console.error since it's already mocked in beforeEach
-      mockMessage.forward = jest.fn().mockRejectedValue(new Error("Forward failed"));
+      mockMessage.forward = jest
+        .fn()
+        .mockRejectedValue(new Error("Forward failed"));
       mockValidateEmailAlias.mockResolvedValue("user1@example.com");
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         "Failed to forward email to user1@example.com:",
@@ -276,7 +347,11 @@ describe("Email Worker", () => {
 
       mockValidateEmailAlias.mockResolvedValue(initialDestination);
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(mockMessage.forward).toHaveBeenCalledTimes(2);
       expect(mockMessage.forward).toHaveBeenCalledWith(initialDestination);
@@ -302,7 +377,11 @@ describe("Email Worker", () => {
 
       mockValidateEmailAlias.mockResolvedValue(initialDestination);
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(mockMessage.forward).toHaveBeenCalledTimes(2);
       expect(mockMessage.forward).toHaveBeenCalledWith(initialDestination);
@@ -325,7 +404,11 @@ describe("Email Worker", () => {
     it("should handle complete successful flow", async () => {
       mockValidateEmailAlias.mockResolvedValue("user1@example.com");
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(mockValidateEmailAlias).toHaveBeenCalledWith({
         keysRecipientMap: {
@@ -341,7 +424,11 @@ describe("Email Worker", () => {
     it("should handle fallback to silent failure scenario", async () => {
       mockValidateEmailAlias.mockResolvedValue(null);
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
       expect(console.error).toHaveBeenCalledWith(
         `No valid destination email for alias ${mockMessage.to}.`,
@@ -353,9 +440,15 @@ describe("Email Worker", () => {
     it("should handle configuration error scenario", async () => {
       mockEnv.EMAIL_OPTIONS = "";
 
-      await worker.email(mockMessage as unknown as ForwardableEmailMessage, mockEnv, mockContext);
+      await worker.email(
+        mockMessage as unknown as ForwardableEmailMessage,
+        mockEnv,
+        mockContext,
+      );
 
-      expect(console.error).toHaveBeenCalledWith("EMAIL_OPTIONS environment variable is not set");
+      expect(console.error).toHaveBeenCalledWith(
+        "EMAIL_OPTIONS environment variable is not set",
+      );
       expect(mockMessage.setReject).not.toHaveBeenCalled();
       expect(mockMessage.forward).not.toHaveBeenCalled();
     });

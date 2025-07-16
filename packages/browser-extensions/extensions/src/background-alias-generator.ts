@@ -26,7 +26,9 @@ export async function generateAliasForBackground(): Promise<string> {
  * @param tabUrl The URL of the current tab
  * @returns Promise that resolves to the generated email alias
  */
-export async function generateAliasForBackgroundWithUrl(tabUrl?: string): Promise<string> {
+export async function generateAliasForBackgroundWithUrl(
+  tabUrl?: string,
+): Promise<string> {
   try {
     const defaultLabel = await getDefaultLabel();
     const domain = extractDomainForSource(tabUrl);

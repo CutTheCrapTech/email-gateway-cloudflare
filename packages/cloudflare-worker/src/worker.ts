@@ -59,7 +59,11 @@ export default {
    * The main entry point for the Cloudflare Email Worker.
    * This function is triggered for each incoming email.
    */
-  async email(message: ForwardableEmailMessage, env: Env, _ctx: ExecutionContext): Promise<void> {
+  async email(
+    message: ForwardableEmailMessage,
+    env: Env,
+    _ctx: ExecutionContext,
+  ): Promise<void> {
     // Input validation
     if (!message.to || !message.from) {
       console.error("Invalid email message: missing to/from fields.");
@@ -87,7 +91,9 @@ export default {
     }
 
     if (ignore_email_checks.includes(message.to)) {
-      console.log(`Recipient ${message.to} is in the ignore list. Forwarding to default address.`);
+      console.log(
+        `Recipient ${message.to} is in the ignore list. Forwarding to default address.`,
+      );
       await safeForward(message, default_email_address, default_email_address);
       return;
     }
@@ -112,14 +118,19 @@ export default {
       });
 
       if (destinationEmail && destinationEmail !== "") {
-        console.log(`Forwarding email for alias ${message.to} to ${destinationEmail}`);
+        console.log(
+          `Forwarding email for alias ${message.to} to ${destinationEmail}`,
+        );
         await safeForward(message, destinationEmail, default_email_address);
       } else {
         console.error(`No valid destination email for alias ${message.to}.`);
         return;
       }
     } catch (error) {
-      console.error(`Error validating alias ${message.to} with a secret:`, error);
+      console.error(
+        `Error validating alias ${message.to} with a secret:`,
+        error,
+      );
       return;
     }
   },

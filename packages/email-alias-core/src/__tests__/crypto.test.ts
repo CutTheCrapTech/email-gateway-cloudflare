@@ -417,7 +417,9 @@ describe("crypto.ts", () => {
       const { crypto: importedCrypto } = await import("../crypto.js");
 
       // Error should be thrown when accessing crypto properties
-      expect(() => importedCrypto.subtle).toThrow("Crypto API not available in this environment");
+      expect(() => importedCrypto.subtle).toThrow(
+        "Crypto API not available in this environment",
+      );
     });
   });
 
@@ -448,7 +450,9 @@ describe("crypto.ts", () => {
       const { crypto: importedCrypto } = await import("../crypto.js");
 
       // Error should be thrown when accessing crypto properties
-      expect(() => importedCrypto.subtle).toThrow("Crypto API not available in this environment");
+      expect(() => importedCrypto.subtle).toThrow(
+        "Crypto API not available in this environment",
+      );
     });
   });
 
@@ -479,7 +483,9 @@ describe("crypto.ts", () => {
       const { crypto: importedCrypto } = await import("../crypto.js");
 
       // Error should be thrown when accessing crypto properties
-      expect(() => importedCrypto.subtle).toThrow("Crypto API not available in this environment");
+      expect(() => importedCrypto.subtle).toThrow(
+        "Crypto API not available in this environment",
+      );
     });
   });
 
@@ -510,7 +516,9 @@ describe("crypto.ts", () => {
       const { crypto: importedCrypto } = await import("../crypto.js");
 
       // Error should be thrown when accessing crypto properties
-      expect(() => importedCrypto.subtle).toThrow("Crypto API not available in this environment");
+      expect(() => importedCrypto.subtle).toThrow(
+        "Crypto API not available in this environment",
+      );
     });
   });
 
@@ -531,8 +539,12 @@ describe("crypto.ts", () => {
       // Mock self.crypto with real-like behavior
       const mockSelfCrypto = {
         subtle: {
-          importKey: jest.fn(() => Promise.resolve("mock-key" as unknown as CryptoKey)),
-          sign: jest.fn(() => Promise.resolve(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]).buffer)),
+          importKey: jest.fn(() =>
+            Promise.resolve("mock-key" as unknown as CryptoKey),
+          ),
+          sign: jest.fn(() =>
+            Promise.resolve(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]).buffer),
+          ),
         },
         getRandomValues: jest.fn((array: Uint8Array) => {
           for (let i = 0; i < array.length; i++) {
@@ -549,7 +561,9 @@ describe("crypto.ts", () => {
       });
 
       // Import and test actual library functions
-      const { generateEmailAlias, validateEmailAlias } = await import("../index.js");
+      const { generateEmailAlias, validateEmailAlias } = await import(
+        "../index.js"
+      );
 
       // This should work without throwing "Crypto API not available in this environment"
       const alias = await generateEmailAlias({

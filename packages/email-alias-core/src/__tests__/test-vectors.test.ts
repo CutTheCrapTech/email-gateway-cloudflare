@@ -65,7 +65,8 @@ describe("Cross-Environment Test Vectors", () => {
       aliasParts: ["test-123", "service_name", "with.dots"],
       domain: "special.example.org",
       hashLength: 10,
-      expectedAlias: "test-123-service_name-with.dots-730329e43d@special.example.org",
+      expectedAlias:
+        "test-123-service_name-with.dots-730329e43d@special.example.org",
     },
   ];
 
@@ -207,13 +208,19 @@ describe("Cross-Environment Test Vectors", () => {
         ["sign"],
       );
 
-      const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(testData));
+      const signature = await crypto.subtle.sign(
+        "HMAC",
+        key,
+        encoder.encode(testData),
+      );
       const hexSignature = Array.from(new Uint8Array(signature))
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("");
 
       // This should always produce the same signature across environments
-      expect(hexSignature).toBe("591e1dc35460e2638692501efb9201398e061dd6fa93af3d3cf2a87c0e1402fa");
+      expect(hexSignature).toBe(
+        "591e1dc35460e2638692501efb9201398e061dd6fa93af3d3cf2a87c0e1402fa",
+      );
     });
   });
 
@@ -227,7 +234,9 @@ describe("Cross-Environment Test Vectors", () => {
         console.log(`Node.js version: ${process.version}`);
         console.log(`Platform: ${process.platform} ${process.arch}`);
         console.log("Crypto implementation: Available");
-        console.log(`All test vectors: ${VERIFIED_TEST_VECTORS.length} verified`);
+        console.log(
+          `All test vectors: ${VERIFIED_TEST_VECTORS.length} verified`,
+        );
         console.log("Status: ✅ All cross-environment tests passed");
         console.log("=== End Test Results ===\n");
       }

@@ -60,7 +60,10 @@ function getCrypto(): CryptoInterface {
       try {
         // biome-ignore lint/style/useNodejsImportProtocol: Intentional fallback for older Node.js versions
         const crypto = require("crypto");
-        if (crypto.webcrypto?.subtle && typeof crypto.webcrypto.getRandomValues === "function") {
+        if (
+          crypto.webcrypto?.subtle &&
+          typeof crypto.webcrypto.getRandomValues === "function"
+        ) {
           return crypto.webcrypto as CryptoInterface;
         }
         // If webcrypto is not available in the crypto module

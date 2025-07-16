@@ -56,7 +56,16 @@ browser.runtime.onInstalled.addListener((details) => {
   void browser.contextMenus.create({
     id: "generate-email-alias",
     title: "Generate Email Alias",
-    contexts: ["page", "frame", "selection", "link", "editable", "image", "video", "audio"],
+    contexts: [
+      "page",
+      "frame",
+      "selection",
+      "link",
+      "editable",
+      "image",
+      "video",
+      "audio",
+    ],
     documentUrlPatterns: ["http://*/*", "https://*/*"],
   });
 });
@@ -115,7 +124,10 @@ async function handleOpenDialogCommand(tabId: number): Promise<void> {
     } as ShowAliasDialogMessage);
   } catch (error) {
     console.error("Failed to handle open-dialog command:", error);
-    await showNotification("Failed to open alias generator. Please try again.", true);
+    await showNotification(
+      "Failed to open alias generator. Please try again.",
+      true,
+    );
   }
 }
 
@@ -210,10 +222,15 @@ async function handleQuickGenerateCommand(tabId: number): Promise<void> {
 /**
  * Show a user-friendly notification with enhanced styling and error handling
  */
-async function showNotification(message: string, isError = false): Promise<void> {
+async function showNotification(
+  message: string,
+  isError = false,
+): Promise<void> {
   try {
     const iconUrl = isError ? "icons/icon48.png" : "icons/icon48.png";
-    const title = isError ? "Email Alias Generator - Error" : "Email Alias Generator";
+    const title = isError
+      ? "Email Alias Generator - Error"
+      : "Email Alias Generator";
 
     await browser.notifications.create({
       type: "basic",
@@ -430,7 +447,11 @@ function isExtensionMessage(message: unknown): message is ExtensionMessage {
 
 // Handle messages from popup/content scripts
 browser.runtime.onMessage.addListener(
-  (message: unknown, _sender, sendResponse: (response: MessageResponse) => void) => {
+  (
+    message: unknown,
+    _sender,
+    sendResponse: (response: MessageResponse) => void,
+  ) => {
     // Handle ping messages for content script availability check
     if (isPingMessage(message)) {
       sendResponse({ success: true });

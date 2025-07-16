@@ -3,7 +3,11 @@
  * @copyright 2025 karteekiitg
  */
 
-import { generateEmailAlias, generateSecureRandomString, validateEmailAlias } from "../index.js";
+import {
+  generateEmailAlias,
+  generateSecureRandomString,
+  validateEmailAlias,
+} from "../index.js";
 
 /**
  * Cross-environment consistency tests for email alias generation and validation.
@@ -400,14 +404,20 @@ describe("Cross-Environment Consistency", () => {
       // Generate the same HMAC signature multiple times
       const signatures: number[][] = [];
       for (let i = 0; i < 5; i++) {
-        const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(testData));
+        const signature = await crypto.subtle.sign(
+          "HMAC",
+          key,
+          encoder.encode(testData),
+        );
         signatures.push(Array.from(new Uint8Array(signature)));
       }
 
       // All signatures should be identical
-      expect(signatures.every((sig) => JSON.stringify(sig) === JSON.stringify(signatures[0]))).toBe(
-        true,
-      );
+      expect(
+        signatures.every(
+          (sig) => JSON.stringify(sig) === JSON.stringify(signatures[0]),
+        ),
+      ).toBe(true);
     });
   });
 
@@ -445,7 +455,13 @@ describe("Cross-Environment Consistency", () => {
       });
 
       it("should throw identical errors for invalid inputs across environments", () => {
-        const invalidInputs = [0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY];
+        const invalidInputs = [
+          0,
+          -1,
+          1.5,
+          Number.NaN,
+          Number.POSITIVE_INFINITY,
+        ];
 
         for (const input of invalidInputs) {
           expect(() => generateSecureRandomString(input)).toThrow(
@@ -544,7 +560,9 @@ describe("Cross-Environment Consistency", () => {
 
     describe("URL-safe encoding consistency", () => {
       it("should consistently produce URL-safe strings", () => {
-        const results = Array.from({ length: 50 }, () => generateSecureRandomString(64));
+        const results = Array.from({ length: 50 }, () =>
+          generateSecureRandomString(64),
+        );
 
         for (const result of results) {
           // Should be URL-safe
@@ -562,9 +580,9 @@ describe("Cross-Environment Consistency", () => {
 
       it("should use URL-safe replacements when needed", () => {
         // Generate many strings to ensure we get some - and _ characters
-        const largeString = Array.from({ length: 100 }, () => generateSecureRandomString(50)).join(
-          "",
-        );
+        const largeString = Array.from({ length: 100 }, () =>
+          generateSecureRandomString(50),
+        ).join("");
 
         // Should contain URL-safe replacement characters
         // (This is probabilistic but very likely with this much data)
@@ -626,7 +644,9 @@ describe("Cross-Environment Consistency", () => {
 
         // Should produce valid alias
         expect(alias).toMatch(
-          new RegExp(`^${randomService}-${randomProvider}-[a-f0-9]{8}@example\\.com$`),
+          new RegExp(
+            `^${randomService}-${randomProvider}-[a-f0-9]{8}@example\\.com$`,
+          ),
         );
 
         // Should validate correctly
