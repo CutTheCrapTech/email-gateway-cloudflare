@@ -44,7 +44,7 @@ jobs:
         with:
           # Only version, don't publish
           version: npm run version
-          commit: "Version packages"
+          commit: "Version packages [skip ci]"
           title: "Version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
