@@ -61,7 +61,7 @@ jobs:
           echo "Generated exclude regex: $EXCLUDE_REGEX"
 
           # Find files that match include patterns
-          MATCHING_FILES=$(echo "$FILES" | grep -E "$INCLUDE_REGEX" || true)
+          MATCHING_FILES=$(printf '%s\n' $FILES | grep -E "$INCLUDE_REGEX" || true)
 
           if [ -n "$MATCHING_FILES" ]; then
             echo "Files matching include extensions:"
