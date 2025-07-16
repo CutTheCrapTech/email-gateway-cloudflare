@@ -10,6 +10,11 @@
   "automerge": false,
   "packageRules": [
     {
+      "description": "Force GitHub Actions to resolve to release tags, not branches",
+      "matchManagers": ["github-actions"],
+      "versioning": "github-tags"
+    },
+    {
       "description": "Github Actions Trusted vendors: Non-major updates",
       "matchManagers": ["github-actions"],
       "pinDigests": true,
