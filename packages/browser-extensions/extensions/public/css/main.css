@@ -19,17 +19,8 @@
 /* Import component styles */
 @import url("./components.css");
 
-/* Import keyboard shortcuts styles */
-@import url("./shortcuts.css");
-
 /* Import popup-specific styles */
 @import url("./popup.css");
-
-/* Import dialog styles */
-@import url("./dialog.css");
-
-/* Import toast notification styles */
-@import url("./toast.css");
 
 /* Legacy compatibility - Gradually remove these as components are updated */
 .legacy-section {

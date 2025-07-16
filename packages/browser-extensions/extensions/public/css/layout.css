@@ -503,32 +503,6 @@ body.options-page .section:last-child {
   line-height: 1.6;
 }
 
-.keyboard-help {
-  background-color: var(--background-input);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.keyboard-help ol {
-  margin: 1rem 0;
-  padding-left: 1.5rem;
-}
-
-.keyboard-help li {
-  margin-bottom: 0.5rem;
-  line-height: 1.5;
-}
-
-.keyboard-note {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-}
-
 .pin-note {
   margin-top: 1.5rem;
   font-style: italic;

@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const generateKeyBtn = document.getElementById(
     "generate-key-btn",
   ) as HTMLButtonElement;
-  const keyActions = document.getElementById("key-actions") as HTMLDivElement;
+
   const copyKeyBtn = document.getElementById(
     "copy-key-btn",
   ) as HTMLButtonElement;
@@ -93,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
     !defaultLabelInput ||
     !saveButton ||
     !generateKeyBtn ||
-    !keyActions ||
     !copyKeyBtn ||
     !viewKeyBtn ||
     !backupConfirmedCheckbox
@@ -104,19 +103,29 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // --- State variable ---
-  let isNewKeyGenerated = false;
+  // --- State variables ---
+  let savedToken = "";
+  let isKeyChanged = false;
 
   // --- Form Validation Function ---
   function validateForm(): void {
     const domain = domainInput.value.trim();
     const token = tokenInput.value.trim();
 
+    // Check if the token has changed from what is saved
+    isKeyChanged = token !== savedToken;
+
+    // Show/hide the backup confirmation based on whether the key has changed
+    const backupContainer = document.getElementById("backup-container");
+    if (backupContainer) {
+      backupContainer.classList.toggle("hidden", !isKeyChanged);
+    }
+
     // Check if required fields are filled
     const hasRequiredFields = domain && token;
 
     // Check if backup confirmation is needed and satisfied
-    const needsBackupConfirmation = isNewKeyGenerated;
+    const needsBackupConfirmation = isKeyChanged;
     const hasBackupConfirmation = backupConfirmedCheckbox.checked;
 
     // Enable save button only if all conditions are met
@@ -136,16 +145,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add validation on input changes
   domainInput.addEventListener("input", validateForm);
-  tokenInput.addEventListener("input", validateForm);
+  tokenInput.addEventListener("input", () => {
+    // When the user types, we need to re-validate the form
+    validateForm();
+  });
   backupConfirmedCheckbox.addEventListener("change", validateForm);
 
   generateKeyBtn.addEventListener("click", () => {
     const newKey = generateSecureRandomString(8);
     tokenInput.value = newKey;
     tokenInput.type = "text"; // Show the key
-    keyActions.classList.remove("hidden");
     backupConfirmedCheckbox.checked = false;
-    isNewKeyGenerated = true;
     showStatusMessage("New key generated. Please back it up now.", false);
     validateForm(); // Revalidate after generating key
   });
@@ -178,8 +188,11 @@ document.addEventListener("DOMContentLoaded", () => {
       tokenInput.value = settings.token || "";
       defaultLabelInput.value = settings.defaultLabel || "marketing";
 
-      // Reset the new key generated state since we're loading existing settings
-      isNewKeyGenerated = false;
+      // Store the initial token value
+      savedToken = settings.token || "";
+
+      // Reset the key changed state
+      isKeyChanged = false;
 
       // Validate form after loading settings
       validateForm();
@@ -201,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (isNewKeyGenerated && !backupConfirmedCheckbox.checked) {
+      if (isKeyChanged && !backupConfirmedCheckbox.checked) {
         showStatusMessage(
           "Please confirm you have backed up the new secret key.",
           true,
@@ -216,10 +229,13 @@ document.addEventListener("DOMContentLoaded", () => {
           defaultLabel,
         });
 
+        // Update the saved token state
+        savedToken = token;
+
         showStatusMessage("Settings saved successfully!");
         // After saving, reset the state
-        isNewKeyGenerated = false;
-        keyActions.classList.add("hidden");
+        backupConfirmedCheckbox.checked = false;
+        isKeyChanged = false;
         tokenInput.type = "password";
         validateForm(); // Revalidate after saving
       } catch (error) {

@@ -30,7 +30,7 @@ const esbuildConfig = {
 };
 
 const contentScriptConfig = {
-  entryPoints: [path.join(codeDir, "src", "dialog.ts")],
+  entryPoints: [path.join(codeDir, "src", "content.ts")],
   bundle: true,
   format: "iife",
   target: "es2020",

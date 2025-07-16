@@ -13,29 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const generateBtn = document.getElementById(
     "generate-btn",
   ) as HTMLButtonElement | null;
-  const resultContainer = document.getElementById(
-    "result-container",
-  ) as HTMLDivElement | null;
-  const aliasResultSpan = document.getElementById(
-    "alias-result",
-  ) as HTMLSpanElement | null;
-  const copyBtn = document.getElementById(
-    "copy-btn",
-  ) as HTMLButtonElement | null;
   const errorContainer = document.getElementById(
     "error-container",
   ) as HTMLDivElement | null;
 
   // --- Type Guard ---
-  if (
-    !labelInput ||
-    !sourceInput ||
-    !generateBtn ||
-    !resultContainer ||
-    !aliasResultSpan ||
-    !copyBtn ||
-    !errorContainer
-  ) {
+  if (!labelInput || !sourceInput || !generateBtn || !errorContainer) {
     const message =
       "A critical UI element is missing from popup.html and the extension cannot function.";
     console.error(message);
@@ -111,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `${message} <button id="open-options-btn" style="margin-left: 8px;">Open Settings</button>`
       : message;
     errorContainer.classList.remove("hidden");
-    resultContainer.classList.add("hidden");
 
     // Add event listener for the options button if it was created
     if (showOptionsButton) {
@@ -135,16 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  /**
-   * Displays the generated alias in the result container.
-   * @param alias The generated email alias to display
-   */
-  const showResult = (alias: string) => {
-    aliasResultSpan.textContent = alias;
-    resultContainer.classList.remove("hidden");
-    hideError();
-  };
-
   // --- Auto-fill functionality ---
   /**
    * Attempts to fill the currently focused email field on the active tab.
@@ -157,8 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
         currentWindow: true,
       });
       if (tab?.id) {
+        // Corrected message format to match content script (`dialog.ts`)
         await browser.tabs.sendMessage(tab.id, {
-          action: "fillEmailField",
+          type: "fill-email-field",
           alias: alias,
         });
       }
@@ -193,10 +166,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const alias = await generateEmailAlias(aliasParts);
-      showResult(alias);
+
+      // Copy to clipboard
+      await navigator.clipboard.writeText(alias);
 
       // Try to auto-fill the active email field
       await fillActiveEmailField(alias);
+
+      // Provide feedback to the user
+      generateBtn.textContent = "Copied & Filled!";
+      setTimeout(() => {
+        // Revert button text after a delay
+        generateBtn.textContent = "Generate";
+        // Close popup automatically after success
+        window.close();
+      }, 1500);
     } catch (error) {
       if (error instanceof ApiError) {
         // Check if the error is about missing domain/token configuration
@@ -208,29 +192,11 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("An unexpected error occurred:", error);
         showError("An unexpected error occurred. Please check the console.");
       }
-    } finally {
+      // Re-enable button on error
       generateBtn.disabled = false;
       generateBtn.textContent = "Generate";
     }
-  };
-
-  /**
-   * Handles copying the generated alias to clipboard.
-   */
-  const handleCopy = async () => {
-    const alias = aliasResultSpan.textContent;
-    if (!alias) return;
-
-    try {
-      await navigator.clipboard.writeText(alias);
-      copyBtn.textContent = "Copied!";
-      setTimeout(() => {
-        copyBtn.textContent = "Copy";
-      }, 1500);
-    } catch (err) {
-      console.error("Failed to copy alias to clipboard: ", err);
-      showError("Could not copy alias to clipboard.");
-    }
+    // Note: `finally` block is removed because we now handle button state differently for success vs. error
   };
 
   // --- Event Listener Registration ---
@@ -239,10 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // The `void` operator correctly handles the returned promise.
   generateBtn.addEventListener("click", () => {
     void handleGeneration();
-  });
-
-  copyBtn.addEventListener("click", () => {
-    void handleCopy();
   });
 
   /**

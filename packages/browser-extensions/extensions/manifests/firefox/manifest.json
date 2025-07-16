@@ -25,35 +25,29 @@
     "scripts": ["background.js"]
   },
   "commands": {
-    "open-dialog": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+E"
-      },
-      "description": "Open Email Alias Generator popup"
-    },
-    "fill-current-field": {
+    "_execute_action": {
       "suggested_key": {
         "default": "Ctrl+Shift+U"
       },
-      "description": "Fill current email input field with generated alias"
+      "description": "Activate the extension"
     },
-    "quick-generate": {
+    "fill-current-field": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Y"
+        "default": "Ctrl+Shift+E"
       },
-      "description": "Quick generate alias with default settings"
+      "description": "Fill email input field with generated alias"
     }
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["dialog.js"],
+      "js": ["content.js"],
       "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dialog.html", "css/dialog.css", "css/*"],
+      "resources": ["css/*"],
       "matches": ["<all_urls>"]
     }
   ],

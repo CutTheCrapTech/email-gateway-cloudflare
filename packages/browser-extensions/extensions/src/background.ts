@@ -8,19 +8,10 @@ interface OpenOptionsMessage {
   action: "openOptionsPage";
 }
 
-interface ShowAliasDialogMessage {
-  type: "show-alias-dialog";
-  source?: "keyboard-shortcut" | "context-menu" | "popup";
-}
-
 interface FillEmailFieldMessage {
   type: "fill-email-field";
   alias: string;
   source?: "keyboard-shortcut";
-}
-
-interface EmailFieldsResponse {
-  hasEmailFields: boolean;
 }
 
 interface GetCommandsMessage {
@@ -87,53 +78,14 @@ browser.commands.onCommand.addListener(async (command) => {
   const tabId = activeTab.id;
 
   switch (command) {
-    case "open-dialog":
-      await handleOpenDialogCommand(tabId);
-      break;
     case "fill-current-field":
       await handleFillCurrentFieldCommand(tabId);
-      break;
-    case "quick-generate":
-      await handleQuickGenerateCommand(tabId);
       break;
     default:
       console.warn("Unknown command:", command);
   }
 });
 
-/**
- * Handle the open-dialog keyboard command
- */
-async function handleOpenDialogCommand(tabId: number): Promise<void> {
-  try {
-    // Ensure content script is loaded
-    const scriptLoaded = await ensureContentScriptLoaded(tabId);
-
-    if (!scriptLoaded) {
-      await showNotification(
-        "This page doesn't support the extension. Try refreshing the page or use it on a different website.",
-        true,
-      );
-      return;
-    }
-
-    // Show the alias dialog
-    await browser.tabs.sendMessage(tabId, {
-      type: "show-alias-dialog",
-      source: "keyboard-shortcut",
-    } as ShowAliasDialogMessage);
-  } catch (error) {
-    console.error("Failed to handle open-dialog command:", error);
-    await showNotification(
-      "Failed to open alias generator. Please try again.",
-      true,
-    );
-  }
-}
-
-/**
- * Handle the fill-current-field keyboard command
- */
 async function handleFillCurrentFieldCommand(tabId: number): Promise<void> {
   try {
     const settings = await loadSettings();
@@ -172,49 +124,6 @@ async function handleFillCurrentFieldCommand(tabId: number): Promise<void> {
         : error instanceof Error
           ? error.message
           : "Failed to fill email field. Please try again.";
-    await showNotification(errorMessage, true);
-  }
-}
-
-/**
- * Handle the quick-generate keyboard command
- */
-async function handleQuickGenerateCommand(tabId: number): Promise<void> {
-  try {
-    const settings = await loadSettings();
-
-    if (!settings.domain || !settings.token) {
-      await showNotification(
-        "Please configure domain and secret key in extension options first.",
-        true,
-      );
-      await browser.runtime.openOptionsPage();
-      return;
-    }
-
-    const tab = await browser.tabs.get(tabId);
-    const alias = await generateAliasForBackgroundWithUrl(tab.url);
-
-    // Copy to clipboard
-    await browser.scripting.executeScript({
-      target: { tabId: tabId },
-      func: (text: string) => {
-        navigator.clipboard
-          .writeText(text)
-          .catch((e) => console.error("Failed to copy to clipboard:", e));
-      },
-      args: [alias],
-    });
-
-    await showNotification(`✓ Generated alias copied: ${alias}`);
-  } catch (error) {
-    console.error("Failed to handle quick-generate command:", error);
-    const errorMessage =
-      error instanceof ApiError
-        ? error.message
-        : error instanceof Error
-          ? error.message
-          : "Failed to generate alias. Please try again.";
     await showNotification(errorMessage, true);
   }
 }
@@ -307,7 +216,7 @@ async function ensureContentScriptLoaded(tabId: number): Promise<boolean> {
     // Try to inject the content script
     await browser.scripting.executeScript({
       target: { tabId },
-      files: ["dialog.js"],
+      files: ["content.js"],
     });
 
     // Wait a moment for script to initialize
@@ -320,69 +229,12 @@ async function ensureContentScriptLoaded(tabId: number): Promise<boolean> {
   }
 }
 
-/**
- * Type guard to check if an object is a valid EmailFieldsResponse.
- * @param obj The object to check
- * @returns True if the object matches the EmailFieldsResponse structure
- */
-function isEmailFieldsResponse(obj: unknown): obj is EmailFieldsResponse {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    "hasEmailFields" in obj &&
-    typeof (obj as EmailFieldsResponse).hasEmailFields === "boolean"
-  );
-}
-
 // Handle context menu clicks
 browser.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "generate-email-alias" && tab?.id !== undefined) {
     const tabId = tab.id;
-    void (async () => {
-      try {
-        // Ensure content script is loaded
-        const scriptLoaded = await ensureContentScriptLoaded(tabId);
-
-        if (!scriptLoaded) {
-          console.error("Content script could not be loaded on this page");
-          await showNotification(
-            "This page doesn't support the extension. Try refreshing the page or use it on a different website.",
-            true,
-          );
-          return;
-        }
-
-        // Check if the page has email fields (optional check)
-        try {
-          const response: unknown = await browser.tabs.sendMessage(tabId, {
-            type: "check-email-fields",
-          });
-
-          if (isEmailFieldsResponse(response)) {
-            console.log("Email fields check:", response);
-          } else {
-            console.log("Unexpected response format");
-          }
-
-          console.log("Email fields check:", response);
-        } catch {
-          console.log("Could not check for email fields");
-        }
-
-        // Show the dialog - it will handle cases where no email fields exist
-        // by copying to clipboard instead
-        await browser.tabs.sendMessage(tabId, {
-          type: "show-alias-dialog",
-          source: "context-menu",
-        } as ShowAliasDialogMessage);
-      } catch {
-        console.error("Failed to communicate with content script");
-        await showNotification(
-          "Could not access this page. Please refresh and try again, or use the extension on a different website.",
-          true,
-        );
-      }
-    })();
+    // Reuse the same logic as the "fill-current-field" keyboard shortcut
+    void handleFillCurrentFieldCommand(tabId);
   }
 });
 
@@ -396,7 +248,10 @@ interface ErrorResponse {
   error: string;
 }
 
-type MessageResponse = SuccessResponse | ErrorResponse | CommandsResponse;
+export type MessageResponse =
+  | SuccessResponse
+  | ErrorResponse
+  | CommandsResponse;
 
 // Define ping message type
 interface PingMessage {

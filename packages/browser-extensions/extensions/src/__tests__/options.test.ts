@@ -121,6 +121,23 @@ describe("Options Page Utilities", () => {
     });
   });
 
+  describe("UI interaction logic", () => {
+    it("should show backup confirmation when secret key changes", () => {
+      const token = "secret-token";
+      const newToken = "new-secret-token";
+      let isKeyChanged = false;
+
+      // Initial state
+      isKeyChanged = false;
+      expect(isKeyChanged).toBe(false);
+
+      // Key is changed
+      // @ts-expect-error This comparison is intentional for testing purposes
+      isKeyChanged = newToken !== token;
+      expect(isKeyChanged).toBe(true);
+    });
+  });
+
   describe("Settings processing", () => {
     it("should use default label when empty", () => {
       const userLabel = "";

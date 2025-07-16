@@ -174,64 +174,6 @@ button.danger:hover:not(:disabled) {
   background-color: var(--button-primary-hover);
 }
 
-#copy-btn {
-  background-color: var(--button-secondary);
-  color: white;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
-#copy-btn:hover:not(:disabled) {
-  background-color: var(--button-secondary-hover);
-}
-
-/* Shortcut-related buttons */
-.record-btn {
-  background-color: var(--button-primary);
-  color: white;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-
-.record-btn:hover:not(:disabled) {
-  background-color: var(--button-primary-hover);
-}
-
-.record-btn:disabled {
-  background-color: var(--button-secondary);
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.clear-btn {
-  background-color: var(--button-danger);
-  color: white;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
-
-.clear-btn:hover:not(:disabled) {
-  background-color: var(--button-danger-hover);
-}
-
-/* Suggestion buttons */
-.suggestion-btn {
-  background-color: var(--button-secondary);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-.suggestion-btn:hover:not(:disabled) {
-  background-color: var(--button-secondary-hover);
-}
-
 /* Loading state */
 .btn-loading {
   position: relative;

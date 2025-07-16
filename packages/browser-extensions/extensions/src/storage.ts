@@ -17,7 +17,7 @@ export interface ExtensionSettings {
 const SETTINGS_KEY = "extension_settings";
 
 /**
- * Saves the provided settings to `browser.storage.sync`.
+ * Saves the provided settings to `browser.storage.local`.
  * Sync storage is used to automatically sync settings across a user's devices.
  *
  * @param settings - The settings object to save.
@@ -26,7 +26,7 @@ const SETTINGS_KEY = "extension_settings";
  */
 export async function saveSettings(settings: ExtensionSettings): Promise<void> {
   try {
-    await browser.storage.sync.set({ [SETTINGS_KEY]: settings });
+    await browser.storage.local.set({ [SETTINGS_KEY]: settings });
   } catch (error) {
     console.error("Failed to save settings:", error);
     throw new Error("Could not save settings to browser storage.");
@@ -34,7 +34,7 @@ export async function saveSettings(settings: ExtensionSettings): Promise<void> {
 }
 
 /**
- * Loads settings from `browser.storage.sync`.
+ * Loads settings from `browser.storage.local`.
  *
  * @returns A promise that resolves to the loaded settings object.
  *          If no settings are found, it returns an empty object.
@@ -42,7 +42,7 @@ export async function saveSettings(settings: ExtensionSettings): Promise<void> {
  */
 export async function loadSettings(): Promise<ExtensionSettings> {
   try {
-    const storageResult = await browser.storage.sync.get(SETTINGS_KEY);
+    const storageResult = await browser.storage.local.get(SETTINGS_KEY);
     const settings = storageResult[SETTINGS_KEY];
     // Ensure the loaded value is a non-null object before returning.
     if (typeof settings === "object" && settings !== null) {

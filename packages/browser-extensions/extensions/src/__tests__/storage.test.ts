@@ -9,13 +9,13 @@ type MockStorageData = {
   extension_settings?: ExtensionSettings;
 };
 
-// The type for the mock `browser.storage.sync` object, including our custom helper method.
-type MockBrowserStorageSync = typeof browser.storage.sync & {
+// The type for the mock `browser.storage.local` object, including our custom helper method.
+type MockBrowserStorageLocal = typeof browser.storage.local & {
   _clear: () => void;
 };
 
 // --- Mocking the `webextension-polyfill` library ---
-// We mock the entire module to control the behavior of `browser.storage.sync`.
+// We mock the entire module to control the behavior of `browser.storage.local`.
 vi.mock("webextension-polyfill", () => {
   // A simple in-memory store to simulate the browser's storage
   let memoryStore: MockStorageData = {};
@@ -23,7 +23,7 @@ vi.mock("webextension-polyfill", () => {
   return {
     default: {
       storage: {
-        sync: {
+        local: {
           // Mock `set` to store data in our in-memory store
           set: vi.fn((data: MockStorageData) => {
             Object.assign(memoryStore, data);
@@ -50,11 +50,11 @@ describe("Storage Module", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Use our custom type to access the `_clear` helper without `any`
-    (browser.storage.sync as MockBrowserStorageSync)._clear();
+    (browser.storage.local as MockBrowserStorageLocal)._clear();
   });
 
   describe("saveSettings", () => {
-    it("should call browser.storage.sync.set with the correct key and settings", async () => {
+    it("should call browser.storage.local.set with the correct key and settings", async () => {
       const settings: ExtensionSettings = {
         domain: "example.com",
         token: "secret-token",
@@ -63,9 +63,9 @@ describe("Storage Module", () => {
       await saveSettings(settings);
 
       // We expect `set` to have been called once
-      expect(browser.storage.sync.set).toHaveBeenCalledOnce();
+      expect(browser.storage.local.set).toHaveBeenCalledOnce();
       // And we expect it to have been called with an object where our settings are nested under 'extension_settings'
-      expect(browser.storage.sync.set).toHaveBeenCalledWith({
+      expect(browser.storage.local.set).toHaveBeenCalledWith({
         extension_settings: settings,
       });
     });
@@ -78,13 +78,13 @@ describe("Storage Module", () => {
         domain: "test.com",
         token: "another-token",
       };
-      await browser.storage.sync.set({ extension_settings: settings });
+      await browser.storage.local.set({ extension_settings: settings });
 
       // Now, try to load them
       const loaded = await loadSettings();
 
       // We expect `get` to have been called with the correct key
-      expect(browser.storage.sync.get).toHaveBeenCalledWith(
+      expect(browser.storage.local.get).toHaveBeenCalledWith(
         "extension_settings",
       );
       // And we expect the loaded settings to match what we saved
@@ -93,7 +93,7 @@ describe("Storage Module", () => {
 
     it("should return an empty object when no settings are saved", async () => {
       const loaded = await loadSettings();
-      expect(browser.storage.sync.get).toHaveBeenCalledWith(
+      expect(browser.storage.local.get).toHaveBeenCalledWith(
         "extension_settings",
       );
       // The result should be an empty object, not null or undefined
@@ -102,7 +102,7 @@ describe("Storage Module", () => {
 
     it("should return empty object when storage contains corrupted data", async () => {
       // Mock the storage to return corrupted data (non-object)
-      vi.mocked(browser.storage.sync.get).mockResolvedValue({
+      vi.mocked(browser.storage.local.get).mockResolvedValue({
         extension_settings: "invalid", // Not an object
       });
 
@@ -114,7 +114,7 @@ describe("Storage Module", () => {
 
     it("should return empty object when storage contains null", async () => {
       // Mock the storage to return null
-      vi.mocked(browser.storage.sync.get).mockResolvedValue({
+      vi.mocked(browser.storage.local.get).mockResolvedValue({
         extension_settings: null,
       });
 
@@ -126,7 +126,7 @@ describe("Storage Module", () => {
 
     it("should return empty object when storage contains array", async () => {
       // Mock the storage to return an array (which is technically an object but not what we want)
-      vi.mocked(browser.storage.sync.get).mockResolvedValue({
+      vi.mocked(browser.storage.local.get).mockResolvedValue({
         extension_settings: ["invalid", "array"],
       });
 
@@ -150,7 +150,7 @@ describe("Storage Module", () => {
 
       for (const { value, expected } of invalidValues) {
         // Mock the storage to return invalid data
-        vi.mocked(browser.storage.sync.get).mockResolvedValue({
+        vi.mocked(browser.storage.local.get).mockResolvedValue({
           extension_settings: value,
         });
 

@@ -228,56 +228,6 @@
 }
 
 /* Divider */
-.divider {
-  height: 1px;
-  background-color: var(--border-color);
-  margin: 1rem 0;
-}
-
-.divider.vertical {
-  width: 1px;
-  height: auto;
-  margin: 0 1rem;
-}
-
-/* Shortcut warnings and suggestions */
-.shortcut-warnings {
-  margin: 0.5rem 0;
-  padding: 0.5rem;
-  background-color: rgba(220, 53, 69, 0.1);
-  border-left: 3px solid var(--text-error);
-  border-radius: 4px;
-}
-
-.shortcut-suggestions {
-  margin: 0.5rem 0;
-}
-
-.suggestion-label {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.25rem;
-}
-
-.warning {
-  color: var(--text-error);
-  margin-bottom: 0.25rem;
-}
-
-/* Keyboard display component */
-.kbd {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  font-family: "Courier New", monospace;
-  background-color: var(--background-input);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  box-shadow: 0 1px 2px var(--shadow);
-  white-space: nowrap;
-}
-
-/* Tab component */
 .tabs {
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 1rem;
