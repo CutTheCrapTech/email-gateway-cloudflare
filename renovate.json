@@ -12,6 +12,7 @@
     {
       "description": "Github Actions Trusted vendors: Non-major updates",
       "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
       "matchPackagePatterns": [
         "^actions/",
         "^github/",
@@ -31,6 +32,14 @@
     {
       "description": "Github Actions Community vendors: Non-major updates",
       "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
+      "excludePackagePatterns": [
+        "^actions/",
+        "^github/",
+        "^google-github-actions/",
+        "^opentofu/",
+        "^docker/"
+      ],
       "minor": {
         "groupName": "github-actions-community",
         "labels": ["non-major-update"]
@@ -43,6 +52,7 @@
     {
       "description": "Github Actions Trusted vendors: Major updates",
       "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
       "matchPackagePatterns": [
         "^actions/",
         "^github/",
@@ -58,6 +68,14 @@
     {
       "description": "Github Actions Community vendors: Major updates",
       "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
+      "excludePackagePatterns": [
+        "^actions/",
+        "^github/",
+        "^google-github-actions/",
+        "^opentofu/",
+        "^docker/"
+      ],
       "major": {
         "groupName": "github-actions-community-major",
         "labels": ["major-update"]
