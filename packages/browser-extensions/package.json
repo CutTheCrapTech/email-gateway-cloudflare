@@ -10,7 +10,7 @@
     "build": "node scripts/build.mjs",
     "type-check": "tsc --noEmit",
     "type-check:test": "tsc --noEmit --project tsconfig.test.json",
-    "type-check:all": "npm run type-check && npm run type-check:test",
+    "type-check:all": "pnpm run type-check && pnpm run type-check:test",
     "format": "biome format --write .",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
@@ -18,10 +18,9 @@
     "lint:ci": "biome ci .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "npm run type-check:all && npm run lint && npm run test",
-    "check:ci": "npm run type-check:all && npm run lint:ci && npm run test",
-    "ci": "npm run check:ci && npm run build",
-    "upgrade": "npx npm-check-updates -u && npm install"
+    "check": "pnpm run type-check:all && pnpm run lint && pnpm run test",
+    "check:ci": "pnpm run type-check:all && pnpm run lint:ci && pnpm run test",
+    "ci": "pnpm run check:ci && pnpm run build"
   },
   "_scripts_documentation": {
     "clean": "Clean build artifacts in dist/",
