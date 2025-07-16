@@ -12,6 +12,7 @@ on:
         options:
           - production
           - staging
+          - development
       package_filter:
         description: "Package name filter (e.g., 'my-worker')"
         required: false
