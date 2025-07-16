@@ -132,7 +132,7 @@ describe("API Module: generateEmailAlias", () => {
       consoleSpy.mockRestore();
     });
 
-    it("should handle special characters in alias parts", async () => {
+    it("should catch errors from the core library and re-throw as an ApiError", async () => {
       const consoleSpy = vi
         .spyOn(console, "error")
         .mockImplementation(() => {});

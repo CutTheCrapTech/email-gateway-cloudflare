@@ -85,11 +85,12 @@ describe("Cross-Environment Test Vectors", () => {
         expect(alias).toBe(vector.expectedAlias);
 
         // Verify the alias validates correctly
-        const recipient = await validateEmailAlias({
-          keysRecipientMap: { [vector.secretKey]: "recipient@gmail.com" },
-          fullAlias: alias,
-          hashLength: vector.hashLength,
-        });
+        const recipient =
+          (await validateEmailAlias({
+            keysRecipientMap: { [vector.secretKey]: "recipient@gmail.com" },
+            fullAlias: alias,
+            hashLength: vector.hashLength,
+          })) ?? "";
 
         expect(recipient).toBe("recipient@gmail.com");
       },
@@ -122,11 +123,12 @@ describe("Cross-Environment Test Vectors", () => {
       expect(aliases[0]).toBe("consistent-test-6439f8f5@verify.example.com");
 
       // Validate the alias
-      const recipient = await validateEmailAlias({
-        keysRecipientMap: { [testConfig.secretKey]: "recipient@gmail.com" },
-        fullAlias: aliases[0],
-        hashLength: testConfig.hashLength,
-      });
+      const recipient =
+        (await validateEmailAlias({
+          keysRecipientMap: { [testConfig.secretKey]: "recipient@gmail.com" },
+          fullAlias: aliases[0] || "",
+          hashLength: testConfig.hashLength,
+        })) ?? "";
 
       expect(recipient).toBe("recipient@gmail.com");
     });
@@ -154,11 +156,12 @@ describe("Cross-Environment Test Vectors", () => {
         const alias = await generateEmailAlias(config);
 
         // Validate with correct parameters
-        const recipient = await validateEmailAlias({
-          keysRecipientMap: { [config.secretKey]: "recipient@gmail.com" },
-          fullAlias: alias,
-          hashLength: config.hashLength,
-        });
+        const recipient =
+          (await validateEmailAlias({
+            keysRecipientMap: { [config.secretKey]: "recipient@gmail.com" },
+            fullAlias: alias,
+            hashLength: config.hashLength,
+          })) ?? "";
 
         expect(recipient).toBe("recipient@gmail.com");
 
@@ -229,7 +232,7 @@ describe("Cross-Environment Test Vectors", () => {
       const { crypto } = await import("../crypto.js");
 
       // Only log in verbose mode to reduce test noise
-      if (process.env.VERBOSE) {
+      if ((process.env as { VERBOSE?: string }).VERBOSE) {
         console.log("\n=== Cross-Environment Test Results ===");
         console.log(`Node.js version: ${process.version}`);
         console.log(`Platform: ${process.platform} ${process.arch}`);
@@ -292,7 +295,7 @@ describe("Cross-Environment Test Vectors", () => {
       expect(uniqueAliases.size).toBe(iterations);
 
       // Only log performance details in verbose mode to reduce test noise
-      if (process.env.VERBOSE) {
+      if ((process.env as { VERBOSE?: string }).VERBOSE) {
         console.log(
           `Performance: Generated ${iterations} aliases in ${generateTime}ms, validated in ${validateTime}ms`,
         );

@@ -39,7 +39,7 @@ This document describes the comprehensive testing strategy for the email-alias-e
 pnpm run test
 
 # Run specific test file
-pnpm run test src/__tests__/crypto.test.ts
+pnpm run test extensions/src/__tests__/api.test.ts
 
 # Run tests with verbose output
 pnpm run test -- --verbose
