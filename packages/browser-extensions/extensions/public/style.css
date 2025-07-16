@@ -1,0 +1,6 @@
+/* --- Legacy Style.css File --- */
+/* This file now imports the modular CSS system for backwards compatibility */
+
+@import url("css/main.css");
+
+/* Any page-specific overrides can be added below if needed */

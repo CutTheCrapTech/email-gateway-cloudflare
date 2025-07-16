@@ -1,124 +1,85 @@
-# Continuous Integration (CI) Setup
+# Continuous Integration (CI) and Continuous Deployment (CD)
 
-This document explains the CI/CD setup for the email-gateway-cloudflare project.
+This project utilizes GitHub Actions for its CI/CD pipelines, ensuring code quality, automated testing, and streamlined deployments.
 
-## Overview
+## Core CI Workflow (`.github/workflows/ci.yaml`)
 
-The project uses a comprehensive CI pipeline that ensures code quality, type safety, and functionality before any code is merged or released.
+The main CI workflow runs on every push to `main` and `feature/**` branches, and on every pull request targeting `main`. Its primary responsibilities include:
 
-## Scripts
+- **Checkout Repository**: Fetches the latest code.
+- **Install pnpm**: Ensures the correct package manager is available.
+- **Setup Node.js**: Configures the Node.js environment with caching for `pnpm` dependencies.
+- **Install Dependencies**: Installs all project dependencies using `pnpm install --frozen-lockfile`.
+- **Run Comprehensive CI Checks**: Executes the `pnpm run ci` command, which typically includes:
+  - Type checking
+  - Linting
+  - Unit and integration tests
+  - Build verification
 
-### Development Scripts
+## Changeset Check Workflow (`.github/workflows/check-changesets.yaml`)
 
-- `npm run check` - Runs all quality checks without building (fast feedback for development)
-- `npm run type-check:all` - Checks TypeScript types for both source and test files
-- `npm run lint` - Checks code quality and formatting
-- `npm run test` - Runs the full test suite
+This workflow runs on pull requests to `main` and helps maintain proper versioning and changelog generation. It:
 
-### CI/CD Scripts
+- Detects if user-facing code changes are present in a pull request.
+- Checks if a corresponding [Changeset](https://github.com/changesets/changesets) has been added.
+- Comments on the pull request to remind contributors to add a changeset if needed.
 
-- `npm run ci` - Runs complete CI pipeline (type check + lint + test + build)
-- `npm run prepublishOnly` - Automatically runs before publishing to npm
+## Versioning Workflow (`.github/workflows/version.yaml`)
 
-## GitHub Actions Workflows
+This workflow is responsible for versioning packages based on changesets and creating release pull requests. It triggers on:
 
-### 1. Continuous Integration (`.github/workflows/ci.yaml`)
+- Manual dispatch (`workflow_dispatch`).
+- Pull requests closed to `main`.
+- Pushes to `main`.
 
-**Trigger:** Every push and pull request to `main` branch
+It uses the `changesets/action` to:
 
-**Steps:**
-1. Checkout code
-2. Setup Node.js LTS
-3. Install dependencies with `npm ci`
-4. Run comprehensive CI checks with `npm run ci`
+- Increment package versions.
+- Update `CHANGELOG.md` files.
+- Create a "Version packages" pull request (or commit directly on `main` after PR merge).
 
-This workflow ensures that:
-- TypeScript types are correct for both source and test files
-- Code follows formatting and quality standards
-- All tests pass
-- Code builds successfully
+## Publishing Workflow (`.github/workflows/publish.yaml`)
 
-### 2. Release (`.github/workflows/release.yaml`)
+This workflow handles the publication of packages and deployments. It is primarily triggered manually via `workflow_dispatch` and can perform the following actions:
 
-**Trigger:** Manual workflow dispatch
+- **Create GitHub Releases**: Generates new GitHub releases for published packages.
+- **Publish to npm**: Publishes updated packages to the npm registry.
+- **Publish Browser Extensions**: Calls a reusable workflow (`publish-extensions.yaml`) to deploy browser extensions.
+- **Deploy Cloudflare Workers**: Calls a reusable workflow (`publish-worker.yaml`) to deploy Cloudflare Workers to specified environments (e.g., production, staging).
 
-**Steps:**
-1. Checkout code with full history
-2. Setup Node.js LTS
-3. Install dependencies with `npm ci`
-4. Run comprehensive CI checks with `npm run ci`
-5. Create semantic release with automated versioning
+This workflow leverages the `changesets/action` for publishing and orchestrates the deployment of different application components.
 
-## TypeScript Configuration
+**`workflow_dispatch` Inputs:**
 
-The project uses two TypeScript configurations:
+- `create_releases` (boolean, default: `true`): Whether to create GitHub releases.
+- `publish_npm` (boolean, default: `true`): Whether to publish to npm.
+- `publish_extensions` (boolean, default: `false`): Whether to publish browser extensions.
+- `publish_worker` (boolean, default: `false`): Whether to deploy Cloudflare Worker.
 
-### Source Code (`tsconfig.json`)
-- Strict type checking enabled
-- Excludes test files to prevent test-specific types from affecting production build
-- Optimized for production code quality
+## Publish Extensions Workflow (`.github/workflows/publish-extensions.yaml`)
 
-### Test Files (`tsconfig.test.json`)
-- Extends main config but with relaxed settings for test convenience
-- Allows `noUncheckedIndexedAccess: false` for easier array access in tests
-- Allows `noPropertyAccessFromIndexSignature: false` for `process.env` access
-- Disables unused variable checks (common in test mocks)
+This reusable workflow is called by the `publish.yaml` workflow (or can be triggered manually via `workflow_dispatch`). It is responsible for publishing browser extensions. Key features include:
 
-## Why This Setup?
+- **Package Filtering**: Allows filtering extensions to publish based on package name.
+- **Force Publish**: Option to force publication even if no changes are detected.
+- **Environment Variables**: Utilizes secrets for API keys and client credentials for different browser stores (e.g., Firefox, Chrome).
 
-### Problem Solved
-Previously, IDE errors in test files weren't caught by command-line TypeScript checks because test files were excluded from the main `tsconfig.json`. This caused:
-- Silent type errors in tests
-- Inconsistent development experience
-- Potential runtime failures
+**`workflow_dispatch` Inputs:**
 
-### Solution
-1. **Separate TypeScript configs** - Source and test files have appropriate type checking
-2. **Comprehensive CI script** - Single command runs all necessary checks
-3. **GitHub Actions integration** - Automated quality gates
-4. **Clear documentation** - Team understands the setup
+- `package_filter` (string, optional): Package name filter (e.g., 'my-extension').
+- `force_publish` (boolean, default: `false`): Force publish even if no changes detected.
 
-## Running Checks Locally
+## Deploy Workers Workflow (`.github/workflows/publish-worker.yaml`)
 
-```bash
-# Quick development check (no build)
-npm run check
+This reusable workflow is called by the `publish.yaml` workflow (or can be triggered manually via `workflow_dispatch`). It is responsible for deploying Cloudflare Workers. Key features include:
 
-# Full CI pipeline (includes build)
-npm run ci
+- **Environment Selection**: Allows specifying the deployment environment (e.g., `production`, `staging`).
+- **Package Filtering**: Allows filtering workers to deploy based on package name.
+- **Force Deploy**: Option to force deployment even if no changes are detected.
+- **Environment Variables**: Utilizes secrets for Cloudflare API token and account ID.
 
-# Individual checks
-npm run type-check          # Source files only
-npm run type-check:test     # Test files only
-npm run type-check:all      # Both source and test files
-npm run lint                # Code quality
-npm run test                # Test suite
-npm run build               # Compile TypeScript
-```
+**`workflow_dispatch` Inputs:**
 
-## Best Practices
-
-1. **Always run `npm run check` before committing** - Catches issues early
-2. **Use `npm run ci` before creating PRs** - Ensures full pipeline passes
-3. **Fix linting issues with `npm run lint:fix`** - Automatic fixes where possible
-4. **Check both source and test types** - Prevents deployment surprises
-
-## Troubleshooting
-
-### TypeScript Errors Only in IDE
-- Ensure you're using the latest TypeScript version
-- Check if errors are in test files (they now get checked separately)
-- Run `npm run type-check:all` to see command-line output
-
-### CI Failures
-- Run `npm run ci` locally to reproduce
-- Check each step individually:
-  - `npm run type-check:all`
-  - `npm run lint`
-  - `npm run test`
-  - `npm run build`
-
-### Linting Issues
-- Run `npm run lint:fix` for auto-fixable issues
-- Some issues require manual fixes (check the output)
-- Use `npm run lint:unsafe_fix` for more aggressive fixes (review changes carefully)
+- `environment` (choice, default: `production`): Deployment environment (`production` or `staging`).
+- `package_filter` (string, optional): Package name filter (e.g., 'my-worker').
+- `force_deploy` (boolean, default: `false`): Force deploy even if no changes detected.

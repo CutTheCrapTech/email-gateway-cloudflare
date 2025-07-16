@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["vitest/globals", "jsdom"]
+  },
+  "include": [
+    "extensions/**/*.test.ts",
+    "extensions/**/*.spec.ts",
+    "extensions/**/__tests__/**/*",
+    "*.ts"
+  ],
+  "exclude": []
+}

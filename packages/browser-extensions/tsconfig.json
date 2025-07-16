@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es2024", "dom", "dom.iterable"],
+    "target": "es2024",
+    "allowJs": true,
+    "moduleDetection": "force",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@common/*": ["extensions/src/*"]
+    },
+    "types": ["chrome"]
+  },
+  "include": ["extensions/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "extensions/**/*.test.ts",
+    "extensions/**/*.spec.ts"
+  ]
+}

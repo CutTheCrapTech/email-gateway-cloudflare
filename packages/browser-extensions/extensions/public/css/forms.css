@@ -1,0 +1,190 @@
+/* --- Form Styles --- */
+
+/* Form groups for better spacing */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Form elements */
+label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: var(--background-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="email"]:disabled {
+  background-color: var(--button-disabled);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Checkbox styles */
+input[type="checkbox"] {
+  margin-right: 0.5rem;
+  accent-color: var(--button-primary);
+}
+
+/* Select styles */
+select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: var(--background-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+/* Textarea styles */
+textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background-color: var(--background-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+/* Secret key container */
+.secret-key-container {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.input-with-icon-wrapper {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.secret-key-container input {
+  flex: 1;
+  padding-right: 3rem; /* Make space for the icon */
+}
+
+#view-key-btn {
+  position: absolute;
+  right: 0.5rem; /* Padding from the right edge */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+#view-key-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Button group for form actions */
+.button-group {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+/* Backup confirmation section */
+.backup-confirmation {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background-color: var(--background-input);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  display: flex;
+}
+
+.backup-confirmation label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.backup-confirmation input[type="checkbox"] {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Form validation states */
+.form-group.error input {
+  border-color: var(--text-error);
+}
+
+.form-group.error label {
+  color: var(--text-error);
+}
+
+.form-group.success input {
+  border-color: var(--border-success);
+}
+
+.form-group.success label {
+  color: var(--text-success);
+}
+
+/* Field help text */
+.field-help {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+/* Required field indicator */
+.required::after {
+  content: " *";
+  color: var(--text-error);
+}

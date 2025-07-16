@@ -1,0 +1,12 @@
+{
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "CutTheCrapTech/email-gateway-cloudflare" }
+  ],
+  "commit": false,
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}

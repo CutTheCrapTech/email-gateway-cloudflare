@@ -1,0 +1,104 @@
+# .github/workflows/publish.yml
+name: Publish Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_releases:
+        description: "Create GitHub releases"
+        required: false
+        default: true
+        type: boolean
+      publish_npm:
+        description: "Publish to npm"
+        required: false
+        default: true
+        type: boolean
+      publish_extensions:
+        description: "Publish browser extensions"
+        required: false
+        default: false
+        type: boolean
+      publish_worker:
+        description: "Deploy Cloudflare Worker"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      published_packages: ${{ steps.published-packages.outputs.packages }}
+      has_changes: ${{ steps.published-packages.outputs.has_changes }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          # Use the latest Long-Term Support version of Node.js
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run comprehensive CI checks
+        run: pnpm run ci
+
+      - name: Publish to npm and create GitHub releases
+        if: github.event.inputs.publish_npm == 'true' || github.event.inputs.create_releases == 'true'
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
+        with:
+          publish: npm run release
+          createGithubReleases: ${{ github.event.inputs.create_releases }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Get published packages
+        id: published-packages
+        run: |
+          PACKAGES=$(npx changeset status --output=json | jq -r '.releases[] | select(.type != "none") | "\(.name)@\(.newVersion)"')
+          if [ -z "$PACKAGES" ]; then
+            echo "No packages were published"
+            echo "packages=" >> $GITHUB_OUTPUT
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Published packages:"
+            echo "$PACKAGES"
+            echo "packages<<EOF" >> $GITHUB_OUTPUT
+            echo "$PACKAGES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+  publish-extensions:
+    needs: publish
+    if: github.event.inputs.publish_extensions == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/publish-extensions.yml
+    with:
+      published_packages: ${{ needs.publish.outputs.published-packages }}
+    secrets: inherit
+
+  deploy-workers:
+    needs: publish
+    if: github.event.inputs.publish_worker == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/publish-worker.yaml
+    with:
+      published_packages: ${{ needs.publish.outputs.published-packages }}
+    secrets: inherit

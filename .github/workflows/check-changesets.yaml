@@ -1,0 +1,167 @@
+# .github/workflows/changeset-check.yml
+name: Changeset Check
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  changeset-reminder:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    env:
+      # Configurable file extensions (comma-separated)
+      INCLUDE_FILE_EXTENSIONS: "ts,js,json"
+      EXCLUDE_FILE_EXTENSIONS: "test.ts,test.js,spec.ts,spec.js"
+      EXCLUDE_DIRECTORIES: "__tests__"
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Check for changesets
+        id: changesets
+        run: |
+          # Check if there are any changesets (excluding README)
+          if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            echo "missing=true" >> $GITHUB_OUTPUT
+            echo "No changesets found"
+          else
+            echo "missing=false" >> $GITHUB_OUTPUT
+            echo "Changesets found:"
+            ls .changeset/*.md | grep -v README || true
+          fi
+
+      - name: Check if PR affects user-facing code
+        id: files
+        run: |
+          # Build include patterns from env var
+          INCLUDE_ARGS=""
+          IFS=',' read -ra EXTENSIONS <<< "$INCLUDE_FILE_EXTENSIONS"
+          for ext in "${EXTENSIONS[@]}"; do
+            INCLUDE_ARGS="$INCLUDE_ARGS '*.$ext'"
+          done
+
+          # Build exclude patterns from env var
+          EXCLUDE_ARGS=""
+          IFS=',' read -ra EXTENSIONS <<< "$EXCLUDE_FILE_EXTENSIONS"
+          for ext in "${EXTENSIONS[@]}"; do
+            EXCLUDE_ARGS="$EXCLUDE_ARGS ':!*.$ext'"
+          done
+
+          # Build directory exclude patterns from env var
+          IFS=',' read -ra EXCLUDE_DIRS <<< "$EXCLUDE_DIRECTORIES"
+          for dir in "${EXCLUDE_DIRS[@]}"; do
+            EXCLUDE_ARGS="$EXCLUDE_ARGS ':!**/$dir/**'"
+          done
+
+          # Use exact PR commit SHAs for precise comparison
+          USER_FACING_FILES=$(
+            eval "git diff --name-only \
+              ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} \
+              -- $INCLUDE_ARGS $EXCLUDE_ARGS"
+          )
+
+          if [ -n "$USER_FACING_FILES" ]; then
+            echo "user_facing=true" >> $GITHUB_OUTPUT
+            echo "User-facing code changes detected:"
+            echo "$USER_FACING_FILES"
+          else
+            echo "user_facing=false" >> $GITHUB_OUTPUT
+            echo "No user-facing code changes detected"
+          fi
+
+      - name: Comment on PR
+        if: steps.changesets.outputs.missing == 'true' && steps.files.outputs.user_facing == 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes('📝 Changeset Reminder')
+            );
+
+            const commentBody = `## 📝 Changeset Reminder
+
+            This PR appears to modify user-facing code but doesn't include a changeset.
+
+            **If this introduces changes that should be released**, please add a changeset:
+            \`\`\`bash
+            npx changeset
+            \`\`\`
+
+            **If this shouldn't trigger a release**, you can ignore this message.
+
+            <details>
+            <summary>What needs a changeset?</summary>
+
+            **Needs changeset:**
+            - ✅ New features
+            - ✅ Bug fixes
+            - ✅ Breaking changes
+            - ✅ Performance improvements
+            - ✅ API changes
+
+            **Doesn't need changeset:**
+            - ❌ Documentation updates
+            - ❌ Test changes
+            - ❌ Internal refactoring
+            - ❌ CI/tooling changes
+            - ❌ Dependency updates (unless they affect users)
+            </details>
+
+            ---
+            <sub>This is an automated reminder. The PR can still be merged without a changeset.</sub>`;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: commentBody
+              });
+            }
+
+      - name: Remove changeset comment if not needed
+        if: steps.changesets.outputs.missing == 'false' || steps.files.outputs.user_facing == 'false'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes('📝 Changeset Reminder')
+            );
+
+            if (botComment) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id
+              });
+            }
+
+      - name: Always succeed
+        run: echo "✅ Changeset check completed (non-blocking)"

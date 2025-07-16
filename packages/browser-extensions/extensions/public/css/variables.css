@@ -1,0 +1,52 @@
+/* --- Color Palette using CSS Custom Properties --- */
+:root {
+  /* --- Light Theme (Default) --- */
+  --background-body: #f8f9fa;
+  --background-card: #ffffff;
+  --background-input: #ffffff;
+  --background-success: #d4edda;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-heading: #343a40;
+  --text-success: #155724;
+  --text-error: #dc3545;
+  --border-color: #dee2e6;
+  --border-focus: #86b7fe;
+  --border-success: #c3e6cb;
+  --button-primary: #0d6efd;
+  --button-primary-hover: #0b5ed7;
+  --button-danger: #dc3545;
+  --button-danger-hover: #bb2d3b;
+  --button-secondary: #6c757d;
+  --button-secondary-hover: #5c636a;
+  --button-disabled: #e9ecef;
+  --text-disabled: #adb5bd;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  /* --- Dark Theme Overrides --- */
+  :root {
+    --background-body: #1a1d23;
+    --background-card: #2d3748;
+    --background-input: #374151;
+    --background-success: #065f46;
+    --text-primary: #f7fafc;
+    --text-secondary: #a0aec0;
+    --text-heading: #e2e8f0;
+    --text-success: #6ee7b7;
+    --text-error: #f87171;
+    --border-color: #4a5568;
+    --border-focus: #63b3ed;
+    --border-success: #059669;
+    --button-primary: #3182ce;
+    --button-primary-hover: #2c5aa0;
+    --button-danger: #e53e3e;
+    --button-danger-hover: #c53030;
+    --button-secondary: #718096;
+    --button-secondary-hover: #4a5568;
+    --button-disabled: #4a5568;
+    --text-disabled: #718096;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Email Alias Generator",
+  "version": "1.0.0",
+  "description": "Generate secure email aliases for any website on the fly using your custom domain and secret token.",
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "activeTab",
+    "notifications",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["css/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U"
+      },
+      "description": "Activate the extension"
+    },
+    "fill-current-field": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      },
+      "description": "Fill email input field with generated alias"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Email Alias Generator</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Email Alias Generator</h1>
+
+    <div class="section">
+      <div class="form-group">
+        <label for="label-input">
+          Label
+          <span
+            class="info-icon"
+            title="A general category for this alias, like 'work', 'shopping', or 'news'. This helps you organize aliases."
+            >i</span
+          >
+        </label>
+        <input type="text" id="label-input" placeholder="e.g., shopping" />
+      </div>
+
+      <div class="form-group">
+        <label for="source-input">
+          Source
+          <span
+            class="info-icon"
+            title="The specific website or service this alias is for, e.g., 'amazon', 'netflix', or 'github'."
+            >i</span
+          >
+        </label>
+        <input type="text" id="source-input" placeholder="e.g., amazon" />
+      </div>
+
+      <button id="generate-btn">Generate</button>
+
+      <div id="error-container" class="error hidden"></div>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
