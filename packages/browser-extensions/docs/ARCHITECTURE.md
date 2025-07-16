@@ -44,7 +44,7 @@ The codebase is organized into focused modules:
 
 - **`popup.ts`**: Main extension popup interface
 - **`options.ts`**: Configuration and settings page
-- **`dialog.ts`**: In-page overlay for alias generation
+- **`content.ts`**: Content script containing email field detection
 
 #### Utility Modules
 
@@ -141,7 +141,6 @@ The CSS is organized into focused modules for maintainability:
 #### Feature Modules:
 
 - **`popup.css`**: Extension popup specific styles
-- **`dialog.css`**: In-page dialog styling
 - **`shortcuts.css`**: Keyboard shortcut interface styles
 
 ### Design System
@@ -193,13 +192,15 @@ function validateInput(aliasParts: string[]): void {
 
 ```
 __tests__/
-├── api.test.ts                     # API functionality tests
-├── api.integration.test.ts         # Integration tests with email-alias-core
+├── api.test.ts                        # API functionality tests
+├── api.integration.test.ts            # Integration tests with email-alias-core
 ├── background-alias-generator.test.ts # Background processing tests
-├── dialog.test.ts                  # Dialog component tests
-├── options.test.ts                 # Options page tests
-├── storage.test.ts                 # Storage abstraction tests
-└── toast.test.ts                   # Toast notification tests
+├── background.test.ts                 # Background worker tests
+├── content.test.ts                    # Content script tests
+├── domain.test.ts                     # Domain processing tests
+├── options.test.ts                    # Options page tests
+├── popup.test.ts                      # Extension popup tests
+└── storage.test.ts                    # Storage abstraction tests
 ```
 
 ### 2. Testing Approach

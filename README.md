@@ -25,7 +25,7 @@ This repository is a monorepo managed by npm workspaces and includes the followi
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v22 or later)
-- [npm](https://www.npmjs.com/) (v10 or later)
+- [pnpm](https://pnpm.io/) (v10 or later)
 
 ### Installation
 
@@ -49,24 +49,26 @@ This monorepo uses pnpm workspaces to manage the packages. Commands can be run f
 
 The following scripts are available in the root `package.json` and can be run with `pnpm run <script_name>`:
 
-| Script            | Description                                                        |
-| ----------------- | ------------------------------------------------------------------ |
-| `deploy`          | Deploy to production (runs the `deploy` script in each workspace). |
-| `clean`           | Clean build artifacts in `dist/` directories.                      |
-| `build`           | Clean and build all packages.                                      |
-| `type-check`      | Check TypeScript types for source files only.                      |
-| `type-check:test` | Check TypeScript types for test files only.                        |
-| `type-check:all`  | Check TypeScript types for both source and test files.             |
-| `format`          | Format code using Biome.                                           |
-| `lint`            | Check code quality and formatting using Biome.                     |
-| `lint:fix`        | Fix auto-fixable linting issues.                                   |
-| `lint:unsafe_fix` | Fix auto-fixable linting issues including unsafe fixes.            |
-| `lint:ci`         | Run Biome in CI mode (stricter).                                   |
-| `test`            | Run tests for all packages.                                        |
-| `check`           | Run all checks (types, lint, tests) - for development.             |
-| `check:ci`        | Run all checks (types, lint, tests) for CI/CD.                     |
-| `ci`              | Run all CI checks including build - for CI/CD.                     |
-| `upgrade`         | Upgrades dependencies using npm-check-updates.                     |
+| Script            | Description                                                                       |
+| ----------------- | --------------------------------------------------------------------------------- |
+| `version`         | Runs changeset version.                                                           |
+| `publish`         | Runs changeset publish.                                                           |
+| `clean`           | Clean build artifacts in `dist/` directories.                                     |
+| `build`           | Clean and build all packages.                                                     |
+| `type-check`      | Check TypeScript types for source files only.                                     |
+| `type-check:test` | Check TypeScript types for test files only.                                       |
+| `type-check:all`  | Check TypeScript types for both source and test files.                            |
+| `format`          | Format code using Biome.                                                          |
+| `lint`            | Check code quality and formatting using Biome.                                    |
+| `lint:fix`        | Fix auto-fixable linting issues.                                                  |
+| `lint:unsafe_fix` | Fix auto-fixable linting issues including unsafe fixes.                           |
+| `lint:ci`         | Run Biome in CI mode (stricter).                                                  |
+| `test`            | Run tests for all packages.                                                       |
+| `check`           | Run all checks (types, lint, tests) - for development.                            |
+| `check:ci`        | Run all checks (types, lint, tests) for CI/CD.                                    |
+| `ci`              | Run all CI checks including build - for CI/CD.                                    |
+| `validate`        | Run all CI checks including build - for dev - similar to CI above but sequential. |
+| `upgrade`         | Upgrades dependencies using pnpm.                                                 |
 
 ## Project Structure
 

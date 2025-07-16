@@ -12,7 +12,6 @@ This project provides a browser extension that allows you to quickly generate un
 - **Cross-Browser Support**: Works seamlessly on [Chrome](https://chromewebstore.google.com/detail/email-alias-generator/ghhkompkfhenihpidldalcocbfplkdgm) & [Firefox](https://addons.mozilla.org/en-US/firefox/addon/email-alias-generator-hmac/) with manifest v3.
 - **Guided Setup**: An easy-to-use options page helps you generate and back up your secret key with secure random generation.
 - **Context Menu & Shortcuts**: Quickly generate aliases from any webpage or with customizable keyboard shortcuts.
-- **Toast Notifications**: Real-time feedback with success/error notifications for better user experience.
 - **Improved Error Handling**: Comprehensive error handling and user-friendly error messages.
 - **Enhanced UI**: Modern, responsive design with dark mode support and improved accessibility.
 
@@ -110,13 +109,10 @@ pnpm run type-check  # TypeScript type checking
 
 4.  **Context Menu**:
     - Right-click on any webpage to generate an alias for the current domain.
-    - The dialog will auto-fill the source based on the current website.
 
 5.  **Keyboard Shortcuts**:
-    - **Open Dialog**: `Ctrl+Shift+E` - Opens the alias generator popup
-    - **Fill Current Field**: `Ctrl+Shift+U` - Generates and fills email input on the current page
-    - **Quick Generate**: `Ctrl+Shift+Y` - Generates an alias and copies it to clipboard
-    - Shortcuts can be customized in your browser's extension settings.
+    - **Open Popup**: `Ctrl+Shift+U` - Opens the alias generator popup
+    - **Fill Current Field**: `Ctrl+Shift+E` - Generates and fills email input on the current page
 
 6.  **Enhanced Features**:
     - **Toast Notifications**: Get real-time feedback for successful operations and errors.
@@ -142,16 +138,14 @@ This project uses a modern TypeScript monorepo structure with comprehensive tool
 
 The CSS has been modularized for better maintainability:
 
-- `css/variables.css` - CSS custom properties and color themes
 - `css/base.css` - Typography and basic layout
-- `css/forms.css` - Form elements and inputs
 - `css/buttons.css` - Button styles and variants
 - `css/components.css` - Reusable UI components
+- `css/forms.css` - Form elements and inputs
 - `css/layout.css` - Grid, flexbox utilities, and responsive design
+- `css/main.css` - Main CSS entrypoint
 - `css/popup.css` - Popup-specific styles
-- `css/shortcuts.css` - Keyboard shortcut related styles
-- `css/toast.css` - Toast notification system
-- `css/dialog.css` - Modal dialog styles
+- `css/variables.css` - CSS custom properties and color themes
 
 ### Quality Assurance
 
@@ -177,8 +171,4 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ### Before submitting:
 
-1. Ensure all tests pass: `pnpm test`
-2. Run type checking: `pnpm run type-check`
-3. Format code: `pnpm run format`
-4. Fix any linting issues: `pnpm run lint:fix`
-5. Test the build: `pnpm run build`
+Ensure all tests pass using: `pnpm run validate`

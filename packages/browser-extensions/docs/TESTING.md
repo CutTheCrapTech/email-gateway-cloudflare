@@ -12,25 +12,33 @@ This document describes the comprehensive testing strategy for the email-alias-e
 
 - Tests the integration of API functions with external services or complex scenarios.
 
-### 3. Dialog Tests (`extensions/src/__tests__/dialog.test.ts`)
+### 3. Background Alias Generator Tests (`extensions/src/__tests__/background-alias-generator.test.ts`)
 
-- Tests the functionality related to the extension's dialogs.
+- Tests the logic for generating aliases in the background script.
 
-### 4. Options Tests (`extensions/src/__tests__/options.test.ts`)
+### 4. Background Tests (`extensions/src/__tests__/background.test.ts`)
+
+- Tests the logic for background script.
+
+### 5. Content Tests (`extensions/src/__tests__/content.test.ts`)
+
+- Tests the functionality related to the email field detection.
+
+### 6. Domain Tests (`extensions/src/__tests__/domain.test.ts`)
+
+- Tests the functionality of domain detection.
+
+### 7. Options Tests (`extensions/src/__tests__/options.test.ts`)
 
 - Tests the functionality of the extension's options page.
 
-### 5. Storage Tests (`extensions/src/__tests__/storage.test.ts`)
+### 8. Popup Tests (`extensions/src/__tests__/popup.test.ts`)
+
+- Tests the logic for extension popup.
+
+### 9. Storage Tests (`extensions/src/__tests__/storage.test.ts`)
 
 - Tests the data storage and retrieval mechanisms of the extension.
-
-### 6. Toast Tests (`extensions/src/__tests__/toast.test.ts`)
-
-- Tests the toast notification system.
-
-### 7. Background Alias Generator Tests (`extensions/src/__tests__/background-alias-generator.test.ts`)
-
-- Tests the logic for generating aliases in the background script.
 
 ## Running Tests
 
