@@ -76,7 +76,7 @@ For direct deployment using Cloudflare's native tooling:
 1. **Install Wrangler**:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. **Authenticate with Cloudflare**:
@@ -88,7 +88,7 @@ For direct deployment using Cloudflare's native tooling:
 3. **Build the worker**:
 
    ```bash
-   npm run build
+   pnpm run build
    ```
 
 4. **Create configuration**:
@@ -186,8 +186,8 @@ Regardless of deployment method, you need to configure Cloudflare Email Routing:
 To build the project locally, install the dependencies and run the build script:
 
 ```bash
-npm install
-npm run build
+pnpm install
+pnpm run build
 ```
 
 This will generate the bundled JavaScript files in the `dist/` directory.
@@ -197,7 +197,7 @@ This will generate the bundled JavaScript files in the `dist/` directory.
 Run the test suite:
 
 ```bash
-npm test
+pnpm run test
 ```
 
 ### Code Quality
@@ -205,7 +205,7 @@ npm test
 Check types, linting, and run tests:
 
 ```bash
-npm run check
+pnpm run check
 ```
 
 ## Release Process

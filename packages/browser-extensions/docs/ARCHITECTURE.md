@@ -12,9 +12,10 @@ See the [root `README.md`](../../../README.md) for the project structure.
 
 ### 1. Monorepo Structure
 
-The project uses a monorepo approach with npm workspaces to share common code between Chrome and Firefox extensions while maintaining browser-specific configurations.
+The project uses a monorepo approach with pnpm workspaces to share common code between Chrome and Firefox extensions while maintaining browser-specific configurations.
 
 **Benefits:**
+
 - Single source of truth for shared logic
 - Consistent build and development processes
 - Easy cross-browser testing and maintenance
@@ -22,6 +23,7 @@ The project uses a monorepo approach with npm workspaces to share common code be
 ### 2. TypeScript Foundation
 
 All source code is written in TypeScript, providing:
+
 - Compile-time type safety
 - Enhanced IDE support
 - Better refactoring capabilities
@@ -75,6 +77,7 @@ graph TD
 ### 2. Background Service Worker
 
 The background script handles:
+
 - **Keyboard Shortcuts**: Global shortcut handling
 - **Context Menus**: Right-click menu integration
 - **Cross-tab Communication**: Message passing between components
@@ -84,13 +87,14 @@ The background script handles:
 
 ```typescript
 interface Settings {
-  domain: string;        // User's custom domain
-  token: string;         // Secret cryptographic key
-  defaultLabel: string;  // Default alias label
+  domain: string; // User's custom domain
+  token: string; // Secret cryptographic key
+  defaultLabel: string; // Default alias label
 }
 ```
 
 **Storage Strategy:**
+
 - Uses browser.storage.sync for cross-device synchronization
 - Encrypted storage for sensitive data
 - Graceful fallback mechanisms
@@ -122,17 +126,20 @@ class ApiError extends Error {
 The CSS is organized into focused modules for maintainability:
 
 #### Core Modules:
+
 - **`variables.css`**: CSS custom properties and design tokens
 - **`base.css`**: Typography, reset, and fundamental styles
 - **`layout.css`**: Grid, flexbox utilities, and responsive design
 
 #### Component Modules:
+
 - **`forms.css`**: Form elements and validation states
 - **`buttons.css`**: Button variants and interactions
 - **`components.css`**: Reusable UI components
 - **`toast.css`**: Toast notification styling
 
 #### Feature Modules:
+
 - **`popup.css`**: Extension popup specific styles
 - **`dialog.css`**: In-page dialog styling
 - **`shortcuts.css`**: Keyboard shortcut interface styles
@@ -140,11 +147,13 @@ The CSS is organized into focused modules for maintainability:
 ### Design System
 
 #### Color System:
+
 - CSS custom properties for theming
 - Automatic dark/light mode detection
 - High contrast mode support
 
 #### Responsive Design:
+
 - Mobile-first approach
 - Flexible layouts for different screen sizes
 - Touch-friendly interactive elements
@@ -172,7 +181,7 @@ function validateInput(aliasParts: string[]): void {
     throw new ApiError("Invalid input: exactly two parts required");
   }
 
-  if (aliasParts.some(part => !part || part.trim() === "")) {
+  if (aliasParts.some((part) => !part || part.trim() === "")) {
     throw new ApiError("Both Label and Source fields are required");
   }
 }
@@ -196,16 +205,19 @@ __tests__/
 ### 2. Testing Approach
 
 #### Unit Tests:
+
 - **Isolated Testing**: Each module tested in isolation
 - **Mock Dependencies**: External dependencies mocked for predictable tests
 - **Edge Cases**: Comprehensive coverage of error conditions
 
 #### Integration Tests:
+
 - **Real Library Integration**: Tests with actual email-alias-core library
 - **End-to-End Workflows**: Complete user interaction flows
 - **Cross-browser Compatibility**: Browser-specific functionality testing
 
 #### Test Tools:
+
 - **Vitest**: Modern test runner with TypeScript support
 - **JSDOM**: DOM simulation for UI testing
 - **Browser Mocking**: webextension-polyfill for browser API simulation
@@ -233,11 +245,11 @@ graph LR
 
 ```bash
 # Development commands
-npm run type-check    # TypeScript validation
-npm run lint          # Code quality checks
-npm run test          # Run test suite
-npm run format        # Code formatting
-npm run build         # Production build
+pnpm run type-check    # TypeScript validation
+pnpm run lint          # Code quality checks
+pnpm run test          # Run test suite
+pnpm run format        # Code formatting
+pnpm run build         # Production build
 ```
 
 ## Performance Considerations
@@ -263,11 +275,13 @@ npm run build         # Production build
 ## Browser Compatibility
 
 ### Chrome (Manifest V3)
+
 - Service Workers for background processing
 - Modern JavaScript APIs
 - Enhanced security model
 
 ### Firefox (Manifest V2/V3)
+
 - Background scripts compatibility
 - Cross-browser polyfills
 - Firefox-specific API adaptations

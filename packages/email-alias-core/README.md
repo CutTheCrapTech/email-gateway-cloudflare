@@ -48,6 +48,12 @@ or
 yarn add email-alias-core
 ```
 
+or
+
+```bash
+pnpm install email-alias-core
+```
+
 ## Usage
 
 The library exports three main functions: `generateEmailAlias`, `validateEmailAlias`, and `generateSecureRandomString`.

@@ -1,3 +1,4 @@
+import psl from "psl";
 import browser from "webextension-polyfill";
 import { loadSettings } from "./storage";
 
@@ -10,7 +11,6 @@ import { loadSettings } from "./storage";
 export function extractDomainForSource(url?: string): string {
   try {
     let hostname: string;
-
     if (url) {
       // If URL is provided, parse it
       const urlObj = new URL(url);
@@ -22,11 +22,30 @@ export function extractDomainForSource(url?: string): string {
 
     // Remove common subdomains like 'www.'
     const domain = hostname.replace(/^(www\.)/, "");
-    const parts = domain.split(".");
 
-    // For domains like "example.com" -> return "example"
-    // For domains like "s3.amazonaws.com" -> return "amazonaws"
-    // For domains like "subdomain.example.co.uk" -> return "example"
+    // Use psl to properly extract the domain name
+    const parsed = psl.parse(domain);
+    if (!parsed || parsed.error) {
+      // Fallback to simple split if psl fails
+      const parts = domain.split(".");
+      if (parts.length >= 2) {
+        return parts[parts.length - 2] || "";
+      }
+      return parts[0] || "";
+    }
+
+    // If there's an sld (normal case), return it
+    if (parsed.sld) {
+      return parsed.sld;
+    }
+
+    // If no sld but there's a subdomain, it means the domain is a public suffix
+    if (parsed.subdomain) {
+      return parsed.subdomain.split(".")[0] || "";
+    }
+
+    // Final fallback: split the original domain and take second-to-last part
+    const parts = domain.split(".");
     if (parts.length >= 2) {
       return parts[parts.length - 2] || "";
     }
@@ -52,7 +71,6 @@ export async function getDefaultLabel(): Promise<string> {
         return settings.defaultLabel;
       }
     }
-
     // Fall back to default
     return "marketing";
   } catch (error) {

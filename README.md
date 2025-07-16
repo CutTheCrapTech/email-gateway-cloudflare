@@ -38,16 +38,16 @@ This repository is a monorepo managed by npm workspaces and includes the followi
 
 2.  Install dependencies from the root of the monorepo:
     ```bash
-    npm install
+    pnpm install
     ```
 
 ## Development
 
-This monorepo uses npm workspaces to manage the packages. Commands can be run for all packages from the root directory.
+This monorepo uses pnpm workspaces to manage the packages. Commands can be run for all packages from the root directory.
 
 ### Available Scripts
 
-The following scripts are available in the root `package.json` and can be run with `npm run <script_name>`:
+The following scripts are available in the root `package.json` and can be run with `pnpm run <script_name>`:
 
 | Script            | Description                                                        |
 | ----------------- | ------------------------------------------------------------------ |
@@ -90,4 +90,4 @@ Contributions, issues, and feature requests are welcome. Feel free to check the 
 
 ### Before submitting:
 
-Ensure everything passes using: `npm run ci`
+Ensure everything passes using: `pnpm run ci`

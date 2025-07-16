@@ -34,16 +34,16 @@ This document describes the comprehensive testing strategy for the email-alias-c
 
 ```bash
 # Run all tests
-npm test
+pnpm run test
 
 # Run specific test file
-npm test src/__tests__/crypto.test.ts
+pnpm run test src/__tests__/crypto.test.ts
 
 # Run tests with verbose output
-npm test -- --verbose
+pnpm run test -- --verbose
 
 # Run tests in watch mode
-npm test -- --watch
+pnpm run test -- --watch
 ```
 
 ## Cross-Environment Verification
@@ -202,12 +202,12 @@ Based on testing in Node.js v22.14.0:
 
 ```bash
 # Standard Node.js testing
-npm test
+pnpm run test
 
 # Test with different Node.js versions using nvm
-nvm use 16 && npm test
-nvm use 18 && npm test
-nvm use 20 && npm test
+nvm use 16 && pnpm run test
+nvm use 18 && pnpm run test
+nvm use 20 && pnpm run test
 ```
 
 ### Cloudflare Workers Testing

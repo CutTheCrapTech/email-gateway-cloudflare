@@ -50,11 +50,11 @@ This extension uses a **"Key Ring Model"** to provide a balance of high security
     ```
 2.  Install dependencies:
     ```bash
-    npm install
+    pnpm install
     ```
 3.  Run quality checks:
     ```bash
-    npm run check
+    pnpm run ci
     ```
 
 ### Build
@@ -62,16 +62,16 @@ This extension uses a **"Key Ring Model"** to provide a balance of high security
 To build the extensions for Chrome and Firefox:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 For development, run all quality checks:
 
 ```bash
-npm run format  # Format code
-npm run lint    # Check code quality
-npm run test    # Run tests
-npm run type-check  # TypeScript type checking
+pnpm run format  # Format code
+pnpm run lint    # Check code quality
+pnpm run test    # Run tests
+pnpm run type-check  # TypeScript type checking
 ```
 
 ## Browser Installation
@@ -138,8 +138,6 @@ For more information on setting up the worker, see the [`cloudflare-worker` docu
 
 This project uses a modern TypeScript monorepo structure with comprehensive tooling:
 
-
-
 ### CSS Architecture
 
 The CSS has been modularized for better maintainability:
@@ -166,11 +164,11 @@ The CSS has been modularized for better maintainability:
 ### Running Tests
 
 ```bash
-npm test              # Run all tests
-npm run test:watch    # Run tests in watch mode
-npm run type-check    # TypeScript type checking
-npm run lint          # Code quality checks
-npm run format        # Code formatting
+pnpm test              # Run all tests
+pnpm run test:watch    # Run tests in watch mode
+pnpm run type-check    # TypeScript type checking
+pnpm run lint          # Code quality checks
+pnpm run format        # Code formatting
 ```
 
 ## Contributing
@@ -179,8 +177,8 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ### Before submitting:
 
-1. Ensure all tests pass: `npm test`
-2. Run type checking: `npm run type-check`
-3. Format code: `npm run format`
-4. Fix any linting issues: `npm run lint:fix`
-5. Test the build: `npm run build`
+1. Ensure all tests pass: `pnpm test`
+2. Run type checking: `pnpm run type-check`
+3. Format code: `pnpm run format`
+4. Fix any linting issues: `pnpm run lint:fix`
+5. Test the build: `pnpm run build`
