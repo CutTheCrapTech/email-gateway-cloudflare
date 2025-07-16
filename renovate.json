@@ -12,7 +12,8 @@
     {
       "description": "Force GitHub Actions to resolve to release tags, not branches",
       "matchManagers": ["github-actions"],
-      "versioning": "github-tags"
+      "versioning": "github-tags",
+      "allowedVersions": "/^v?\\d+\\.\\d+(\\.\\d+.*)?$/"
     },
     {
       "description": "Github Actions Trusted vendors: Non-major updates",
