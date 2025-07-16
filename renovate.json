@@ -10,16 +10,9 @@
   "automerge": false,
   "packageRules": [
     {
-      "description": "Force GitHub Actions to resolve to release tags, not branches",
-      "matchManagers": ["github-actions"],
-      "versioning": "github-tags",
-      "allowedVersions": "/^v?\\d+\\.\\d+(\\.\\d+.*)?$/"
-    },
-    {
       "description": "Github Actions Trusted vendors: Non-major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
       "matchManagers": ["github-actions"],
-      "pinDigests": true,
-      "matchUpdateTypes": ["minor", "patch"],
       "matchPackagePatterns": [
         "^actions/",
         "^github/",
@@ -27,14 +20,19 @@
         "^opentofu/",
         "^docker/"
       ],
-      "groupName": "github-actions-trusted",
-      "labels": ["non-major-update"]
+      "minor": {
+        "groupName": "github-actions-trusted",
+        "labels": ["non-major-update"]
+      },
+      "patch": {
+        "groupName": "github-actions-trusted",
+        "labels": ["non-major-update"]
+      }
     },
     {
       "description": "Github Actions Community vendors: Non-major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
       "matchManagers": ["github-actions"],
-      "pinDigests": true,
-      "matchUpdateTypes": ["minor", "patch"],
       "excludePackagePatterns": [
         "^actions/",
         "^github/",
@@ -42,14 +40,19 @@
         "^opentofu/",
         "^docker/"
       ],
-      "groupName": "github-actions-community",
-      "labels": ["non-major-update"]
+      "minor": {
+        "groupName": "github-actions-community",
+        "labels": ["non-major-update"]
+      },
+      "patch": {
+        "groupName": "github-actions-community",
+        "labels": ["non-major-update"]
+      }
     },
     {
       "description": "Github Actions Trusted vendors: Major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
       "matchManagers": ["github-actions"],
-      "pinDigests": true,
-      "matchUpdateTypes": ["major"],
       "matchPackagePatterns": [
         "^actions/",
         "^github/",
@@ -57,14 +60,15 @@
         "^opentofu/",
         "^docker/"
       ],
-      "groupName": "github-actions-trusted-major",
-      "labels": ["major-update"]
+      "major": {
+        "groupName": "github-actions-trusted-major",
+        "labels": ["major-update"]
+      }
     },
     {
       "description": "Github Actions Community vendors: Major updates",
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
       "matchManagers": ["github-actions"],
-      "pinDigests": true,
-      "matchUpdateTypes": ["major"],
       "excludePackagePatterns": [
         "^actions/",
         "^github/",
@@ -72,8 +76,10 @@
         "^opentofu/",
         "^docker/"
       ],
-      "groupName": "github-actions-community-major",
-      "labels": ["major-update"]
+      "major": {
+        "groupName": "github-actions-community-major",
+        "labels": ["major-update"]
+      }
     },
     {
       "description": "NPM: Non-major updates",
