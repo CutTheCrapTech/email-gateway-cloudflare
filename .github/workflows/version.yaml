@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda #v4
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
         with:
           version: 10
 
@@ -40,7 +40,7 @@ jobs:
         run: pnpm run ci
 
       - name: Create Release Pull Request or Publish to npm
-        uses: changesets/action@e0538e686673de0265c8a3e2904b8c76beaa43fd #v1.5.2
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.5.3
         with:
           # Only version, don't publish
           version: npm run version
