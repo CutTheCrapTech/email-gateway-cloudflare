@@ -6,7 +6,7 @@
   "dependencyDashboardTitle": "📊 Dependency Updates (Manual Review Required)",
   "labels": ["dependencies", "renovate"],
   "timezone": "Asia/Kolkata",
-  "schedule": ["* 16 * * 1"],
+  "schedule": ["* 16 * *1"],
   "prHourlyLimit": 1,
   "automerge": false,
   "packageRules": [
@@ -20,19 +20,29 @@
         "^opentofu/",
         "^docker/"
       ],
-      "matchUpdateTypes": ["digest", "minor", "patch"],
-      "groupName": "github-actions-trusted",
-      "labels": ["non-major-update"]
+      "minor": {
+        "groupName": "github-actions-trusted",
+        "labels": ["non-major-update"]
+      },
+      "patch": {
+        "groupName": "github-actions-trusted",
+        "labels": ["non-major-update"]
+      }
     },
     {
-      "description": "Github Actions Trusted vendors: Non-major updates",
+      "description": "Github Actions Community vendors: Non-major updates",
       "extends": ["helpers:pinGitHubActionDigestsToSemver"],
-      "matchUpdateTypes": ["digest", "minor", "patch"],
-      "groupName": "github-actions-community",
-      "labels": ["non-major-update"]
+      "minor": {
+        "groupName": "github-actions-community",
+        "labels": ["non-major-update"]
+      },
+      "patch": {
+        "groupName": "github-actions-community",
+        "labels": ["non-major-update"]
+      }
     },
     {
-      "description": "Github Actions Community vendors: Major updates",
+      "description": "Github Actions Trusted vendors: Major updates",
       "extends": ["helpers:pinGitHubActionDigestsToSemver"],
       "matchPackagePatterns": [
         "^actions/",
@@ -41,16 +51,18 @@
         "^opentofu/",
         "^docker/"
       ],
-      "matchUpdateTypes": ["major"],
-      "groupName": "github-actions-trusted-major",
-      "labels": ["major-update"]
+      "major": {
+        "groupName": "github-actions-trusted-major",
+        "labels": ["major-update"]
+      }
     },
     {
       "description": "Github Actions Community vendors: Major updates",
       "extends": ["helpers:pinGitHubActionDigestsToSemver"],
-      "matchUpdateTypes": ["major"],
-      "groupName": "github-actions-community-major",
-      "labels": ["major-update"]
+      "major": {
+        "groupName": "github-actions-community-major",
+        "labels": ["major-update"]
+      }
     },
     {
       "description": "NPM: Non-major updates",
