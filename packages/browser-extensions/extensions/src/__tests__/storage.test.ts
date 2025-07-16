@@ -132,9 +132,7 @@ describe("Storage Module", () => {
 
       const settings = await loadSettings();
 
-      // The current implementation accepts arrays because typeof [] === "object"
-      // This test documents the current behavior - arrays are accepted
-      expect(settings).toEqual(["invalid", "array"]);
+      expect(settings).toEqual({});
     });
 
     it("should handle various invalid data types gracefully", async () => {
@@ -143,7 +141,7 @@ describe("Storage Module", () => {
         { value: 42, expected: {} },
         { value: true, expected: {} },
         { value: false, expected: {} },
-        { value: [], expected: [] }, // Arrays are accepted (typeof [] === "object")
+        { value: [], expected: {} },
         { value: null, expected: {} },
         { value: undefined, expected: {} },
       ];

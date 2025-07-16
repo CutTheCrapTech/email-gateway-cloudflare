@@ -45,7 +45,11 @@ export async function loadSettings(): Promise<ExtensionSettings> {
     const storageResult = await browser.storage.local.get(SETTINGS_KEY);
     const settings = storageResult[SETTINGS_KEY];
     // Ensure the loaded value is a non-null object before returning.
-    if (typeof settings === "object" && settings !== null) {
+    if (
+      typeof settings === "object" &&
+      settings !== null &&
+      !Array.isArray(settings)
+    ) {
       return settings as ExtensionSettings;
     }
     // Return an empty object for any other case (undefined, null, corrupted data).
