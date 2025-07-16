@@ -42,9 +42,9 @@
   "author": "CutTheCrapTech",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CutTheCrapTech/email-alias-core/issues"
+    "url": "https://github.com/CutTheCrapTech/email-gateway-cloudflare/issues"
   },
-  "homepage": "https://github.com/CutTheCrapTech/email-alias-core#readme",
+  "homepage": "https://github.com/CutTheCrapTech/email-gateway-cloudflare/tree/main/packages/email-alias-core#readme",
   "publishConfig": {
     "provenance": true,
     "access": "public"
