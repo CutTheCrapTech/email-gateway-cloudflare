@@ -17,6 +17,7 @@ import {
 describe("Cross-Environment Consistency", () => {
   const secretKey = "test-secret-key-for-consistency-testing";
   const domain = "test.example.com";
+  const escapedDomain = domain.replace(/\./g, "\\.");
   const testCases = [
     { aliasParts: ["service", "provider"], hashLength: 8 },
     { aliasParts: ["shop", "amazon", "electronics"], hashLength: 12 },
@@ -58,7 +59,7 @@ describe("Cross-Environment Consistency", () => {
         // Verify the format
         const expectedPrefix = aliasParts.join("-");
         const expectedRegex = new RegExp(
-          `^${expectedPrefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-[a-f0-9]{${hashLength}}@${domain.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
+          `^${expectedPrefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-[a-f0-9]{${hashLength}}@${escapedDomain}$`,
         );
         expect(alias1).toMatch(expectedRegex);
       },

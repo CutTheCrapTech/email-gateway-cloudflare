@@ -39,6 +39,8 @@ on:
 jobs:
   deploy-workers:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     environment: ${{ inputs.environment || 'production' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
