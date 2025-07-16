@@ -1,6 +1,6 @@
 {
   "name": "email-alias-core Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-22",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:2-22",
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
