@@ -140,8 +140,9 @@ For direct deployment using Cloudflare's native tooling:
 For a simple one-time setup without additional tooling:
 
 1. **Download the worker code**:
-   - Go to the [latest GitHub release](https://github.com/CutTheCrapTech/email-gateway-cloudflare/releases/latest)
-   - Download the "Built artifacts" asset (e.g., `worker v1.0.1.js`)
+   - Go to the [GitHub releases page](https://github.com/CutTheCrapTech/email-gateway-cloudflare/releases)
+   - Find the release corresponding to the latest version of @email-gateway/cloudflare-worker
+   - Download Assets -> dist.zip (which contains `worker.js`)
 
 2. **Access Cloudflare Dashboard**:
    - Log in to your [Cloudflare Dashboard](https://dash.cloudflare.com/)
