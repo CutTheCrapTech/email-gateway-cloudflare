@@ -44,7 +44,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CutTheCrapTech/email-alias-core.git"
+    "url": "git+https://github.com/CutTheCrapTech/email-gateway-cloudflare.git"
   },
   "keywords": [
     "email",
