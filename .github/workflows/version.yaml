@@ -46,5 +46,6 @@ jobs:
           version: npm run version
           commit: "Version packages [skip ci]"
           title: "Version packages"
+          commitMode: "github-api"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
