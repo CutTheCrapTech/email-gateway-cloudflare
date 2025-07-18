@@ -2,7 +2,8 @@
   "name": "email-gateway",
   "private": true,
   "scripts": {
-    "version": "pnpm changeset version && pnpm run -r --if-present postversion",
+    "version": "pnpm changeset version && pnpm run postversion",
+    "postversion": "pnpm run -r --if-present postversion",
     "publish": "npm run prepublishOnly && pnpm changeset publish",
     "clean": "pnpm run -r clean",
     "build": "pnpm run -r build",

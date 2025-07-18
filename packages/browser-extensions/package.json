@@ -1,6 +1,6 @@
 {
   "name": "@email-gateway/email-alias-extensions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "Browser extensions for generating email aliases.",
@@ -23,7 +23,7 @@
     "ci": "pnpm run check:ci && pnpm run build",
     "validate": "pnpm run check && pnpm run build",
     "prepublishOnly": "pnpm run ci",
-    "postversion": "node scripts/update-manifest-version.mjs"
+    "postversion": "node scripts/update-manifest-version.mjs && pnpm run format"
   },
   "_scripts_documentation": {
     "clean": "Clean build artifacts in dist/",
