@@ -12,7 +12,7 @@ A zero-dependency library to create and verify secure email aliases for custom d
 `email-alias-core` allows you to generate unique, secure, and verifiable email aliases for your custom domain. Instead of using your real email address for online services, you can generate an alias like `shop-amazon-74e423d7@your-domain.com`.
 
 **Note:** The alias format now includes a key prefix for efficient validation:
-`<aliasParts>-<keyPrefix><hash>@domain.com`
+`<aliasParts>-<keyPrefix>-<hash>@domain.com`
 where `keyPrefix` is the first 2 hex chars of the secret key, and `hash` is the truncated HMAC signature.
 
 The system is "verifiable" because it uses a secret key and HMAC-SHA256 to generate a cryptographic signature for each alias. This means your email infrastructure (e.g., a Cloudflare Worker) can instantly verify if an incoming email is addressed to a legitimately generated alias, effectively stopping spam and phishing attempts sent to guessed addresses.
