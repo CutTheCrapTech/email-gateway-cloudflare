@@ -64,13 +64,27 @@ jobs:
               exit 1
             fi
             echo "Found latest version: $LATEST_VERSION"
-            PACKAGES_JSON=$(jq -n --arg name "$PACKAGE_NAME" --arg version "$LATEST_VERSION" '[{"name": $name, "version": $version}]')
+            # Fix: Use proper JSON construction with jq
+            PACKAGES_JSON=$(jq -n \
+              --arg name "$PACKAGE_NAME" \
+              --arg version "$LATEST_VERSION" \
+              '[{"name": $name, "version": $version}]')
           # Automated workflow_call run
           else
             echo "Automated run from published packages."
             PACKAGES_JSON='${{ inputs.published_packages }}'
           fi
-          echo "packages_json=$PACKAGES_JSON" >> $GITHUB_OUTPUT
+
+          # Debug output
+          echo "Generated packages JSON:"
+          echo "$PACKAGES_JSON"
+
+          # Write to GitHub output with proper escaping
+          {
+            echo "packages_json<<EOF"
+            echo "$PACKAGES_JSON"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Download, Verify, and Publish Extensions
         env:
@@ -81,7 +95,10 @@ jobs:
           FIREFOX_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
           FIREFOX_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
         run: |
-          echo '${{ steps.packages_to_publish.outputs.packages_json }}' | jq -c '.[]' | while read -r package; do
+          PACKAGES_TO_PROCESS='${{ steps.packages_to_publish.outputs.packages_json }}'
+          echo "Processing packages: $PACKAGES_TO_PROCESS"
+
+          echo "$PACKAGES_TO_PROCESS" | jq -c '.[]' | while read -r package; do
             PACKAGE_NAME=$(echo "$package" | jq -r .name)
             PACKAGE_VERSION=$(echo "$package" | jq -r .version)
             TAG_NAME="${PACKAGE_NAME}@${PACKAGE_VERSION}"
