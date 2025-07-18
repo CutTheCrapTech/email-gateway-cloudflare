@@ -60,7 +60,7 @@ jobs:
         if: github.event.inputs.publish_npm == 'true' || github.event.inputs.create_releases == 'true'
         uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba # v1.5.3
         with:
-          publish: npm run release
+          publish: pnpm run publish
           createGithubReleases: ${{ github.event.inputs.create_releases }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
