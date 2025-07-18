@@ -29,7 +29,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # for github releases
+      id-token: write # to enable use of OIDC for npm provenance
     outputs:
       published_packages: ${{ steps.published-packages.outputs.packages }}
       has_changes: ${{ steps.published-packages.outputs.has_changes }}
