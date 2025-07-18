@@ -22,7 +22,7 @@
     "check:ci": "pnpm run type-check:all && pnpm run lint:ci && pnpm run test",
     "ci": "pnpm run check:ci && pnpm run build",
     "validate": "pnpm run check && pnpm run build",
-    "prepublishOnly": "pnpm run ci"
+    "prepublishOnly": "pnpm run ci && cd dist/chrome && zip -r ../chrome-extension.zip . && cd - && cd dist/firefox && zip -r ../firefox-extension.zip . && cd -"
   },
   "_scripts_documentation": {
     "clean": "Clean build artifacts in dist/",

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "version": "pnpm changeset version",
-    "publish": "pnpm changeset publish",
+    "publish": "npm run prepublishOnly && pnpm changeset publish",
     "clean": "pnpm run -r clean",
     "build": "pnpm run -r build",
     "type-check": "pnpm run -r type-check",
