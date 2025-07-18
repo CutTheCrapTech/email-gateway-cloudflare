@@ -1,6 +1,6 @@
 {
   "name": "@email-gateway/cloudflare-worker",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "private": true,
   "description": "A Cloudflare Worker for a private email gateway, integrating email-alias-core and email-scrubber-core.",
   "main": "dist/worker.js",

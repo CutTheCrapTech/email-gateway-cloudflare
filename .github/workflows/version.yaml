@@ -13,7 +13,7 @@ permissions:
 jobs:
   version:
     # Skip if it's the bot's own version commit (prevents infinite loop)
-    if: github.event.head_commit.message != 'Version packages [skip ci]'
+    if: ${{!contains(github.event.head_commit.message, format('chore(changesets){0} Version packages [skip ci]', ':'))}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -44,8 +44,8 @@ jobs:
         with:
           # Only version, don't publish
           version: npm run version
-          commit: "Version packages [skip ci]"
-          title: "Version packages"
+          commit: "chore(changesets): Version packages [skip ci]"
+          title: "chore(changesets): Version packages"
           commitMode: "github-api"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
