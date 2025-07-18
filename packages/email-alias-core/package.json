@@ -1,6 +1,6 @@
 {
   "name": "email-alias-core",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "A zero-dependency library to create and verify secure email aliases for custom domains.",
   "main": "dist/index.js",
   "module": "dist/index.js",
