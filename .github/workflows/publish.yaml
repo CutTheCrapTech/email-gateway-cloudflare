@@ -88,7 +88,7 @@ jobs:
     if: github.event.inputs.publish_extensions == 'true'
     permissions:
       contents: read
-    uses: ./.github/workflows/publish-extensions.yml
+    uses: ./.github/workflows/publish-extensions.yaml
     with:
       published_packages: ${{ needs.publish.outputs.published-packages }}
     secrets: inherit
