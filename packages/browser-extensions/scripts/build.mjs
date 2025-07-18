@@ -1,3 +1,4 @@
+import { execSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import esbuild from "esbuild";
@@ -74,9 +75,27 @@ async function buildExtension(buildConfig) {
   }
 }
 
+async function createZipArchive(sourceDir, outPath) {
+  const archiveName = path.basename(outPath);
+  console.log(`Creating zip archive: ${archiveName}...`);
+  try {
+    // Using the same zip command from the original prepublishOnly script
+    execSync(`cd ${sourceDir} && zip -r ${outPath} .`);
+    console.log(`✅ Successfully created ${outPath}`);
+  } catch (err) {
+    console.error(`❌ Failed to create zip archive ${archiveName}:`, err);
+    process.exit(1);
+  }
+}
+
 async function main() {
   await fs.emptyDir(outDir);
   console.log('Cleaned root "dist" directory');
+
+  await fs.copy(
+    path.join(projectRoot, "extension-config.json"),
+    path.join(outDir, "extension-config.json"),
+  );
 
   const builds = [
     { name: "chrome", manifestDir: chromeManifestDir },
@@ -87,7 +106,18 @@ async function main() {
     await buildExtension(buildConfig);
   }
 
-  console.log("\n✅ All builds completed successfully");
+  console.log(`
+✅ All builds completed successfully`);
+
+  // --- Create ZIP archives ---
+  await createZipArchive(
+    path.join(outDir, "chrome"),
+    path.join(outDir, "chrome-extension.zip"),
+  );
+  await createZipArchive(
+    path.join(outDir, "firefox"),
+    path.join(outDir, "firefox-extension.zip"),
+  );
 }
 
 main().catch((err) => {

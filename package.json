@@ -2,7 +2,7 @@
   "name": "email-gateway",
   "private": true,
   "scripts": {
-    "version": "pnpm changeset version",
+    "version": "pnpm changeset version && pnpm run -r --if-present postversion",
     "publish": "npm run prepublishOnly && pnpm changeset publish",
     "clean": "pnpm run -r clean",
     "build": "pnpm run -r build",
@@ -23,7 +23,8 @@
     "upgrade": "pnpm update -r"
   },
   "_scripts_documentation": {
-    "version": "changeset version",
+    "version": "Bumps versions via changesets and then runs post-versioning steps.",
+    "postversion": "Runs the 'postversion' script in all packages (e.g., to sync manifest versions).",
     "publish": "changeset publish",
     "clean": "Clean build artifacts in dist/",
     "build": "Clean and build",
@@ -53,6 +54,7 @@
     "@changesets/cli": "^2.29.5",
     "@cloudflare/workers-types": "^4.20250718.0",
     "@jest/globals": "^30.0.4",
+    "@types/fs-extra": "^11.0.4",
     "@types/jest": "^30.0.0",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.0.14",

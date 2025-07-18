@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc",
+    "build": "pnpm run clean && tsc",
     "type-check": "tsc --noEmit",
     "type-check:test": "tsc --noEmit --project tsconfig.test.json",
     "type-check:all": "pnpm run type-check && pnpm run type-check:test",

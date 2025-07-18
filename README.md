@@ -51,7 +51,8 @@ The following scripts are available in the root `package.json` and can be run wi
 
 | Script            | Description                                                                       |
 | ----------------- | --------------------------------------------------------------------------------- |
-| `version`         | Runs changeset version.                                                           |
+| `version`         | Bumps versions via changesets and then runs post-versioning steps.                |
+| `postversion`     | Runs the 'postversion' script in all packages (e.g., to sync manifest versions).  |
 | `publish`         | Runs changeset publish.                                                           |
 | `clean`           | Clean build artifacts in `dist/` directories.                                     |
 | `build`           | Clean and build all packages.                                                     |

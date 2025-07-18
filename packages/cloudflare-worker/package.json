@@ -25,6 +25,7 @@
   },
   "_scripts_documentation": {
     "clean": "Clean build artifacts in dist/",
+    "build:worker": "Builds the Cloudflare Worker.",
     "build": "Clean and build",
     "type-check": "Check TypeScript types for source files only",
     "type-check:test": "Check TypeScript types for test files only",

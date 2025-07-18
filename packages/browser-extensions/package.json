@@ -22,7 +22,8 @@
     "check:ci": "pnpm run type-check:all && pnpm run lint:ci && pnpm run test",
     "ci": "pnpm run check:ci && pnpm run build",
     "validate": "pnpm run check && pnpm run build",
-    "prepublishOnly": "pnpm run ci && cd dist/chrome && zip -r ../chrome-extension.zip . && cd - && cd dist/firefox && zip -r ../firefox-extension.zip . && cd -"
+    "prepublishOnly": "pnpm run ci",
+    "postversion": "node scripts/update-manifest-version.mjs"
   },
   "_scripts_documentation": {
     "clean": "Clean build artifacts in dist/",
@@ -41,7 +42,8 @@
     "check:ci": "Runs type checks, linting, and tests for CI environments.",
     "ci": "Runs all CI checks and builds the extensions.",
     "validate": "Run all CI checks including build - for development",
-    "prepublishOnly": "Runs before npm publish to ensure quality"
+    "prepublishOnly": "Runs before npm publish to ensure quality",
+    "postversion": "Syncs the manifest.json version with the package.json version after a version bump."
   },
   "dependencies": {
     "email-alias-core": "^1.5.2",
