@@ -2,4 +2,4 @@
 "email-alias-core": patch
 ---
 
-fix: Moved to a monorepo
+fix: Align package metadata with monorepo structure
