@@ -93,4 +93,4 @@ Contributions, issues, and feature requests are welcome. Feel free to check the 
 ### Before submitting:
 
 1. Ensure everything passes using: `pnpm run validate`
-2. Create a release: `npx changeset`
+2. Create a changeset: `npx changeset`
