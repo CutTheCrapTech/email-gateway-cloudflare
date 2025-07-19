@@ -23,7 +23,15 @@
     "ci": "pnpm run check:ci && pnpm run build",
     "validate": "pnpm run check && pnpm run build",
     "prepublishOnly": "pnpm run ci",
-    "postversion": "node scripts/update-manifest-version.mjs && pnpm run format"
+    "postversion": "node scripts/update-manifest-version.mjs && pnpm run format",
+    "zip-chrome": "(cd dist/chrome && zip -r ../../chrome-extention.zip .)",
+    "zip-firefox": "(cd dist/firefox && zip -r ../../firefox-extention.zip .)",
+    "zip": "zip -r dist.zip ./dist",
+    "release-dist": "pnpm run zip && gh release upload $npm_package_name@$npm_package_version dist.zip --clobber",
+    "release-chrome": "pnpm run zip-chrome && gh release upload $npm_package_name@$npm_package_version chrome-extention.zip --clobber",
+    "release-firefox": "pnpm run zip-firefox && gh release upload $npm_package_name@$npm_package_version firefox-extention.zip --clobber",
+    "release-extn-config": "gh release upload $npm_package_name@$npm_package_version extension-config.json --clobber",
+    "postrelease": "pnpm run release-dist && pnpm run release-chrome && pnpm run release-firefox && pnpm run release-extn-config"
   },
   "_scripts_documentation": {
     "clean": "Clean build artifacts in dist/",
@@ -43,7 +51,15 @@
     "ci": "Runs all CI checks and builds the extensions.",
     "validate": "Run all CI checks including build - for development",
     "prepublishOnly": "Runs before npm publish to ensure quality",
-    "postversion": "Syncs the manifest.json version with the package.json version after a version bump."
+    "postversion": "Syncs the manifest.json version with the package.json version after a version bump.",
+    "zip-chrome": "Zips the Chrome extension files into chrome-extention.zip.",
+    "zip-firefox": "Zips the Firefox extension files into firefox-extention.zip.",
+    "zip": "Zip Dist directory into dist.zip for release.",
+    "release-dist": "Uploads dist.zip to GitHub release.",
+    "release-chrome": "Uploads chrome-extention.zip to GitHub release.",
+    "release-firefox": "Uploads firefox-extention.zip to GitHub release.",
+    "release-extn-config": "Uploads extension-config.json to GitHub release.",
+    "postrelease": "Runs after github release by changesets"
   },
   "dependencies": {
     "email-alias-core": "^1.5.2",

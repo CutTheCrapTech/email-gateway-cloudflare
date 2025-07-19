@@ -7,6 +7,8 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
+    "get-package-name": "echo $npm_package_name",
+    "get-package-version": "echo $npm_package_version",
     "clean": "rimraf dist",
     "build": "pnpm run clean && tsc",
     "type-check": "tsc --noEmit",
@@ -22,9 +24,14 @@
     "check:ci": "pnpm run type-check:all && pnpm run lint:ci && pnpm run test",
     "ci": "pnpm run check:ci && pnpm run build",
     "validate": "pnpm run check && pnpm run build",
-    "prepublishOnly": "pnpm run ci"
+    "prepublishOnly": "pnpm run ci",
+    "zip": "zip -r dist.zip ./dist",
+    "release-dist": "gh release upload $npm_package_name@$npm_package_version dist.zip --clobber",
+    "postrelease": "pnpm run zip && pnpm run release-dist"
   },
   "_scripts_documentation": {
+    "get-package-name": "Get Package Name",
+    "get-package-version": "Get Package Version",
     "clean": "Clean build artifacts in dist/",
     "build": "Clean and build",
     "type-check": "Check TypeScript types for source files only",
@@ -40,7 +47,10 @@
     "check:ci": "Run all checks (types, lint, tests) for CI/CD",
     "ci": "Run all CI checks including build - for CI/CD",
     "validate": "Run all CI checks including build - for development",
-    "prepublishOnly": "Runs before npm publish to ensure quality"
+    "prepublishOnly": "Runs before npm publish to ensure quality",
+    "zip": "Zip Dist directory into dist.zip for release.",
+    "release-dist": "Uploads dist.zip to GitHub release.",
+    "postrelease": "Runs after github release by changesets"
   },
   "repository": {
     "type": "git",

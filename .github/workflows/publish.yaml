@@ -60,56 +60,20 @@ jobs:
         with:
           publish: pnpm run publish
           createGithubReleases: ${{ github.event.inputs.create_releases }}
+          commitMode: "github-api"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: "Find and upload release assets"
-        if: steps.changesets.outputs.published == 'true'
+      - name: Run Post-Release Tasks
+        if: github.event_name == 'workflow_dispatch' || steps.changesets.outputs.published == 'true'
+        run: |
+          # Small delay just to be safe, then run in parallel
+          sleep 5
+          pnpm run -r --parallel --if-present postrelease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -c '.[]' | while read -r package; do
-            PACKAGE_NAME=$(echo "$package" | jq -r .name)
-            PACKAGE_VERSION=$(echo "$package" | jq -r .version)
-            TAG_NAME="${PACKAGE_NAME}@${PACKAGE_VERSION}"
-
-            echo "--- Processing package: ${PACKAGE_NAME} version ${PACKAGE_VERSION} ---"
-
-            PACKAGE_DIR=""
-            for dir in packages/*/; do
-              if [ -f "${dir}package.json" ]; then
-                name=$(jq -r .name "${dir}package.json")
-                if [ "$name" == "$PACKAGE_NAME" ]; then
-                  PACKAGE_DIR=$dir
-                  break
-                fi
-              fi
-            done
-
-            if [ -z "$PACKAGE_DIR" ]; then
-              echo "Could not find directory for package ${PACKAGE_NAME}. Skipping asset upload."
-              continue
-            fi
-
-            if [ ! -d "${PACKAGE_DIR}dist" ]; then
-              echo "'dist' directory not found in ${PACKAGE_DIR}. No assets to upload."
-              continue
-            fi
-
-            ASSET_NAME="dist.zip"
-            (cd "${PACKAGE_DIR}" && zip -r "../../${ASSET_NAME}" ./dist && cd -)
-
-            echo "Created asset: ${ASSET_NAME}. Uploading to release with tag ${TAG_NAME}..."
-
-            gh release upload "$TAG_NAME" "$ASSET_NAME" --clobber
-
-            echo "Successfully uploaded ${ASSET_NAME}."
-
-            rm "$ASSET_NAME"
-            echo "Cleaned up asset file."
-            echo ""
-          done
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-extensions:
     needs: publish
