@@ -70,7 +70,43 @@ jobs:
         run: |
           # Small delay just to be safe, then run in parallel
           sleep 5
-          pnpm run -r --parallel --if-present postrelease
+
+          if [ "${{ steps.changesets.outputs.published }}" == "true" ]; then
+            # Store the raw JSON output in a temporary variable
+            RAW_PACKAGES_JSON='${{ steps.changesets.outputs.publishedPackages }}'
+
+            # Log the raw JSON for debugging purposes
+            echo "Raw published packages JSON:"
+            echo "$RAW_PACKAGES_JSON"
+
+            # Use jq to extract just the package names from the variable
+            PUBLISHED_PKGS=$(echo "$RAW_PACKAGES_JSON" | jq -r '.[].name')
+
+            # Log the PUBLISHED_PKGS for debugging purposes
+            echo "Running postrelease for published packages:"
+            echo "${PUBLISHED_PKGS}"
+
+            # Check if any packages were actually published.
+            if [ -n "$PUBLISHED_PKGS" ]; then
+              # Create a bash array to hold the filter arguments safely.
+              filter_args=()
+              # Read each package name and build the filter arguments array.
+              # This avoids shell word-splitting issues.
+              while IFS= read -r pkg_name; do
+                filter_args+=("--filter" "$pkg_name")
+              done <<< "$PUBLISHED_PKGS"
+
+              # Execute pnpm, passing the filter arguments BEFORE the 'run' command.
+              # "${filter_args[@]}" expands the array into separate, safely quoted arguments.
+              pnpm run "${filter_args[@]}" --parallel --if-present postrelease
+            else
+              echo "No published packages found, skipping postrelease tasks."
+            fi
+          else
+            # Fallback for manual dispatch - run on all packages
+            echo "Manual dispatch - running postrelease on all packages"
+            pnpm run -r --parallel --if-present postrelease
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
