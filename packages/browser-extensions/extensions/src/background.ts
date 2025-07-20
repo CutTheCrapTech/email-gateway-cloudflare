@@ -102,6 +102,15 @@ async function handleFillCurrentFieldCommand(tabId: number): Promise<void> {
     const tab = await browser.tabs.get(tabId);
     const alias = await generateAliasForBackgroundWithUrl(tab.url);
 
+    // Ask the content script to copy the alias to the clipboard
+    await browser.scripting.executeScript({
+      target: { tabId },
+      func: (text: string) => {
+        navigator.clipboard.writeText(text);
+      },
+      args: [alias],
+    });
+
     const scriptLoaded = await ensureContentScriptLoaded(tabId);
 
     if (!scriptLoaded) {
