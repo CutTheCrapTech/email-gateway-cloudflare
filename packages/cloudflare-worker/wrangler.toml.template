@@ -1,10 +1,14 @@
 # wrangler.toml.template
-name = "email-gateway-worker"
+name = "email-gateway-prod"
 main = "dist/worker.js"
 compatibility_date = "2025-07-08"
 
 [vars]
 EMAIL_OPTIONS = '{"default_email_address":"default@example.com","ignore_email_checks": ["trusted-receiver@example.com"]}'
+
+[observability]
+enabled = true
+head_sampling_rate = 1
 
 [[email]]
 name = "email-gateway"

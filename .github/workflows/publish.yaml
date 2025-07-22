@@ -19,11 +19,6 @@ on:
         required: false
         default: false
         type: boolean
-      publish_worker:
-        description: "Deploy Cloudflare Worker"
-        required: false
-        default: false
-        type: boolean
 
 jobs:
   publish:
@@ -125,15 +120,3 @@ jobs:
       CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
       FIREFOX_API_KEY: ${{ secrets.FIREFOX_API_KEY }}
       FIREFOX_API_SECRET: ${{ secrets.FIREFOX_API_SECRET }}
-
-  deploy-workers:
-    needs: publish
-    if: github.event.inputs.publish_worker == 'true' && needs.publish.outputs.has_changes == 'true'
-    permissions:
-      contents: read
-    uses: ./.github/workflows/publish-worker.yaml
-    with:
-      published_packages: ${{ needs.publish.outputs.published_packages }}
-    secrets:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

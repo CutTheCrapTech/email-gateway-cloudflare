@@ -54,32 +54,14 @@ This workflow leverages the `changesets/action` for publishing and orchestrates 
 - `create_releases` (boolean, default: `true`): Whether to create GitHub releases.
 - `publish_npm` (boolean, default: `true`): Whether to publish to npm.
 - `publish_extensions` (boolean, default: `false`): Whether to publish browser extensions.
-- `publish_worker` (boolean, default: `false`): Whether to deploy Cloudflare Worker.
 
 ## Publish Extensions Workflow (`.github/workflows/publish-extensions.yaml`)
 
 This reusable workflow is called by the `publish.yaml` workflow (or can be triggered manually via `workflow_dispatch`). It is responsible for publishing browser extensions. Key features include:
 
 - **Package Filtering**: Allows filtering extensions to publish based on package name.
-- **Force Publish**: Option to force publication even if no changes are detected.
-- **Environment Variables**: Utilizes secrets for API keys and client credentials for different browser stores (e.g., Firefox, Chrome).
+- **Secrets**: Utilizes secrets for API keys and client credentials for different browser stores (e.g., Firefox, Chrome).
 
 **`workflow_dispatch` Inputs:**
 
-- `package_filter` (string, optional): Package name filter (e.g., 'my-extension').
-- `force_publish` (boolean, default: `false`): Force publish even if no changes detected.
-
-## Deploy Workers Workflow (`.github/workflows/publish-worker.yaml`)
-
-This reusable workflow is called by the `publish.yaml` workflow (or can be triggered manually via `workflow_dispatch`). It is responsible for deploying Cloudflare Workers. Key features include:
-
-- **Environment Selection**: Allows specifying the deployment environment (e.g., `production`, `staging`).
-- **Package Filtering**: Allows filtering workers to deploy based on package name.
-- **Force Deploy**: Option to force deployment even if no changes are detected.
-- **Environment Variables**: Utilizes secrets for Cloudflare API token and account ID.
-
-**`workflow_dispatch` Inputs:**
-
-- `environment` (choice, default: `production`): Deployment environment (`production` or `staging`).
-- `package_filter` (string, optional): Package name filter (e.g., 'my-worker').
-- `force_deploy` (boolean, default: `false`): Force deploy even if no changes detected.
+- `package_name` (string, optional): Package name filter (e.g., '@email-gateway/email-alias-extensions').
