@@ -1,44 +1,25 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:recommended"],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "📊 Dependency Updates (Manual Review Required)",
-  "labels": [
-    "dependencies",
-    "renovate"
-  ],
+  "labels": ["dependencies", "renovate"],
   "timezone": "Asia/Kolkata",
-  "schedule": [
-    "* 16 * * 1"
-  ],
+  "schedule": ["* 16 * * 1"],
   "prHourlyLimit": 5,
   "automerge": false,
   "packageRules": [
     {
       "description": "Github Actions Trusted vendors: Non-major updates",
-      "extends": [
-        "helpers:pinGitHubActionDigestsToSemver"
-      ],
-      "matchManagers": [
-        "github-actions"
-      ],
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
       "minor": {
         "groupName": "github-actions-trusted",
-        "labels": [
-          "dependencies",
-          "renovate",
-          "non-major-update"
-        ]
+        "labels": ["dependencies", "renovate", "non-major-update"]
       },
       "patch": {
         "groupName": "github-actions-trusted",
-        "labels": [
-          "dependencies",
-          "renovate",
-          "non-major-update"
-        ]
+        "labels": ["dependencies", "renovate", "non-major-update"]
       },
       "matchPackageNames": [
         "/^actions//",
@@ -52,27 +33,15 @@
     },
     {
       "description": "Github Actions Community vendors: Non-major updates",
-      "extends": [
-        "helpers:pinGitHubActionDigestsToSemver"
-      ],
-      "matchManagers": [
-        "github-actions"
-      ],
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
       "minor": {
         "groupName": "github-actions-community",
-        "labels": [
-          "dependencies",
-          "renovate",
-          "non-major-update"
-        ]
+        "labels": ["dependencies", "renovate", "non-major-update"]
       },
       "patch": {
         "groupName": "github-actions-community",
-        "labels": [
-          "dependencies",
-          "renovate",
-          "non-major-update"
-        ]
+        "labels": ["dependencies", "renovate", "non-major-update"]
       },
       "matchPackageNames": [
         "!/^actions//",
@@ -86,19 +55,11 @@
     },
     {
       "description": "Github Actions Trusted vendors: Major updates",
-      "extends": [
-        "helpers:pinGitHubActionDigestsToSemver"
-      ],
-      "matchManagers": [
-        "github-actions"
-      ],
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
       "major": {
         "groupName": "github-actions-trusted-major",
-        "labels": [
-          "dependencies",
-          "renovate",
-          "major-update"
-        ]
+        "labels": ["dependencies", "renovate", "major-update"]
       },
       "matchPackageNames": [
         "/^actions//",
@@ -112,19 +73,11 @@
     },
     {
       "description": "Github Actions Community vendors: Major updates",
-      "extends": [
-        "helpers:pinGitHubActionDigestsToSemver"
-      ],
-      "matchManagers": [
-        "github-actions"
-      ],
+      "extends": ["helpers:pinGitHubActionDigestsToSemver"],
+      "matchManagers": ["github-actions"],
       "major": {
         "groupName": "github-actions-community-major",
-        "labels": [
-          "dependencies",
-          "renovate",
-          "major-update"
-        ]
+        "labels": ["dependencies", "renovate", "major-update"]
       },
       "matchPackageNames": [
         "!/^actions//",
@@ -138,33 +91,17 @@
     },
     {
       "description": "NPM: Non-major updates",
-      "matchManagers": [
-        "npm"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor"
-      ],
-      "groupName": "npm-updates",
-      "labels": [
-        "dependencies",
-        "renovate",
-        "non-major-update"
-      ]
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "npm-non-major-updates",
+      "labels": ["dependencies", "renovate", "non-major-update"]
     },
     {
       "description": "NPM: Major updates",
-      "matchManagers": [
-        "npm"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "labels": [
-        "dependencies",
-        "renovate",
-        "major-update"
-      ]
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "npm-major-updates",
+      "labels": ["dependencies", "renovate", "major-update"]
     }
   ]
 }
