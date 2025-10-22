@@ -100,8 +100,8 @@ importers:
         specifier: ^1.5.2
         version: 1.5.2
       hono:
-        specifier: ^4.8.5
-        version: 4.8.5
+        specifier: ^4.10.2
+        version: 4.10.2
 
   packages/email-alias-core: {}
 
@@ -2285,8 +2285,8 @@ packages:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
 
-  hono@4.8.5:
-    resolution: {integrity: sha512-Up2cQbtNz1s111qpnnECdTGqSIUIhZJMLikdKkshebQSEBcoUKq6XJayLGqSZWidiH0zfHRCJqFu062Mz5UuRA==}
+  hono@4.10.2:
+    resolution: {integrity: sha512-p6fyzl+mQo6uhESLxbF5WlBOAJMDh36PljwlKtP5V1v09NxlqGru3ShK+4wKhSuhuYf8qxMmrivHOa/M7q0sMg==}
     engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@4.0.0:
@@ -6076,7 +6076,7 @@ snapshots:
 
   has-flag@4.0.0: {}
 
-  hono@4.8.5: {}
+  hono@4.10.2: {}
 
   html-encoding-sniffer@4.0.0:
     dependencies:
