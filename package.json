@@ -70,6 +70,6 @@
     "typescript": "^5.8.3",
     "vitest": "^3.2.4",
     "web-ext": "^8.9.0",
-    "wrangler": "^4.25.0"
+    "wrangler": "^4.59.1"
   }
 }
