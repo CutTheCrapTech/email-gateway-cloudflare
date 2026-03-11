@@ -56,6 +56,6 @@
   },
   "dependencies": {
     "email-alias-core": "^1.5.2",
-    "hono": "^4.8.5"
+    "hono": "^4.12.7"
   }
 }
