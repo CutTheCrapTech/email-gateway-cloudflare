@@ -68,7 +68,7 @@
     "rimraf": "^6.0.1",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4",
+    "vitest": "^4.0.0",
     "web-ext": "^8.9.0",
     "wrangler": "^4.25.0"
   }
